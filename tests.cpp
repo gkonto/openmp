@@ -1,8 +1,16 @@
 #include <memory>
+#include <iostream>
 #include "threads.hpp"
 #include "tests.hpp"
 
+Test::Test(const std::string &name) 
+    : name_(name)
+{
+    std::cout << "[+] " << name_ << std::endl;
+}
+
 TestOpenMP::TestOpenMP()
+    : Test("TestOpenMP")
 {
     int x = 5;
     int y = 20;
@@ -19,7 +27,8 @@ TestOpenMP::TestOpenMP()
 }
 
 
-TestUpdateSharedVariable::TestUpdateSharedVariable()
+TestUpdateSharedVariable::TestUpdateSharedVariable() 
+    : Test("TestUpdateSharedVariable")
 {
     int sum = 0;
     #pragma omp parallel shared(sum)
@@ -39,7 +48,9 @@ TestUpdateSharedVariable::TestUpdateSharedVariable()
 
 
 
-TestLoopCollapse::TestLoopCollapse(int n, int m) {
+TestLoopCollapse::TestLoopCollapse(int n, int m) 
+    : Test("TestLoopCollapse")
+{
     std::unique_ptr<int[]> a = std::make_unique<int[]>(m*n);
     
     #pragma omp parallel for default(none) shared(a, m, n) collapse(2)
