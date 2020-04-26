@@ -8,6 +8,7 @@
  set(HEADERS
      threads.hpp
      tests.hpp
+     linked_list.hpp
    )
 
  set(SOURCES

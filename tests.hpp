@@ -3,6 +3,9 @@
 
 #include <string>
 
+//Forward declarations
+struct linked_list;
+
 class Test {
 public:
     Test(const std::string &name);
@@ -30,5 +33,21 @@ struct TestLoopCollapse : public Test {
     TestLoopCollapse(int dim1, int dim2);
 };
 
+
+// Figure 3.6
+// Implementation of a linked list program
+struct TestLinkedList : public Test {
+    TestLinkedList();
+    long do_work(long input_value);
+    void initialize_list();
+    // Figure 3.8
+    void sequentialImpl();
+    // Figure 3.10
+    void parallelImpl();
+
+    linked_list *head_ = nullptr;
+    int function_call_count = 0;
+    int ntasks_ = 15;
+};
 
 #endif
