@@ -2,6 +2,7 @@
 #define TESTS_HPP
 
 #include <string>
+#include <vector>
 
 //Forward declarations
 struct linked_list;
@@ -48,6 +49,19 @@ struct TestLinkedList : public Test {
     linked_list *head_ = nullptr;
     int function_call_count = 0;
     int ntasks_ = 15;
+};
+
+
+struct TestQuickSort : public Test {
+    TestQuickSort(long numOfElems);
+
+    void initialize(std::vector<long> &initial);
+    // Figure 3.15
+    void seqQuickSort(long *a, long lo, long hi);
+    // Figure 3.17
+    void ompQuickSort(long *a, long lo, long hi);
+    long choosePivot(long *a, long lo, long hi);
+    long partitionArray(long *a, long lo, long hi);
 };
 
 #endif

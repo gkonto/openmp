@@ -1,5 +1,9 @@
+#include <utility>
+#include <vector>
 #include <memory>
 #include <iostream>
+#include <stdlib.h>
+#include <time.h>
 #include "threads.hpp"
 #include "tests.hpp"
 #include "linked_list.hpp"
@@ -157,3 +161,85 @@ TestLinkedList::TestLinkedList()
     sequentialImpl();
     parallelImpl();
 }
+
+
+long TestQuickSort::choosePivot(long *a, long lo, long hi) {
+        return (lo + hi) / 2;
+}
+
+long TestQuickSort::partitionArray(long *a, long lo, long hi)
+{
+    long pivotIndex = choosePivot(a, lo, hi);
+    long pivotValue = a[pivotIndex];
+
+    std::swap(a[hi], a[pivotIndex]);
+    long storeIndex = lo;
+
+    for (long i = lo; i <= hi - 1; ++i) {
+        if (a[i] < pivotValue) {
+            std::swap(a[i], a[storeIndex]);
+            ++storeIndex;
+        }
+    }
+    std::swap(a[storeIndex], a[hi]);
+
+    return storeIndex;
+}
+
+void TestQuickSort::seqQuickSort(long *a, long lo, long hi)
+{
+    if (lo < hi) {
+        long p = partitionArray(a, lo, hi);
+        seqQuickSort(a, lo, p - 1); // left branch
+        seqQuickSort(a, p + 1, hi); // right branch
+    }
+}
+
+void TestQuickSort::initialize(std::vector<long> &vec) 
+{
+    srand(time(nullptr));
+    for (auto &a : vec) {
+        a = rand() % 100000 + 1;
+    }
+}
+
+
+void TestQuickSort::ompQuickSort(long *a, long lo, long hi) {
+    if (lo < hi) { 
+        long p = partitionArray(a, lo, hi);
+        #pragma omp task default(none) shared(a) firstprivate(lo, p)
+        {
+            ompQuickSort(a, lo, p-1); // Left branch
+        }
+
+        #pragma omp task default(none), shared(a) firstprivate(hi, p)
+        {
+            ompQuickSort(a, p+1, hi); // Right branch
+        }
+    }
+}
+
+TestQuickSort::TestQuickSort(long numOfElems)
+    : Test("TestQuickSort")
+{
+    std::vector<long> initial(numOfElems);
+    initialize(initial);
+    std::vector<long> seq(initial);
+    seqQuickSort(&seq[0], 0, seq.size() - 1);
+
+    std::vector<long> par(initial);
+    long *a = &par[0];
+    size_t nelements = par.size();
+    #pragma omp parallel default(none) shared(a, nelements)
+    {
+        #pragma omp single nowait
+        {
+            ompQuickSort(a, 0, nelements - 1);
+        } // End of single section
+    } // End of parallel section
+    for (auto &a : par) {
+        std::cout << a << std::endl;
+    }
+}
+
+
