@@ -1,0 +1,147 @@
+1 A Recap of OpenMP 2.5 1
+    1.1 OpenMP Directives and Syntax 1
+    1.2 Creating a Parallel Program with OpenMP 2
+        1.2.1 The Parallel Region
+        1.2.2 The OpenMP Execution Model
+        1.2.3 The OpenMP Memory Model
+    1.3 The Worksharing Constructs 3
+        1.3.1 The Loop Construct
+        1.3.2 The Sections Construct
+        1.3.3 The Single Construct
+        1.3.4 The Fortran Construct
+        1.3.5 The Combined Worksharing COnstructs
+    1.4 The Master Construct
+    1.5 Nested Parallelism
+    1.6 Synchonization Constructs
+        1.6.1 The Barrier Construct
+        1.6.2 The Critical Construct
+        1.6.3 The Atomic Construct
+        1.6.4 The Ordered Construct
+    1.7 The OpenMP 2.5 Environment Variables
+    1.8 The OpenMP 2.5 Runtime Functions
+    1.9 Internal Constrol Variables in OpenMP
+    1.10 Concluding Remarks
+2 New Features in OpenMP
+    2.1 Enhancements to Existing Constructs
+        2.1.1 The Schedule Clause
+        2.1.2 The If Clause
+        2.1.3 The Collapse Clause
+        2.1.4 The Linear Clause
+        2.1.5 The Critical Construct
+        2.1.6 The Atomic Construct
+    2.2 New Environment variables
+    2.3 New Runtime Functions
+        2.3.1 Runtime functions for thread managements,
+              Thread Scheduling and nested parallelism
+        2.3.2 Runtime functions for tasking cancellation and thread affinity
+        2.3.3 Runtime functions for locking
+        2.3.4 Runtime functions for heterogeneous systems
+        2.3.5 usage examples of the new runtime functions
+    2.4 New Functionality
+        2.4.1 Changed owneship of Locks
+        2.4.2 Cancellation
+        2.4.3 User-Defined Reduction
+        2.4.4 The Doacross loop
+    2.5 Concluding remarks
+3 Tasking
+    3.1 Hello Task
+        3.1.1 Parallelizing a Palindrome
+        3.1.2 Parallelizing a Sentence with a Palindrome
+        3.1.3 Closing Comments on the Palindrome Example
+    3.2 Using Tasks to Parallelize a Linked List
+        3.2.1 The Sequential Version of the Linked List Program
+        3.2.2 The Parallel Version of the Linked List Program
+        3.2.3 Closing Comments on the Linked List Example
+    3.3 Sorting Things Out with Tasks
+        3.3.1 The Sequential Quicksort Algorithm
+        3.3.2 The OpenMp Quicksort Algorithm
+        3.3.3 Fine-Tuning the OpenMp Quicksort Algorithm
+        3.3.4 Closing Comments on the OpenMp QuickSort Algorithm
+    3.4 Overlapping I/O and Computations Using Tasks
+        3.4.1 Using Tasks and Task Dependencies
+        3.4.2 Using the Taskloop Construct
+        3.4.3 Closing Comments on the Pipeline Example
+    3.5 The Data Environment with Tasks
+    3.6 What is a Task?
+    3.7 Task Creation, Synchronization, and Scheduling
+    3.8 The Taskloop Construct
+    3.9 Concluding Remarks
+4 Thread Affinity
+    4.1 The Characteristics of a cc-NUMA Architecture
+    4.2 First Touch Data Placement
+        4.2.1 The Pros and Cons of First Touch Data Placement
+        4.2.2 How to Exploit the First Touch Policy
+    4.3 The Need for Thread Affinity Support
+    4.4 The OpenMP Thread Affinity Philosophy
+    4.5 The OpenMP Places Concept
+        4.5.1 Defining OpenMP Places Using Sets with Numbers
+        4.5.2 The OpenMP Place List
+        4.5.3 Defining OpenMP Places Using Abstract Names
+        4.5.4 How to Define the OpenMP Place List
+    4.6 Mapping Threads onto OpenMP Places
+        4.6.1 The Master Affinity Policy
+        4.6.2 The Close Affinity Policy
+        4.6.3 The Spread Affinity Policy
+        4.6.4 What's in a Name?
+    4.7 Making it Easier to Use The Thread Affinity Policies
+        4.7.1 The Sockets Abstract Place List
+        4.7.2 The Cores abstract PLace list
+        4.7.3 The Threads Abstract Place List
+    4.8 Where are my Threads Running?
+        4.8.1 Affinity Examples for a Single-Level parallel Region
+        4.8.2 Affinity Examples for a Nested Parallel Region
+        4.8.3 Making Things Easier Again
+        4.8.4 Moving Threads Around
+    4.9 Concluding Remarks
+5 SIMD - Single Instruction Multiple Data
+    5.1  An Introduction to SIMD Parallelism
+    5.2  SIMD loops
+        5.2.1 The Simd Construct
+        5.2.2 The Simdlen Clause
+        5.2.3 The Safelen Clause
+        5.2.4 The Linear Clause
+        5.2.5 The Aligned Clause
+        5.2.6 The Composite Loop SIMD Construct
+        5.2.7 Use of the Simd Construct with the Ordered Construct
+    5.3 SIMD Functions
+        5.3.1 The Declare Simd Directive
+        5.3.2 SIMD Function Parameter Attributes
+        5.3.3 Conditional Calls To SIMD Functions
+        5.3.4 Multiple Versions of a SIMD Function
+    5.4 Concluding Remarks
+6 Heterogeneous Architectures
+    6.1 Devices and Accelerators
+    6.2 Heterogenerous Program Execution
+        6.2.1 A New Initial Thread
+        6.2.2 Contention Groups
+        6.2.3 A League of Teams
+        6.2.4 The Target Task
+    6.3 Heterogeneous Memory Model
+        6.3.1 Mapped Variables
+        6.3.2 Device Data Environments
+        6.3.3 Device Pointers
+        6.3.4 Array Sections
+    6.4 The Target Construct
+    6.5 The Target Teams Construct
+        6.5.1 The Distribute Construct
+        6.5.2 Combined and Composite Accelerated WorkSharing Constructs
+    6.6 Data Mapping Clauses
+        6.6.1 The Map Clause
+        6.6.2 Mapping Structure Members
+        6.6.3 The Defaultmap Clause and Data-mapping Attributes
+        6.6.4 Pointers and Zero-length Array Sections
+    6.7 The Declare Target Directive
+    6.8 The Data-mapping Constructs
+        6.8.1 The target Data Construct
+        6.8.2 The Target Update Construct
+        6.8.3 The Target Enter and Exit Data Constructs
+    6.9 The Nowait Clause on Device Constructs
+    6.10 Selecting a Device
+        6.10.1 The Default Device and the Device Clause
+        6.10.2 The If Clause on Device Constructs
+    6.11 The Device Pointer Clauses
+        6.11.1 The ls_device_ptr Clause
+        6.11.2 The Use_device_ptr Clause
+    6.12 Device Memory Functions
+    6.13 Concluding Remarks
+
