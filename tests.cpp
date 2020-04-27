@@ -219,6 +219,31 @@ void TestQuickSort::ompQuickSort(long *a, long lo, long hi) {
     }
 }
 
+// The OpenMP quicksort implementation using the final and 
+// mergeable clauses
+// TODO the cutoff value can be set such that the OpenMP version
+// using a single thread performs the same as or similar to the 
+// sequential version.
+void TestQuickSort::ompQuickSort2(long *a, long lo, long hi) {
+    long cutoff_tasks = 50;
+    if (lo < hi) {
+        long p = partitionArray(a, lo, hi);
+        #pragma omp task final ((p-lo) < cutoff_tasks) mergeable default(none) shared(a) firstprivate(lo, p)
+        {
+            // Left branch
+            ompQuickSort2(a, lo, p - 1);
+        }
+
+        #pragma omp task final ((hi - p) < cutoff_tasks) mergeable default(none) shared(a) firstprivate(hi, p)
+        {
+            // Right branch
+            ompQuickSort2(a, p + 1, hi);
+        }
+    }
+}
+
+
+
 TestQuickSort::TestQuickSort(long numOfElems)
     : Test("TestQuickSort")
 {
@@ -237,9 +262,19 @@ TestQuickSort::TestQuickSort(long numOfElems)
             ompQuickSort(a, 0, nelements - 1);
         } // End of single section
     } // End of parallel section
-    for (auto &a : par) {
-        std::cout << a << std::endl;
-    }
+
+    std::vector<long> par2(initial);
+    a = &par2[0];
+    nelements = par2.size();
+    #pragma omp parallel default(none) shared(a, nelements)
+    {
+        #pragma omp single nowait
+        {
+            ompQuickSort(a, 0, nelements - 1);
+        } // End of single section
+    } // End of parallel section
 }
+
+
 
 

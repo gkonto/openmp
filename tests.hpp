@@ -60,6 +60,9 @@ struct TestQuickSort : public Test {
     void seqQuickSort(long *a, long lo, long hi);
     // Figure 3.17
     void ompQuickSort(long *a, long lo, long hi);
+    //Figure 3.19
+    void ompQuickSort2(long *a, long lo, long hi);
+
     long choosePivot(long *a, long lo, long hi);
     long partitionArray(long *a, long lo, long hi);
 };
