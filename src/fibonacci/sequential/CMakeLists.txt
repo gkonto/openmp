@@ -1,6 +1,6 @@
   cmake_minimum_required(VERSION 2.8.7)
 
-  PROJECT(c1)
+  PROJECT(sequential)
   SET(CMAKE_CXX_STANDARD 14)
 
   ADD_DEFINITIONS("-fopenmp -L/usr/local/bin -g -Wall -Wextra -O3 -Wunreachable-code")

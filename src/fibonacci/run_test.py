@@ -87,22 +87,24 @@ if __name__=="__main__":
     print(system_details)
 
     # Execute variations
-    value_range = 38
-    threads_range = 5
+    min_val = 20
+    max_val = 37
+    min_thread = 1
+    max_thread = 4
 
     prog_details = dict()
     for prog in programs:
         prog_details[prog.split('/')[-3]] = dict()
         threads = dict()
         threads["threads num"] = dict();
-        for thread in range(1, threads_range):
+        for thread in range(min_thread, max_thread):
             times = dict()
             times['fib(x)'] = dict()
-            for val in range(1, value_range):
+            for val in range(min_val, max_val):
                 t, value = executeCpp(prog, val, thread)
                 times['fib(x)'][val] = [t, value]
             threads["threads num"][thread] = times
-            if (prog.split('/')[-3] == 'c1'):
+            if (prog.split('/')[-3] == 'sequential'):
                 break
         prog_key = prog.split('/')[-3]
         prog_details[prog_key] = threads
