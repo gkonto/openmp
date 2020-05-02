@@ -22,12 +22,13 @@ def create_lines():
             m.x_axis.extend([x for _,x in sorted(zip(y_axis, x_axis))])
             m.y_axis.extend([y for y, _ in sorted(zip(y_axis, x_axis))])
             lines.append(m)
-    return lines
+    title = "Fibonacci\n{}\nCores: {}\nRAM:{}".format(d['system details']['model name'], d['system details']['cpu cores'], d['system details']['MemTotal'])
+    return lines, title
 
 
 if __name__=="__main__":
 
-    lines = create_lines()
+    lines, title = create_lines()
 
 
     for line in lines:
@@ -39,7 +40,7 @@ if __name__=="__main__":
         # naming the y axis
         plt.ylabel('Time (s)')
         # giving a title to my graph
-        plt.title('Fibonacci Comparison Cases')
+        plt.title(title)
 
     # show a legend on the plot
     plt.legend()
