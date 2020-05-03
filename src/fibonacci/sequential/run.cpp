@@ -4,7 +4,7 @@
 
 static int parseArgs(int argc, char **argv) {
     if (argc <= 1) {
-        std::cout << "Specific fibonacci value to be calculated" << std::endl;
+        std::cout << "Specify fibonacci value to be calculated" << std::endl;
         exit(1);
     }
     
