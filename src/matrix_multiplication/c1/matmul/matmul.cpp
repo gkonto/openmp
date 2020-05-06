@@ -10,6 +10,15 @@ void matmul(int **A, int r1, int c1,
         return;
     }
 
+    r3 = r1;
+    c3 = c2;
+
+    C = new int*[r1];
+    for (int i = 0; i < r1; ++i) {
+        C[i] = new int[c2];
+    }
+
+#pragma omp parallel for
     for (int i = 0; i < r1; ++i) {
         for (int j = 0; j < c2; ++j) {
             int tmp = 0;
