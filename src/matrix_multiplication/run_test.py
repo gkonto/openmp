@@ -72,7 +72,7 @@ def executeCpp(prog, val, thread):
 class Measurement:
     def __init__(self, variation):
         self.variation_ = variation
-        self.times_ = dict()
+        self.times_ = list()
 
     def __eq__(self, key):
         return self.variation_ == key
@@ -125,23 +125,24 @@ if __name__=="__main__":
     max_thread = 4
     dimension_cases = [
             [400, 400, 400],
-            [800, 800, 800]
-            #[900, 900, 900],
-            #[1000, 1000, 1000],
-            #[1100, 1100, 1100],
-            #[1200, 1200, 1200],
-            #[1300, 1300, 1300],
-            #[1400, 1400, 1400],
-            #[1500, 1500, 1500],
-            #[1600, 1600, 1600]
+            [800, 800, 800],
+            [900, 900, 900],
+            [1000, 1000, 1000],
+            [1100, 1100, 1100],
+            [1200, 1200, 1200],
+            [1300, 1300, 1300],
+            [1400, 1400, 1400],
+            [1500, 1500, 1500],
+            [1600, 1600, 1600]
             #[3200, 3200, 3200]
             ]
 
     details = dict()
     measurements = list()
-    for prog in programs:
+    dimensions = list()
+    for prog in sorted(programs): #Sorted reversed: [sequential, c1, c2...]
         variation = prog.split('/')[-3]
-        for thread in range(min_thread, max_thread):
+        for i, thread in enumerate(range(min_thread, max_thread)):
             tmp = "Case: " + variation + " Threads: " + str(thread)
             for val in dimension_cases:
                 t = executeCpp(prog, val, thread)
@@ -150,13 +151,18 @@ if __name__=="__main__":
                 if found == None:
                     found = Measurement(tmp)
                     measurements.append(found)
-                found.times_[str(val)] = t
+
+                f = find_in_measurements(dimensions, str(val))
+                if f == None:
+                    dimensions.append(str(val))
+                found.times_.append(t)
 
             if (prog.split('/')[-3] == 'sequential'):
                 break
 
     details['system details'] = system_details
     details['legends'] = [o.__dict__ for o in measurements]
+    details['dimensions'] = dimensions
 
     j = json.dumps(details, indent = 1)
 

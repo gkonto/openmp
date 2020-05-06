@@ -14,24 +14,22 @@ def read_json():
     with open("result.json", 'r') as f:
         d = json.load(f)
 
-    labels = list()
     legends = list()
     all_val = list()
+    dimensions = d["dimensions"]
     for m in d["legends"]:
-        labels.append(str(m["variation_"]));
+        legends.append(m["variation_"])
         values = list()
         values = len(m["times_"]) * [-1]
-        for case in m["times_"]:
-            try:
-                idx = legends.index(case)
-            except:
-                legends.append(case)
-                idx = len(legends) - 1
-            values[idx] = round(m["times_"][case], 3)
+        for i, time in enumerate(m["times_"]):
+            values[i] = round(time, 3)
         all_val.append(values)
 
 
-    return labels, legends, all_val
+    print(dimensions)
+    print(legends)
+    print(all_val)
+    return legends, dimensions, all_val
 
 
 legends, labels, values = read_json()
