@@ -35,14 +35,6 @@ def read_json():
 
 
 legends, labels, values = read_json()
-print(labels)
-print(legends)
-print(values)
-#labels = ["[100, 100, 100]", "[200, 200, 200]", "[300, 300, 300]"]
-#legends  = ["seq", "c1_1", "c1_2", "c1_3"]
-#values = [[1, 2, 3], [1, 2, 3], [1, 2, 3], [1, 2, 3]]
-
-
 
 # plot a barchart with error bar
 fig, ax = plt.subplots()
@@ -63,4 +55,5 @@ ax.set_title('Matrix Multiplication')
 ax.set_xticks(index + bar_width)
 ax.set_xticklabels((label for label in labels))
 ax.legend(ncol=3)
+plt.xticks(rotation=90)
 plt.show()
