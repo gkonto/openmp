@@ -1,8 +1,9 @@
 #include <omp.h>
 #include "integ.hpp"
 
+//Poor performance. Is false sharing the problem?
 static long num_steps = 1000000000;
-#define NUM_THREADS 1
+#define NUM_THREADS 2
 
 double pi() {
     int nthreads = 0;
