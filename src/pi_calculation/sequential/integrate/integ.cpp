@@ -1,8 +1,6 @@
 #include "integ.hpp"
 
-static long num_steps = 1000000000;
-
-double pi() {
+double pi(long num_steps) {
     int upper_limit = 1;
     double step = upper_limit/(double)num_steps;
     double sum = .0;
