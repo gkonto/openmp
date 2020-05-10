@@ -1,15 +1,20 @@
 #include <omp.h>
+#include <vector>
 #include "integ.hpp"
 
-//Poor performance. Is false sharing the problem?
-static long num_steps = 1000000000;
-#define NUM_THREADS 2
 
-double pi() {
+//FIXME Poor performance. Is false sharing the problem?
+double pi(long num_steps, int num_threads) {
     int nthreads = 0;
-    double pi = .0, sum[NUM_THREADS] = {0.0};
+    double pi = .0;
+
+    double *sum = new double [num_threads];
+    for (int i = 0; i < num_threads; ++i) {
+        sum[i] = 0.0;
+    }
+
     double step= 1.0/(double)num_steps;
-    omp_set_num_threads(NUM_THREADS);
+    omp_set_num_threads(num_threads);
 
 #pragma omp parallel
     {
@@ -26,10 +31,11 @@ double pi() {
         }
     }
 
-    for (int i = 0; i < nthreads; ++i)
-    {
+    for (int i = 0; i < nthreads; ++i) {
         pi += sum[i] * step;
     }
+
+    delete []sum;
 
     return pi;
 }
