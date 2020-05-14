@@ -37,9 +37,5 @@ int main(int argc, char **argv) {
     double p = pi(o.num_steps, o.num_threads);
     std::cout << "Elapsed Time: " << omp_get_wtime() - seconds << std::endl;
     std::cout << "pi Value: " << p << std::endl;
-    if (fabs(p - 3.1415) > 0.01) {
-        std::cout << "Mpainei edo" << std::endl;
-        return 1;
-    }
     return 0;
 }
