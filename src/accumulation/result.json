@@ -1,0 +1,49 @@
+{
+ "system": {
+  "cpu cores": "2", 
+  "MemTotal": "1883380 kB", 
+  "model name": "Intel(R) Core(TM) i5-2467M CPU @ 1.60GHz"
+ }, 
+ "Executions": [
+  [
+   "sequential/build/accumulate 2000000000 ", 
+   [
+    "Result: 2000000001000000000", 
+    "Time Elapsed: 6.11949", 
+    ""
+   ]
+  ], 
+  [
+   "c2/build/accumulate 2000000000 1 ", 
+   [
+    "Result: 2000000001000000000", 
+    "Time Elapsed: 6.20383", 
+    ""
+   ]
+  ], 
+  [
+   "c2/build/accumulate 2000000000 2 ", 
+   [
+    "Result: 2000000001000000000", 
+    "Time Elapsed: 3.56974", 
+    ""
+   ]
+  ], 
+  [
+   "c2/build/accumulate 2000000000 3 ", 
+   [
+    "Result: 2000000001000000000", 
+    "Time Elapsed: 2.66514", 
+    ""
+   ]
+  ], 
+  [
+   "c2/build/accumulate 2000000000 4 ", 
+   [
+    "Result: 2000000001000000000", 
+    "Time Elapsed: 2.53735", 
+    ""
+   ]
+  ]
+ ]
+}
