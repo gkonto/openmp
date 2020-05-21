@@ -1,6 +1,8 @@
 #include <iostream>
 #include <sstream>
+#include <omp.h>
 #include "fib/fib.hpp"
+#include "auxiliaries.hpp"
 
 static int parseArgs(int argc, char **argv) {
     if (argc <= 1) {
@@ -8,11 +10,8 @@ static int parseArgs(int argc, char **argv) {
         exit(1);
     }
     
-    char *v = argv[1];
-    std::stringstream ss;
-    ss << v;
     int val = 0;
-    ss >> val;
+    read_value<int>(argv[1], val);
 
     return val;
 }
@@ -20,5 +19,11 @@ static int parseArgs(int argc, char **argv) {
 int main(int argc, char **argv) {
     int val = parseArgs(argc, argv);
 
-    std::cout << fib(val) << std::endl;
+    double time = omp_get_wtime();
+    int value = fib(val);
+    time = omp_get_wtime() - time;
+
+    std::cout << "Time Elapsed: " << time << std::endl;
+    std::cout << "Value: " << value << std::endl;
+    return 0;
 }

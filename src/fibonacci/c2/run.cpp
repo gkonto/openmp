@@ -2,6 +2,7 @@
 #include <omp.h>
 #include <sstream>
 #include "fib/fib.hpp"
+#include "auxiliaries.hpp"
 
 namespace {
 struct Args {
@@ -18,15 +19,8 @@ static void parseArgs(int argc, char **argv, Args *args) {
         exit(1);
     }
     
-    char *v = argv[1];
-    std::stringstream ss;
-    ss << v;
-    ss >> args->value_;
-
-    v = argv[2];
-    std::stringstream ss1;
-    ss1 << v;
-    ss1 >> args->num_of_threads_;
+    read_value<int>(argv[1], args->value_);
+    read_value<int>(argv[2], args->num_of_threads_);
 }
 
 
@@ -34,9 +28,16 @@ int main(int argc, char **argv) {
     Args args;
     parseArgs(argc, argv, &args);
     omp_set_num_threads(args.num_of_threads_);
+    double time = omp_get_wtime();
+    int value = 0;
     #pragma omp parallel 
     {
+        //FIXME auto prepei na lathos. Exo single kai mesa sto recursion trexo tasks
         #pragma omp single
-             std::cout << fib(args.value_) << std::endl;
+            value = fib(args.value_);
     }
+    time = omp_get_wtime() - time;
+
+    std::cout << "Value: " << value << std::endl;
+    std::cout << "Time: " << time << std::endl;
 }

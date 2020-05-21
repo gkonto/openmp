@@ -3,10 +3,9 @@ import platform
 import time
 import json
 import os
+import sys
 from os.path import abspath, dirname, isdir, isfile, join
 from os import listdir
-
-import sys
 
 split = dirname(abspath(__file__)).split("/")
 accum = "/".join(split[:-1])

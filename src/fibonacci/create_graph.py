@@ -3,47 +3,33 @@ import matplotlib.pyplot as plt
 from collections import namedtuple
 import json
 
+from os.path import dirname, abspath, join
 
-def create_lines():
-    with open("result.json", 'r') as f:
-        d = json.load(f)
+this_path = dirname(abspath(__file__))
+RESULT_FILENAME = join(this_path, "result.json")
 
-    lines = list()
-    for key in d['executions']:
-        Line = namedtuple("Line", "name")
-        for thread in d['executions'][key]['threads num']:
-            Line = namedtuple("Line", "name threads_num x_axis y_axis")
-            m = Line(key, thread, list(), list())
-            x_axis = list()
-            y_axis = list()
-            for x in d['executions'][key]['threads num'][thread]['fib(x)']:
-                x_axis.append(x)
-                y_axis.append(d['executions'][key]['threads num'][thread]['fib(x)'][x][0])
-            m.x_axis.extend([x for _,x in sorted(zip(y_axis, x_axis))])
-            m.y_axis.extend([y for y, _ in sorted(zip(y_axis, x_axis))])
-            lines.append(m)
-    title = "Fibonacci\n{}\nCores: {}\nRAM:{}".format(d['system details']['model name'], d['system details']['cpu cores'], d['system details']['MemTotal'])
-    return lines, title
+def decorate_title(details):
+    title = ""
+    title += details["model name"] + "\n"
+    title += "Memory: " + details["MemTotal"] +  "\n"
+    title += "CPU cores: " + details["cpu cores"]
+
+    return title
 
 
 if __name__=="__main__":
+    with open(RESULT_FILENAME, 'r') as f:
+        d = json.load(f)
 
-    lines, title = create_lines()
+        for key, item in d["Results"].items():
+            y_axis = [round(float(x_val[1]), 4) for x_val in item]
+            x_axis = [y_val[0] for y_val in item]
+            plt.plot(x_axis, y_axis, label = key);
 
-
-    for line in lines:
-        # plotting the line 1 points
-        plt.plot(line.x_axis, line.y_axis, label = "Case: {} Threads number: {}".format(line.name, line.threads_num))
-
-        # naming the x axis
+        title = decorate_title(d["System Details"])
         plt.xlabel('Value x for fib(x)')
-        # naming the y axis
         plt.ylabel('Time (s)')
-        # giving a title to my graph
         plt.title(title)
-
-    # show a legend on the plot
-    plt.legend()
-
-    # function to show the plot
-    plt.show()
+        plt.gcf().canvas.set_window_title("Fibonacci")
+        plt.legend()
+        plt.show()

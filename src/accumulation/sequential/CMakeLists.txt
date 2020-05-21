@@ -19,7 +19,6 @@
       ${AUX_DIR}/auxiliaries.cpp
       )
 
-
   ADD_EXECUTABLE(${PROJECT} ${HEADERS} ${SOURCES})
 
   FIND_PACKAGE(OpenMP)

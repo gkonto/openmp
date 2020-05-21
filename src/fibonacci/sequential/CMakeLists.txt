@@ -5,19 +5,24 @@
 
   ADD_DEFINITIONS("-fopenmp -L/usr/local/bin -g -Wall -Wextra -O3 -Wunreachable-code")
   ADD_SUBDIRECTORY(fib)
+  SET(ROOT_DIR ../../)
+  SET(AUX_DIR ${ROOT_DIR}/auxiliaries)
+  SET(PROJECT run_fib)
 
-  #  ADD_LIBRARY(aparser
-  #    ../../argparser/argparser.hpp
-  #    ../../argparser/argparser.cpp)
+  INCLUDE_DIRECTORIES(${FIB_DIR})
+  INCLUDE_DIRECTORIES(${AUX_DIR})
 
   SET(SOURCES
       run.cpp
+      ${AUX_DIR}/auxiliaries.hpp
+      ${AUX_DIR}/auxiliaries.cpp
       )
 
-  ADD_EXECUTABLE(run_fib ${HEADERS} ${SOURCES})
+  ADD_EXECUTABLE(${PROJECT} ${HEADERS} ${SOURCES})
 
   TARGET_LINK_LIBRARIES(run_fib fib)
-  #TARGET_LINK_LIBRARIES(run_fib aparser)
 
-
-
+  FIND_PACKAGE(OpenMP)
+if(OpenMP_CXX_FOUND)
+    TARGET_LINK_LIBRARIES(${PROJECT} PUBLIC OpenMP::OpenMP_CXX)
+endif()
