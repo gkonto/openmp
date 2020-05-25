@@ -2,6 +2,13 @@
 import matplotlib.pyplot as plt
 import json
 
+import sys
+from os.path import dirname, abspath, join
+split = dirname(abspath(__file__)).split("/")
+accum = "/".join(split[:-1])
+aux_dir = join(accum, "auxiliaries")
+sys.path.insert(1, aux_dir)
+from py_aux import decorate_title
 
 def update_lines(entry):
     split = entry[0].split()
@@ -32,10 +39,6 @@ create_lines(d)
 for key, data in lines.items():
     x_axis = [entry[0] for entry in data]
     y_axis = [entry[1] for entry in data]
-    title = ""
-    for key, entry in d["system"].items():
-        title += key + ": " + entry + "\n"
-
     try:
         l= "Case: {} Threads Number: {}".format(key.split("/")[0], key.split("__")[1])
     except:
@@ -47,5 +50,7 @@ for key, data in lines.items():
 
 fig = plt.figure(1)
 fig.canvas.set_window_title("Linked List Traversal")
+title = decorate_title(d["system"])
+plt.title(title)
 plt.legend()
 plt.show()
