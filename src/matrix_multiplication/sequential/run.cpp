@@ -4,33 +4,8 @@
 #include <time.h>
 #include <stdlib.h>
 #include "matmul/matmul.hpp"
-
-int **create_matrix(int rows, int cols) {
-    int **mat = new int *[rows];
-    for (int i = 0; i < rows; ++i) {
-        mat[i] = new int[cols];
-    }
-    return mat;
-}
-
-
-void destroy_matrix(int **&mat, int rows) {
-    if (mat) {
-        for (int i = 0; i < rows; i++) {
-            delete[] mat[i];
-        }
-        delete[] mat;
-        mat = nullptr;
-    }
-}
-
-void fill_random(int **mat, int rows, int cols) {
-    for (int i = 0; i < rows; ++i) {
-        for (int k = 0; k < cols; ++k) {
-            mat[i][k] = rand() % 100 + 1;
-        }
-    }
-}
+#include "auxiliaries.hpp"
+#include "tools.hpp"
 
 namespace {
     struct Opts{
@@ -40,21 +15,15 @@ namespace {
     };
 }
 
-void read_dimensions(char *arg, int &dim) {
-    std::stringstream ss;
-    ss << arg;
-    ss >> dim;
-}
-
 void parseArgs(int argc, char **argv, Opts &o) {
     if (argc != 4) {
         std::cout << "Specify three dimensions for matrix mult!" << std::endl;
         exit(1);
     }
 
-    read_dimensions(argv[1], o.dim1);
-    read_dimensions(argv[2], o.dim2);
-    read_dimensions(argv[3], o.dim3);
+    read_value<int>(argv[1], o.dim1);
+    read_value<int>(argv[2], o.dim2);
+    read_value<int>(argv[3], o.dim3);
 }
 
 int main(int argc, char **argv) {
@@ -87,15 +56,6 @@ int main(int argc, char **argv) {
     std::cout << "Multiplication Time : " << std::fixed
          << time_taken << std::setprecision(5);
     std::cout << " sec " << std::endl;
-
-    /*
-    for (int i = 0; i < r3; ++i) {
-        for (int k = 0; k < c3; ++k) {
-            std::cout << C[i][k] << " ";
-        }
-        std::cout << std::endl;
-    }
-    */
 
     destroy_matrix(A, o.dim1);
     destroy_matrix(B, o.dim2);

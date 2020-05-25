@@ -2,20 +2,19 @@
 import matplotlib.pyplot as plt
 from collections import namedtuple
 import json
+import sys
 
 from os.path import dirname, abspath, join
+split = dirname(abspath(__file__)).split("/")
+accum = "/".join(split[:-1])
+aux_dir = join(accum, "auxiliaries")
+sys.path.insert(1, aux_dir)
+from py_aux import decorate_title
+
+
 
 this_path = dirname(abspath(__file__))
 RESULT_FILENAME = join(this_path, "result.json")
-
-def decorate_title(details):
-    title = ""
-    title += details["model name"] + "\n"
-    title += "Memory: " + details["MemTotal"] +  "\n"
-    title += "CPU cores: " + details["cpu cores"]
-
-    return title
-
 
 if __name__=="__main__":
     with open(RESULT_FILENAME, 'r') as f:

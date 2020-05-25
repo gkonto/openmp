@@ -5,33 +5,8 @@
 #include <time.h>
 #include <stdlib.h>
 #include "matmul/matmul.hpp"
-
-int **create_matrix(int rows, int cols) {
-    int **mat = new int *[rows];
-    for (int i = 0; i < rows; ++i) {
-        mat[i] = new int[cols];
-    }
-    return mat;
-}
-
-
-void destroy_matrix(int **&mat, int rows) {
-    if (mat) {
-        for (int i = 0; i < rows; i++) {
-            delete[] mat[i];
-        }
-        delete[] mat;
-        mat = nullptr;
-    }
-}
-
-void fill_random(int **mat, int rows, int cols) {
-    for (int i = 0; i < rows; ++i) {
-        for (int k = 0; k < cols; ++k) {
-            mat[i][k] = rand() % 100 + 1;
-        }
-    }
-}
+#include "tools.hpp"
+#include "auxiliaries.hpp"
 
 namespace {
     struct Opts{
@@ -42,22 +17,16 @@ namespace {
     };
 }
 
-void read_int(char *arg, int &dim) {
-    std::stringstream ss;
-    ss << arg;
-    ss >> dim;
-}
-
 void parseArgs(int argc, char **argv, Opts &o) {
     if (argc != 5) {
         std::cout << "Need 4 arguments! 3 matrix dimensions and the number of threads!" << std::endl;
         exit(1);
     }
 
-    read_int(argv[1], o.dim1);
-    read_int(argv[2], o.dim2);
-    read_int(argv[3], o.dim3);
-    read_int(argv[4], o.threads_num);
+    read_value<int>(argv[1], o.dim1);
+    read_value<int>(argv[2], o.dim2);
+    read_value<int>(argv[3], o.dim3);
+    read_value<int>(argv[4], o.threads_num);
 }
 
 int main(int argc, char **argv) {
@@ -86,36 +55,12 @@ int main(int argc, char **argv) {
 
 #pragma omp parallel
     {
+        //FIXME maybe mistake in this single
 #pragma omp single
         matmultrec(0, o.dim1, 0, o.dim3, 0, o.dim2, A, B, C);
     }
     seconds = omp_get_wtime() - seconds;
     std::cout << seconds << std::endl;
-
-
-    /*
-    for (int i = 0; i < o.dim1; i++) {
-        for (int j = 0; j < o.dim2; j++) {
-            std::cout << A[i][j] << " ";
-        }
-        std::cout << std::endl;
-    }
-
-    for (int i = 0; i < o.dim2; i++) {
-        for (int j = 0; j < o.dim3; j++) {
-            std::cout << B[i][j] << " ";
-        }
-        std::cout << std::endl;
-    }
-
-    for (int i = 0; i < r3; i++) {
-        for (int j = 0; j < c3; j++) {
-            std::cout << C[i][j] << " ";
-        }
-        std::cout << std::endl;
-    }
-    */
-
 
     destroy_matrix(A, o.dim1);
     destroy_matrix(B, o.dim2);

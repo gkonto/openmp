@@ -4,54 +4,70 @@ from collections import namedtuple
 import numpy as np
 import matplotlib.pyplot as plt
 import json
-
-
-import matplotlib
+import sys
 import matplotlib.pyplot as plt
 import numpy as np
+
+from os.path import dirname, abspath, join
+split = dirname(abspath(__file__)).split("/")
+accum = "/".join(split[:-1])
+aux_dir = join(accum, "auxiliaries")
+sys.path.insert(1, aux_dir)
+from py_aux import decorate_title
+
 
 def read_json():
     with open("result.json", 'r') as f:
         d = json.load(f)
 
-    legends = list()
-    all_val = list()
-    dimensions = d["dimensions"]
-    for m in d["legends"]:
-        legends.append(m["variation_"])
-        values = list()
-        values = len(m["times_"]) * [-1]
-        for i, time in enumerate(m["times_"]):
-            values[i] = round(time, 3)
-        all_val.append(values)
+    #Each matrix dimension found is one group of bars
+    groups = 0
+
+    #dimensions = list()
+    #all_legends = list()
+    bars_height = list() # List of lists with bars heights
+    dimensions = list()
+
+    legends = [legend for legend in d["Results"].keys()]
+
+    bars_height = [[val[1] for val in heights] for key, heights in d["Results"].items()]
+
+    dimensions = [[val[0] for val in heights] for key, heights in d["Results"].items()]
+
+    groups = len(bars_height)
+
+    title = decorate_title(d["System Details"])
+    return groups, bars_height, dimensions, legends, title
 
 
-    print(dimensions)
-    print(legends)
-    print(all_val)
-    return legends, dimensions, all_val
+if __name__=="__main__":
+    groups, bar_heights, dimensions, legends, title = read_json()
+
+    #Set position of bar in X axis
+    barWidth = 0.1
+    rs = list()
+    rs.append(np.arange(len(bar_heights[0])))
+    for i in range(groups):
+        rs.append([x + barWidth for x in rs[-1]])
+
+    # Make the plot
+    for idx, bars in enumerate(bar_heights):
+        plt.bar(rs[idx], bars, width = barWidth, edgecolor='white', label=legends[idx])
+
+    # Set title
+    plt.title(title)
+
+    # Add ticks on the middle of the group bars
+    plt.xlabel("Matrix dimensions", fontweight='bold')
+    plt.ylabel("Execution Time(seconds)", fontweight='bold')
+    plt.xticks([r + barWidth for r in range(len(bar_heights[0]))], dimensions[0], rotation=15)
+
+    #Matrix title
+    plt.gcf().canvas.set_window_title("Matrix Multiplication")
+
+    # Create legend & Show Graphics
+    plt.legend()
+    plt.show()
 
 
-legends, labels, values = read_json()
 
-# plot a barchart with error bar
-fig, ax = plt.subplots()
-
-plt.style.use('ggplot')
-
-#fig, ax = plt.subplots()
-index = np.arange(len(labels))
-bar_width = 0.1
-opacity = 0.8
-
-for idx, legend in enumerate(legends):
-    ax.bar(index + bar_width * idx, values[idx], bar_width, alpha=opacity, label=legend)
-
-ax.set_xlabel('Matrix Dimensions')
-ax.set_ylabel('Times (secs)')
-ax.set_title('Matrix Multiplication')
-ax.set_xticks(index + bar_width)
-ax.set_xticklabels((label for label in labels))
-ax.legend(ncol=3)
-plt.xticks(rotation=90)
-plt.show()

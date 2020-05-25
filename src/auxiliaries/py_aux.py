@@ -4,6 +4,20 @@ import re
 import os
 import time
 
+#TODO decorate_title sound be in py_aux since it's duplicate
+def decorate_title(details):
+    title = ""
+    title += details["model name"] + "\n"
+    title += "Memory: " + details["MemTotal"] +  "\n"
+    title += "CPU cores: " + details["cpu cores"]
+
+    return title
+
+
+
+def get_doubles(s):
+    return re.findall('-?\ *[0-9]+\.?[0-9]*(?:[Ee]\ *-?\ *[0-9]+)?', s)
+
 def execute_program(prog):
     # create a pipe to a child process
     data, temp = os.pipe()
@@ -18,7 +32,7 @@ def execute_program(prog):
     s = subprocess.check_output(prog, stdin = data, shell = True)
 
     # decode s to a normal string
-    value = s.decode("utf-8").split('\n')
+    value = s.decode("utf-8")
     return value;
 
 
