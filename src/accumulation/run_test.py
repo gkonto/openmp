@@ -12,7 +12,7 @@ accum = "/".join(split[:-1])
 final = join(accum, "auxiliaries")
 
 sys.path.insert(1, final)
-from py_aux import get_processor_name, get_ram, execute_program
+from py_aux import get_processor_name, get_ram, execute_program, get_doubles
 
 variants = list()
 
@@ -22,7 +22,6 @@ with open("run_variations.json", 'r') as f:
 if __name__=="__main__":
     if platform.system() != "Linux" :
         print("Error: This script runs only in linux systems!!")
-    this_path = dirname(abspath(__file__))
 
     # Get cpu details
     system_details = get_processor_name()
@@ -30,16 +29,9 @@ if __name__=="__main__":
 
     # accumulate dictionaries
     system_details.update(ram_details)
-
-    programs = list()
-    for variant in variants:
-        prog = join(variant[0], "build", "accumulate")
-        args = ""
-
-        for arg in variant[1]:
-            args += str(arg) + " "
-        programs.append(prog + " " + args)
-    output = [[program, execute_program(program)] for program in programs]
+    programs = [join(variant[0], "build", "accumulate") + " " + " ".join(map(str, variant[1])) for variant in variants]
+    output = [[program, float(get_doubles(execute_program(program))[1])] for program in programs]
+    print(output)
 
     details = dict()
     details["system"] = system_details
