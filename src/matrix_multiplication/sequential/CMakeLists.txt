@@ -9,7 +9,6 @@
   SET(ROOT_DIR ../../)
   SET(AUX_DIR ${ROOT_DIR}/auxiliaries)
   SET(MAT_MUL ${ROOT_DIR}/matrix_multiplication)
-  SET(AUX_DIR ${ROOT_DIR}/auxiliaries)
   SET(PROJECT mat_mul)
 
   INCLUDE_DIRECTORIES(${AUX_DIR})

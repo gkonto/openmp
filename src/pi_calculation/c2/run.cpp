@@ -3,19 +3,13 @@
 #include <cmath>
 #include <sstream>
 #include "integrate/integ.hpp"
+#include "auxiliaries.hpp"
 
 namespace {
     struct Opts {
         long num_steps = 0;
         int num_threads = 0;
     };
-}
-
-template<typename T>
-static void read_value(char *val, T &num) {
-    std::stringstream ss;
-    ss << val;
-    ss >> num;
 }
 
 static void parseArgs(int argc, char **argv, Opts &o) {

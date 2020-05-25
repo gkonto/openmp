@@ -2,7 +2,6 @@
 import matplotlib.pyplot as plt
 import json
 
-
 def update_lines(entry):
     split = entry[0].split()
     key = None
@@ -22,29 +21,25 @@ def create_lines(d):
         update_lines(entry)
 
 
-with open("result.json", 'r') as f:
-    d = json.load(f)
+if __name__=="__main__":
+    with open("result.json", 'r') as f:
+        d = json.load(f)
 
+    lines = dict()
+    create_lines(d)
 
-lines = dict()
-create_lines(d)
+    for key, data in lines.items():
+        x_axis = [entry[0] for entry in data]
+        y_axis = [entry[1] for entry in data]
+        try:
+            l= "Case: {} Threads Number: {}".format(key.split("/")[0], key.split("_")[1])
+        except:
+            l = "Case: {}".format(key.split("/")[0])
 
-for key, data in lines.items():
-    print(key)
-    print(data)
-    x_axis = [entry[0] for entry in data]
-    y_axis = [entry[1] for entry in data]
-    try:
-        l= "Case: {} Threads Number: {}".format(key.split("/")[0], key.split("_")[1])
-    except:
-        l = "Case: {}".format(key.split("/")[0])
-    print(x_axis)
-    print(y_axis)
-    print(l)
-    plt.plot(x_axis, y_axis, label = l)
-    plt.xlabel("Number of integration steps")
-    plt.ylabel("Time (sec)")
-    plt.title("PI calculation")
+        plt.plot(x_axis, y_axis, label = l)
+        plt.xlabel("Number of integration steps")
+        plt.ylabel("Time (sec)")
+        plt.title("PI calculation")
 
-plt.legend()
-plt.show()
+    plt.legend()
+    plt.show()
