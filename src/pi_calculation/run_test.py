@@ -34,7 +34,6 @@ if __name__=="__main__":
     system_details.update(ram_details)
 
     #Gather all program variations found
-    programs = list()
     programs = [join(variant[0], "build", "pi") + " " + " ".join(map(str, variant[1])) for variant in variants]
     times = [[program, float(get_doubles(execute_program(program))[0])] for program in programs]
 

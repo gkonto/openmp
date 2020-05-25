@@ -33,8 +33,8 @@ for key, data in lines.items():
     x_axis = [entry[0] for entry in data]
     y_axis = [entry[1] for entry in data]
     title = ""
-    for tag, entry in d["system"].items():
-        title += tag + ": " + entry + "\n"
+    for key, entry in d["system"].items():
+        title += key + ": " + entry + "\n"
 
     try:
         l= "Case: {} Threads Number: {}".format(key.split("/")[0], key.split("__")[1])

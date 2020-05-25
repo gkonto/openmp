@@ -4,7 +4,6 @@ import re
 import os
 import time
 
-#TODO decorate_title sound be in py_aux since it's duplicate
 def decorate_title(details):
     title = ""
     title += details["model name"] + "\n"

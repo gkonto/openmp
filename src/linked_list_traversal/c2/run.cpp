@@ -42,8 +42,8 @@ int main(int argc, char **argv) {
     }
 
     delete head;
-    double end = omp_get_wtime();
 
+    double end = omp_get_wtime();
     std::cout << "Time Elapsed: " << end - start << std::endl;
     return 0;
 }

@@ -30,9 +30,8 @@ int main(int argc, char **argv) {
         fib(p->data_);
         p = p->next_;
     }
-    double end = omp_get_wtime();
-
     delete head;
+    double end = omp_get_wtime();
 
     std::cout << "Time Elapsed: " << end - start << std::endl;
     return 0;

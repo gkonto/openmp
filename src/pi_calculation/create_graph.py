@@ -1,6 +1,15 @@
 #!/bin/python3
 import matplotlib.pyplot as plt
 import json
+import sys
+from os.path import dirname, abspath, join
+split = dirname(abspath(__file__)).split("/")
+accum = "/".join(split[:-1])
+aux_dir = join(accum, "auxiliaries")
+sys.path.insert(1, aux_dir)
+from py_aux import decorate_title
+
+
 
 def update_lines(entry):
     split = entry[0].split()
@@ -39,7 +48,10 @@ if __name__=="__main__":
         plt.plot(x_axis, y_axis, label = l)
         plt.xlabel("Number of Integration steps")
         plt.ylabel("Time (sec)")
-        plt.title("PI calculation")
 
+    title = decorate_title(d["system"])
+    plt.title(title)
+
+    plt.gcf().canvas.set_window_title("PI evaluation")
     plt.legend()
     plt.show()
