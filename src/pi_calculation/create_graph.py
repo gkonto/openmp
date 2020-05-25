@@ -37,7 +37,7 @@ if __name__=="__main__":
             l = "Case: {}".format(key.split("/")[0])
 
         plt.plot(x_axis, y_axis, label = l)
-        plt.xlabel("Number of integration steps")
+        plt.xlabel("Number of Integration steps")
         plt.ylabel("Time (sec)")
         plt.title("PI calculation")
 

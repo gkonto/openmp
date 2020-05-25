@@ -35,15 +35,9 @@ if __name__=="__main__":
 
     #Gather all program variations found
     programs = list()
-    for variant in variants:
-        prog = join(variant[0], "build", "pi")
-        args = ""
-        for arg in variant[1]:
-            args += str(arg) + " "
-
-        programs.append(prog + " " + args)
-
+    programs = [join(variant[0], "build", "pi") + " " + " ".join(map(str, variant[1])) for variant in variants]
     times = [[program, float(get_doubles(execute_program(program))[0])] for program in programs]
+
     details = dict()
     details["system"] = system_details
     details["system"]["MemTotal"] = ram_details["MemTotal"]
