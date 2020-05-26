@@ -2,18 +2,23 @@
 #include <fstream> // For files manipulation
 #include <complex> // for complex numbers
 #include <omp.h>
+#include "auxiliaries.hpp"
 
-using namespace std;
+double width  = 100;
+double height = 100;
 
-double width  = 3000;
-double height = 3000;
+namespace {
+    struct Opts {
+        int width = 0;
+        int height = 0;
+    };
+}
 
-static int value(int x, int y) {
-    complex<double> point((double)x/width - 1.5, (double)y/height-0.5);
+static int value(const std::complex<double> &point) {
     // we divide by the image dimensions to get values smaller than 1
     // then apply a translation
     
-    complex<double> z(0, 0);
+    std::complex<double> z(0, 0);
     unsigned int nb_iter = 0;
     while (abs(z) < 2 && nb_iter <= 34) {
         z = z * z + point;
@@ -26,15 +31,30 @@ static int value(int x, int y) {
     }
 }
 
-int main() {
-    ofstream my_image("mandelbrot.ppm");
+static void parseArgs(int argc, char **argv, Opts &o) {
+    if (argc != 3) {
+        std::cout << "Specify height and width (pixels)" << std::endl;
+        exit(1);
+    }
+
+    read_value<int>(argv[1], o.width);
+    read_value<int>(argv[2], o.height);
+}
+
+int main(int argc, char **argv) {
+    Opts o;
+    parseArgs(argc, argv, o);
+
+    std::ofstream my_image("mandelbrot.ppm");
 
     double start = omp_get_wtime();
     if (my_image.is_open()) {
-        my_image << "P3\n" << width << " " << height << " 255\n";
-        for (int i = 0; i < width; ++i) {
-            for (int j = 0; j < height; ++j) {
-                int val  = value(i, j);
+        my_image << "P3\n" << o.width << " " << o.height << " 255\n";
+        for (int i = 0; i < o.width; ++i) {
+            for (int j = 0; j < o.height; ++j) {
+
+                std::complex<double> point((double)i/width - 1.5, (double)j/height-0.5);
+                int val  = value(point);
                 my_image << val << ' ' << 0 << ' ' << 0 << "\n";
             }
         }
