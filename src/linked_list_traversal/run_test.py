@@ -3,8 +3,8 @@ import platform
 import time
 import json
 import subprocess
-import os
 import re
+import os
 from os.path import abspath, dirname, isdir, isfile, join
 from os import listdir
 
