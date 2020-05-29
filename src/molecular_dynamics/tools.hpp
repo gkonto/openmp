@@ -4,6 +4,7 @@ extern void  getSpatialDimension(char **argv, int argc, int &nd);
 extern void  getNumberOfParticles(char **argv, int argc, int &np);
 extern void  getNumberOfTimeSteps(char **argv, int argc, int &step_num);
 extern void  getTimeSteps(char **argv, int argc, double &dt);
+extern void  getNumOfThreads(char **argv, int argc, int &num_threads);
 
 /******************************************************************************/
 /*

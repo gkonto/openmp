@@ -77,11 +77,14 @@ int main(int argc, char *argv[])
   getNumberOfTimeSteps(argv, argc, step_num);
   // Get the time steps.
   getTimeSteps(argv, argc, dt);
+  // Get number of threads
+  int num_threads = 0;
+  getNumOfThreads(argv, argc, num_threads);
 
 
   timestamp();
 
-  int proc_num = omp_get_num_procs();
+  omp_set_num_threads(num_threads);
 
   acc = (double *)malloc(nd * np * sizeof(double));
   box = (double *)malloc(nd * sizeof(double));
@@ -96,6 +99,7 @@ int main(int argc, char *argv[])
   printf("  A molecular dynamics program.\n");
 
   printf("\n");
+  printf("  ND, the spatial dimension, is %d\n", nd);
   printf("  NP, the number of particles in the simulation is %d\n", np);
   printf("  STEP_NUM, the number of time steps, is %d\n", step_num);
   printf("  DT, the size of each time step, is %f\n", dt);

@@ -5,11 +5,11 @@
 #include <stdlib.h>
 #include <time.h>
 #include "tools.hpp"
+#include "auxiliaries.hpp"
 
 /*
 Purpose:
 UPDATE updates positions, velocities and accelerations.
-
 Discussion:
 The time integration is fully parallel.
 
@@ -120,8 +120,6 @@ static void compute(int np, int nd, double pos[], double vel[], double mass,
 }
 
 
-void update(int np, int nd, double pos[], double vel[], double f[],
-            double acc[], double mass, double dt);
 /*
 Purpose:
 R8MAT_UNIFORM_AB returns a scaled pseudorandom R8MAT.

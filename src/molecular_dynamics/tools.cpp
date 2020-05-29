@@ -49,3 +49,15 @@ void getTimeSteps(char **argv, int argc, double &dt) {
 }
 
 
+void getNumOfThreads(char **argv, int argc, int &num_threads) {
+  if (5 < argc) {
+      read_value<int>(argv[5], num_threads);
+  } else {
+    std::cout << std::endl;
+    std::cout << "  Enter NumThreads 1-4" << std::endl;
+    scanf("%d", &num_threads);
+  }
+}
+
+
+
