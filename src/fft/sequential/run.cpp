@@ -15,34 +15,7 @@ double ggl(double *ds);
 void step(int n, int mj, double a[], double b[], double c[], double d[],
           double w[], double sgn);
 
-//****************************************************************************80
-//  Purpose:
-//    MAIN is the main program for FFT_SERIAL.
-int main()
-{
-  double ctime;
-  double ctime1;
-  double ctime2;
-  double error;
-  int first;
-  double flops;
-  double fnm1;
-  int i;
-  int icase;
-  int it;
-  int ln2;
-  double mflops;
-  int n;
-  int nits = 10000;
-  static double seed;
-  double sgn;
-  double *w;
-  double *x;
-  double *y;
-  double *z;
-  double z0;
-  double z1;
-
+static void greetings() {
   timestamp();
   cout << "\n";
   cout << "FFT_SERIAL\n";
@@ -60,13 +33,42 @@ int main()
   cout << "             N      NITS    Error         Time          Time/Call   "
           "  MFLOPS\n";
   cout << "\n";
+}
 
+//****************************************************************************80
+//  Purpose:
+//    MAIN is the main program for FFT_SERIAL.
+int main()
+{
+  double ctime;
+  double ctime1;
+  double ctime2;
+  double error;
+  int first;
+  double flops;
+  double fnm1;
+  int i;
+  int icase;
+  int it;
+  int ln2;
+  double mflops;
+  int nits = 10000;
+  static double seed;
+  double sgn;
+  double *w;
+  double *x;
+  double *y;
+  double *z;
+  double z0;
+  double z1;
   seed = 331.0;
-  n = 1;
+  int n = 1;
+
+  greetings();
+
   //  LN2 is the log base 2 of N.  Each increase of LN2 doubles N.
   for (ln2 = 1; ln2 <= 20; ln2++) {
     n = 2 * n;
-    //
     //  Allocate storage for the complex arrays W, X, Y, Z.
     //  We handle the complex arithmetic,
     //  and store a complex number as a pair of doubles, a complex vector as a
