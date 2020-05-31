@@ -1,6 +1,5 @@
 #!/bin/python
 import platform
-import time
 import json
 import subprocess
 import re
