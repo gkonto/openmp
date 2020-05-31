@@ -56,6 +56,14 @@ static void greetings() {
   printf("\n");
 }
 
+static void bye() {
+  printf("\n");
+  printf("FFT_SERIAL:\n");
+  printf("  Normal end of execution.\n");
+  printf("\n");
+  timestamp();
+}
+
 
 static void bye() {
   // Terminate.
