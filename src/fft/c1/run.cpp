@@ -64,16 +64,6 @@ static void bye() {
   timestamp();
 }
 
-
-static void bye() {
-  // Terminate.
-  printf("\n");
-  printf("FFT_OPENMP:\n");
-  printf("  Normal end of execution.\n");
-  printf("\n");
-  timestamp();
-}
-
 /*
   Purpose:
     MAIN is the main program for FFT_OPENMP.
@@ -201,8 +191,8 @@ int main(int argc, char **argv) {
     free(y);
     free(z);
   }
-  std::cout << "Execution Time: " << omp_get_wtime() - time << " second" << std::endl;
   bye();
+  std::cout << "Execution Time: " << omp_get_wtime() - time << " second" << std::endl;
   return 0;
 }
 
