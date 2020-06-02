@@ -2,6 +2,7 @@
 #include <math.h>
 #include <omp.h>
 #include <stdio.h>
+#include <iostream>
 #include <stdlib.h>
 #include <time.h>
 
@@ -75,23 +76,39 @@
   U[M][N], the solution at the previous iteration. Local, double W[M][N], the
   solution computed at the latest iteration.
 */
+namespace {
+    struct Opts {
+        double epsilon;
+    };
+}
+
+void parseArgs(int argc, char **argv, Opts &o) {
+  if (argc != 2) {
+    std::cout << "Specify epsilon" << std::endl;
+    exit(1);
+  }
+
+  read_value<double>(argv[1], o.epsilon);
+}
+
 int main(int argc, char *argv[]) {
 #define M 500
 #define N 500
+    Opts o;
+    parseArgs(argc, argv, o);
 
   double ctime;
   double ctime1;
   double ctime2;
   double diff;
-  double epsilon;
-  FILE *fp;
+  double epsilon = o.epsilon;
+  //FILE *fp;
   int i;
   int iterations;
   int iterations_print;
   int j;
   double mean;
-  char output_file[80];
-  int success;
+  //char output_file[80];
   double u[M][N];
   double w[M][N];
 
@@ -104,31 +121,15 @@ int main(int argc, char *argv[]) {
   printf("  over a rectangular plate.\n");
   printf("\n");
   printf("  Spatial grid of %d by %d points.\n", M, N);
-  /*
-    Read EPSILON from the command line or the user.
-  */
-  if (argc < 2) {
-    printf("\n");
-    printf("  Enter EPSILON, the error tolerance:\n");
-    success = scanf("%lf", &epsilon);
-  } else {
-    success = sscanf(argv[1], "%lf", &epsilon);
-  }
-
-  if (success != 1) {
-    printf("\n");
-    printf("HEATED_PLATE\n");
-    printf("  Error reading in the value of EPSILON.\n");
-    return 1;
-  }
 
   printf("\n");
   printf("  The iteration will be repeated until the change is <= %f\n",
          epsilon);
   diff = epsilon;
+
   /*
-    Read OUTPUT_FILE from the command line or the user.
-  */
+  int success;
+  // Read OUTPUT_FILE from the command line or the user.
   if (argc < 3) {
     printf("\n");
     printf("  Enter OUTPUT_FILE, the name of the output file:\n");
@@ -143,9 +144,10 @@ int main(int argc, char *argv[]) {
     printf("  Error reading in the value of OUTPUT_FILE.\n");
     return 1;
   }
+  */
 
   printf("\n");
-  printf("  The steady state solution will be written to '%s'.\n", output_file);
+  //printf("  The steady state solution will be written to '%s'.\n", output_file);
   // Set the boundary values, which don't change.
   for (i = 1; i < M - 1; i++) {
     w[i][0] = 100.0;
@@ -235,10 +237,11 @@ int main(int argc, char *argv[]) {
   printf("  Error tolerance achieved.\n");
   printf("  CPU time = %f\n", ctime);
   // Write the solution to the output file.
-  fp = fopen(output_file, "w");
+  /*
+  //fp = fopen(output_file, "w");
 
-  fprintf(fp, "%d\n", M);
-  fprintf(fp, "%d\n", N);
+  //fprintf(fp, "%d\n", M);
+  //fprintf(fp, "%d\n", N);
 
   for (i = 0; i < M; i++) {
     for (j = 0; j < N; j++) {
@@ -247,9 +250,10 @@ int main(int argc, char *argv[]) {
     fputc('\n', fp);
   }
   fclose(fp);
+  */
 
   printf("\n");
-  printf("  Solution written to the output file '%s'\n", output_file);
+  //printf("  Solution written to the output file '%s'\n", output_file);
 
   // Terminate.
   printf("\n");
@@ -257,6 +261,7 @@ int main(int argc, char *argv[]) {
   printf("  Normal end of execution.\n");
   printf("\n");
   timestamp();
+  std::cout << "Execution Time: " << ctime << " seconds" << std::endl;
 
   return 0;
 

@@ -2,12 +2,28 @@
 # include <stdio.h>
 # include <math.h>
 # include <omp.h>
+#include <iostream>
+#include "auxiliaries.hpp"
 
-int main ( int argc, char *argv[] );
+namespace {
+    struct Opts {
+        double epsilon;
+        int num_threads;
+    };
+}
+
+static void parseArgs(int argc, char **argv, Opts &o) {
+  if (argc != 3) {
+    std::cout << "Specify epsilon and num threads" << std::endl;
+    exit(1);
+  }
+
+  read_value<double>(argv[1], o.epsilon);
+  read_value<int>(argv[2], o.num_threads);
+}
 
 /******************************************************************************/
 
-int main ( int argc, char *argv[] )
 
 /******************************************************************************/
 /*
@@ -102,12 +118,15 @@ int main ( int argc, char *argv[] )
 
     Local, double W[M][N], the solution computed at the latest iteration.
 */
+int main ( int argc, char *argv[] )
 {
 # define M 500
 # define N 500
 
+    Opts o;
+    parseArgs(argc, argv, o);
   double diff;
-  double epsilon = 0.001;
+  double epsilon = o.epsilon;
   int i;
   int iterations;
   int iterations_print;
@@ -117,6 +136,8 @@ int main ( int argc, char *argv[] )
   double u[M][N];
   double w[M][N];
   double wtime;
+
+  omp_set_num_threads(o.num_threads);
 
   printf ( "\n" );
   printf ( "HEATED_PLATE_OPENMP\n" );
