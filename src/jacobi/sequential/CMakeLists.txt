@@ -7,17 +7,21 @@
 
   SET(ROOT_DIR ../../)
   SET(AUX_DIR ${ROOT_DIR}/auxiliaries)
-  SET(PROJECT hp)
+  SET(PROJECT jacobi)
 
   INCLUDE_DIRECTORIES(${AUX_DIR})
   INCLUDE_DIRECTORIES(${TOOLS_DIR})
 
   SET(SOURCES
-      run.cpp
+      main.cpp
+      jacobi.cpp
+      jacobi.hpp
+      gnuplot_i.h
+      gnuplot_i.cpp
+      gnuplot_i.hpp
       ${AUX_DIR}/auxiliaries.hpp
       ${AUX_DIR}/auxiliaries.cpp
       )
-
 
   ADD_EXECUTABLE(${PROJECT} ${HEADERS} ${SOURCES})
 

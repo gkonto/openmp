@@ -7,7 +7,7 @@
 
   SET(ROOT_DIR ../../)
   SET(AUX_DIR ${ROOT_DIR}/auxiliaries)
-  SET(PROJECT prod_cons)
+  SET(PROJECT jacobi)
 
   INCLUDE_DIRECTORIES(${AUX_DIR})
 

@@ -3,7 +3,7 @@
 #include <stdlib.h>
 #include <time.h>
 
-#include "jacobi.h"
+#include "jacobi.hpp"
 
 /*
   Purpose:

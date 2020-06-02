@@ -4,13 +4,31 @@
 # include <iomanip>
 # include <iostream>
 # include <omp.h>
+#include "auxiliaries.hpp"
 
 using namespace std;
 
-void timestamp ( );
+namespace {
+    struct Opts {
+        int num_threads;
+        int dim;
+    };
+}
 
-int main ()
+void parseArgs(int argc, char **argv, Opts &o) {
+    if (argc != 3) {
+        std::cout << "Specify dimension and number of threads" << std::endl;
+        exit(1);
+    }
+
+    read_value<int>(argv[1], o.dim);
+    read_value<int>(argv[2], o.num_threads);
+}
+
+int main (int argc, char **argv)
 {
+    Opts o;
+    parseArgs(argc, argv, o);
 //  omp_set_num_threads(1);
   double *b = nullptr;
   double d = 0.0;
@@ -23,8 +41,10 @@ int main ()
   double *x = nullptr;
   double *xnew = nullptr;
 
-  m = 5000;
-  n = 50000;
+  omp_set_num_threads(o.num_threads);
+  m = o.dim;
+  n = o.dim;
+    double start = omp_get_wtime();
 
   b = new double[n];
   x = new double[n];
@@ -148,27 +168,9 @@ int main ()
   std::cout << "  Normal end of execution.\n";
   std::cout << "\n";
   timestamp ( );
+  std::cout << "Execution Time: " << omp_get_wtime() - start << " seconds" << std::endl;
 
   return 0;
 }
 
 
-//    TIMESTAMP prints the current YMDHMS date as a time stamp.
-void timestamp ( )
-{
-# define TIME_SIZE 40
-
-  static char time_buffer[TIME_SIZE];
-  const struct std::tm *tm_ptr;
-  std::time_t now;
-
-  now = std::time ( NULL );
-  tm_ptr = std::localtime ( &now );
-
-  std::strftime ( time_buffer, TIME_SIZE, "%d %B %Y %I:%M:%S %p", tm_ptr );
-
-  std::cout << time_buffer << "\n";
-
-  return;
-# undef TIME_SIZE
-}
