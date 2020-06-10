@@ -5,7 +5,6 @@
 #include "integrate/integ.hpp"
 #include "auxiliaries.hpp"
 
-// Example on page 52
 namespace {
     struct Opts {
         long num_steps = 0;
@@ -22,7 +21,6 @@ static void parseArgs(int argc, char **argv, Opts &o) {
     read_value<long>(argv[1], o.num_steps);
     read_value<int>(argv[2], o.num_threads);
 }
-
 
 int main(int argc, char **argv) {
     Opts o;

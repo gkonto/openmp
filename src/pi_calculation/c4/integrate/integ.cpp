@@ -1,14 +1,11 @@
 #include <omp.h>
 #include "integ.hpp"
 
-
-//Example at p72
 double pi(long num_steps, int num_threads) {
     int nthreads = 0;
     double pi = .0;
     double step= 1.0/(double)num_steps;
     omp_set_num_threads(num_threads);
-
 #pragma omp parallel
     {
         int id = omp_get_thread_num();

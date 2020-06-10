@@ -17,7 +17,6 @@ static void parseArgs(int argc, char **argv, Opts &o) {
         std::cout << "Specify number of steps and num of threads" << std::endl;
         exit(1);
     }
-
     read_value<long>(argv[1], o.num_steps); read_value<int>(argv[2], o.num_threads);
 }
 

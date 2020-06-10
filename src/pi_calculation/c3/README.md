@@ -1,4 +1,5 @@
-**Parallel PI Calculation**
-> :white_check_mark: #pragma_omp_parallel
+**Parallel PI calculation**
 
-> :white_check_mark: #pragma_omp_critical
+> :white_check_mark: #pragma omp parallel 
+
+> :white_check_mark: #pragma omp critical

@@ -29,7 +29,6 @@ int main(int argc, char **argv) {
     auto seconds = omp_get_wtime();
     double p = pi(o.num_steps, o.num_threads);
     std::cout << "Elapsed Time: " << omp_get_wtime() - seconds << std::endl;
-
     std::cout << "pi Value: "<<  p << std::endl;
     return 0;
 }

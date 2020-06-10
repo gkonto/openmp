@@ -1,8 +1,6 @@
 #include <omp.h>
 #include "integ.hpp"
 
-//Examplep in p57
-
 #define PAD 8 // assume 64 byte L1 cache line size
 
 double pi(long num_steps, int num_threads) {
@@ -31,13 +29,10 @@ double pi(long num_steps, int num_threads) {
         }
     }
 
-    for (int i = 0; i < nthreads; ++i)
-    {
+    for (int i = 0; i < nthreads; ++i) {
         pi += sum[i][0] * step;
     }
 
     delete []sum;
-
-
     return pi;
 }

@@ -2,8 +2,6 @@
 #include <iostream>
 #include "integ.hpp"
 
-
-//Example at p71
 double pi(long num_steps, int num_threads) {
     int nthreads = 0;
     double pi = .0;
