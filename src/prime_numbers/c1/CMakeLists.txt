@@ -8,12 +8,15 @@
   SET(ROOT_DIR ../../)
   SET(AUX_DIR ${ROOT_DIR}/auxiliaries)
   SET(PROJECT prime_numbers)
+  SET(PRIME prime)
 
   INCLUDE_DIRECTORIES(${AUX_DIR})
-
+  INCLUDE_DIRECTORIES(${PRIME})
 
   SET(SOURCES
       run.cpp
+      ${PRIME}/prime.hpp
+      ${PRIME}/prime.cpp
       ${AUX_DIR}/auxiliaries.cpp
       ${AUX_DIR}/auxiliaries.hpp
       )
