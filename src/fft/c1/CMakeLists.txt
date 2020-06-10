@@ -7,15 +7,19 @@
 
   SET(ROOT_DIR ../../)
   SET(AUX_DIR ${ROOT_DIR}/auxiliaries)
+  SET(TOOLS ../tools)
   SET(PROJECT fft)
 
   INCLUDE_DIRECTORIES(${AUX_DIR})
+  INCLUDE_DIRECTORIES(${TOOLS})
 
 
   SET(SOURCES
       run.cpp
       ${AUX_DIR}/auxiliaries.cpp
       ${AUX_DIR}/auxiliaries.hpp
+      ${TOOLS}/tools.hpp
+      ${TOOLS}/tools.cpp
       )
 
   ADD_EXECUTABLE(${PROJECT} ${HEADERS} ${SOURCES})
