@@ -42,3 +42,51 @@ double ggl(double *seed)
 
   return value;
 }
+
+
+
+/*
+  Purpose:
+    CFFT2 performs a complex Fast Fourier Transform.
+  Parameters:
+    Input, int N, the size of the array to be transformed.
+    Input/output, double X[2*N], the data to be transformed.
+    On output, the contents of X have been overwritten by work information.
+    Output, double Y[2*N], the forward or backward FFT of X.
+    Input, double W[N], a table of sines and cosines.
+    Input, double SGN, is +1 for a "forward" FFT and -1 for a "backward" FFT.
+*/
+void cfft2(int n, double x[], double y[], double w[], double sgn, STEP_FUN fn)
+{
+  int m = (int)(log((double)n) / log(1.99));
+  int mj = 1;
+  // Toggling switch for work array.
+  int tgle = 1;
+  fn(n, mj, &x[0 * 2 + 0], &x[(n / 2) * 2 + 0], &y[0 * 2 + 0], &y[mj * 2 + 0],
+       w, sgn);
+
+  if (n == 2)  return;
+
+  for (int j = 0; j < m - 2; j++) {
+    mj = mj * 2;
+    if (tgle) {
+      fn(n, mj, &y[0 * 2 + 0], &y[(n / 2) * 2 + 0], &x[0 * 2 + 0],
+           &x[mj * 2 + 0], w, sgn);
+      tgle = 0;
+    } else {
+      fn(n, mj, &x[0 * 2 + 0], &x[(n / 2) * 2 + 0], &y[0 * 2 + 0],
+           &y[mj * 2 + 0], w, sgn);
+      tgle = 1;
+    }
+  }
+  // Last pass through data: move Y to X if needed.
+  if (tgle) {
+    ccopy(n, y, x);
+  }
+
+  mj = n / 2;
+  fn(n, mj, &x[0 * 2 + 0], &x[(n / 2) * 2 + 0], &y[0 * 2 + 0], &y[mj * 2 + 0],
+       w, sgn);
+}
+
+

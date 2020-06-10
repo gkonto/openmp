@@ -14,14 +14,43 @@ namespace {
     };
 } // namespace
 
+
+static void parseArgs(int argc, char **argv, Opts &o) {
+  if (argc != 2) {
+    std::cout << "Specify nits" << std::endl;
+    exit(1);
+  }
+  read_value<int>(argv[1], o.nits);
+}
+
+
+static void greetings() {
+  timestamp();
+  printf("\n");
+  printf("FFT_SERIAL\n");
+  printf("  C version\n");
+  printf("\n");
+  printf("  Demonstrate an implementation of the Fast Fourier Transform\n");
+  printf("  of a complex data vector.\n");
+  //  Prepare for tests.
+  printf("\n");
+  printf("  Accuracy check:\n");
+  printf("\n");
+  printf("    FFT ( FFT ( X(1:N) ) ) == N * X(1:N)\n");
+  printf("\n");
+  printf("             N      NITS    Error         Time          Time/Call    "
+         " MFLOPS\n");
+  printf("\n");
+}
+
+
 /*
   Purpose:
     STEP carries out one step of the workspace version of CFFT2.
   Parameters:
 */
 static void step(int n, int mj, double a[], double b[], double c[], double d[],
-          double w[], double sgn)
-{
+          double w[], double sgn) {
   double wjw[2];
 
   int mj2 = 2 * mj;
@@ -75,81 +104,6 @@ static void cffti(int n, double w[])
   }
 }
 
-
-
-/*
-  Purpose:
-
-    CFFT2 performs a complex Fast Fourier Transform.
-  Parameters:
-    Input, int N, the size of the array to be transformed.
-    Input/output, double X[2*N], the data to be transformed.
-    On output, the contents of X have been overwritten by work information.
-    Output, double Y[2*N], the forward or backward FFT of X.
-    Input, double W[N], a table of sines and cosines.
-    Input, double SGN, is +1 for a "forward" FFT and -1 for a "backward" FFT.
-*/
-static void cfft2(int n, double x[], double y[], double w[], double sgn) {
-  int m = (int)(log((double)n) / log(1.99));
-  int mj = 1;
-  // Toggling switch for work array.
-  int tgle = 1;
-
-  step(n, mj, &x[0 * 2 + 0], &x[(n / 2) * 2 + 0], &y[0 * 2 + 0], &y[mj * 2 + 0],
-       w, sgn);
-
-  if (n == 2) return;
-
-  for (int j = 0; j < m - 2; j++) {
-    mj = mj * 2;
-    if (tgle) {
-      step(n, mj, &y[0 * 2 + 0], &y[(n / 2) * 2 + 0], &x[0 * 2 + 0],
-           &x[mj * 2 + 0], w, sgn);
-      tgle = 0;
-    } else {
-      step(n, mj, &x[0 * 2 + 0], &x[(n / 2) * 2 + 0], &y[0 * 2 + 0],
-           &y[mj * 2 + 0], w, sgn);
-      tgle = 1;
-    }
-  }
-
-  //  Last pass through data: move Y to X if needed.
-  if (tgle) {
-    ccopy(n, y, x);
-  }
-
-  mj = n / 2;
-  step(n, mj, &x[0 * 2 + 0], &x[(n / 2) * 2 + 0], &y[0 * 2 + 0], &y[mj * 2 + 0],
-       w, sgn);
-}
-
-
-static void parseArgs(int argc, char **argv, Opts &o) {
-  if (argc != 2) {
-    std::cout << "Specify nits" << std::endl;
-    exit(1);
-  }
-  read_value<int>(argv[1], o.nits);
-}
-
-static void greetings() {
-  timestamp();
-  printf("\n");
-  printf("FFT_SERIAL\n");
-  printf("  C version\n");
-  printf("\n");
-  printf("  Demonstrate an implementation of the Fast Fourier Transform\n");
-  printf("  of a complex data vector.\n");
-  //  Prepare for tests.
-  printf("\n");
-  printf("  Accuracy check:\n");
-  printf("\n");
-  printf("    FFT ( FFT ( X(1:N) ) ) == N * X(1:N)\n");
-  printf("\n");
-  printf("             N      NITS    Error         Time          Time/Call    "
-         " MFLOPS\n");
-  printf("\n");
-}
 
 /*
   Purpose:
@@ -213,9 +167,9 @@ int main(int argc, char **argv) {
       //  Transform forward, back
       if (first) {
         double sgn = +1.0;
-        cfft2(n, x, y, w, sgn);
+        cfft2(n, x, y, w, sgn, step);
         sgn = -1.0;
-        cfft2(n, y, x, w, sgn);
+        cfft2(n, y, x, w, sgn, step);
 
         //  Results should be same as the initial data multiplied by N.
         double fnm1 = 1.0 / (double)n;
@@ -231,9 +185,9 @@ int main(int argc, char **argv) {
         double ctime1 = omp_get_wtime();
         for (int it = 0; it < nits; it++) {
           double sgn = +1.0;
-          cfft2(n, x, y, w, sgn);
+          cfft2(n, x, y, w, sgn, step);
           sgn = -1.0;
-          cfft2(n, y, x, w, sgn);
+          cfft2(n, y, x, w, sgn, step);
         }
         double ctime2 = omp_get_wtime();
         double ctime = ctime2 - ctime1;

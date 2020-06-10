@@ -7,7 +7,6 @@
 #include <time.h>
 #include "tools.hpp"
 
-
 namespace {
     struct Opts {
       int num_threads = 0;
@@ -15,26 +14,64 @@ namespace {
     };
 } // namespace
 
+
+static void parseArgs(int argc, char **argv, Opts &o) {
+  if (argc != 3) {
+    std::cout << "Specify nits and number of threads" << std::endl;
+    exit(1);
+  }
+
+  read_value<int>(argv[1], o.nits);
+  read_value<int>(argv[2], o.num_threads);
+}
+
+
+static void greetings() {
+  timestamp();
+  printf("\n");
+  printf("FFT_OPENMP\n");
+  printf("  C/OpenMP version\n");
+  printf("\n");
+  printf("  Demonstrate an implementation of the Fast Fourier Transform\n");
+  printf("  of a complex data vector, using OpenMP for parallel execution.\n");
+  printf("\n");
+  printf("  Number of processors available = %d\n", omp_get_num_procs());
+  printf("  Number of threads =              %d\n", omp_get_max_threads());
+  // Prepare for tests.
+  printf("\n");
+  printf("  Accuracy check:\n");
+  printf("\n");
+  printf("    FFT ( FFT ( X(1:N) ) ) == N * X(1:N)\n");
+  printf("\n");
+  printf("             N      NITS    Error         Time          Time/Call    "
+         " MFLOPS\n");
+  printf("\n");
+}
+
+
+static void bye() {
+  printf("\n");
+  printf("FFT_SERIAL:\n");
+  printf("  Normal end of execution.\n");
+  printf("\n");
+  timestamp();
+}
+
+
 /*
   Purpose:
     STEP carries out one step of the workspace version of CFFT2.
   Parameters:
 */
 static void step(int n, int mj, double a[], double b[], double c[], double d[],
-          double w[], double sgn)
-{
-  double ambr;
-  double ambu;
+          double w[], double sgn) {
   double wjw[2];
 
   int mj2 = 2 * mj;
   int lj = n / mj2;
 
-#pragma omp parallel shared(a, b, c, d, lj, mj, mj2, sgn, w) private(          \
-    ambr, ambu, wjw)
-
+#pragma omp parallel shared(a, b, c, d, lj, mj, mj2, sgn, w) private(wjw)
 #pragma omp for nowait
-
   for (int j = 0; j < lj; j++) {
     int jw = j * mj;
     int ja = jw;
@@ -52,59 +89,14 @@ static void step(int n, int mj, double a[], double b[], double c[], double d[],
     for (int k = 0; k < mj; k++) {
       c[(jc + k) * 2 + 0] = a[(ja + k) * 2 + 0] + b[(jb + k) * 2 + 0];
       c[(jc + k) * 2 + 1] = a[(ja + k) * 2 + 1] + b[(jb + k) * 2 + 1];
-
-      ambr = a[(ja + k) * 2 + 0] - b[(jb + k) * 2 + 0];
-      ambu = a[(ja + k) * 2 + 1] - b[(jb + k) * 2 + 1];
-
+      double ambr = a[(ja + k) * 2 + 0] - b[(jb + k) * 2 + 0];
+      double ambu = a[(ja + k) * 2 + 1] - b[(jb + k) * 2 + 1];
       d[(jd + k) * 2 + 0] = wjw[0] * ambr - wjw[1] * ambu;
       d[(jd + k) * 2 + 1] = wjw[1] * ambr + wjw[0] * ambu;
     }
   }
 }
 
-/*
-  Purpose:
-    CFFT2 performs a complex Fast Fourier Transform.
-  Parameters:
-    Input, int N, the size of the array to be transformed.
-    Input/output, double X[2*N], the data to be transformed.
-    On output, the contents of X have been overwritten by work information.
-    Output, double Y[2*N], the forward or backward FFT of X.
-    Input, double W[N], a table of sines and cosines.
-    Input, double SGN, is +1 for a "forward" FFT and -1 for a "backward" FFT.
-*/
-static void cfft2(int n, double x[], double y[], double w[], double sgn)
-{
-  int m = (int)(log((double)n) / log(1.99));
-  int mj = 1;
-  // Toggling switch for work array.
-  int tgle = 1;
-  step(n, mj, &x[0 * 2 + 0], &x[(n / 2) * 2 + 0], &y[0 * 2 + 0], &y[mj * 2 + 0],
-       w, sgn);
-
-  if (n == 2)  return;
-
-  for (int j = 0; j < m - 2; j++) {
-    mj = mj * 2;
-    if (tgle) {
-      step(n, mj, &y[0 * 2 + 0], &y[(n / 2) * 2 + 0], &x[0 * 2 + 0],
-           &x[mj * 2 + 0], w, sgn);
-      tgle = 0;
-    } else {
-      step(n, mj, &x[0 * 2 + 0], &x[(n / 2) * 2 + 0], &y[0 * 2 + 0],
-           &y[mj * 2 + 0], w, sgn);
-      tgle = 1;
-    }
-  }
-  // Last pass through data: move Y to X if needed.
-  if (tgle) {
-    ccopy(n, y, x);
-  }
-
-  mj = n / 2;
-  step(n, mj, &x[0 * 2 + 0], &x[(n / 2) * 2 + 0], &y[0 * 2 + 0], &y[mj * 2 + 0],
-       w, sgn);
-}
 
 /*
   Purpose:
@@ -113,65 +105,19 @@ static void cfft2(int n, double x[], double y[], double w[], double sgn)
     Input, int N, the size of the array to be transformed.
     Output, double W[N], a table of sines and cosines.
 */
-static void cffti(int n, double w[])
-{
-  const double pi = 3.141592653589793;
-
-  int n2 = n / 2;
-  double aw = 2.0 * pi / ((double)n);
-
+static void cffti(int n, double w[]) {
+    const double pi = 3.141592653589793;
+    int n2 = n / 2;
+    double aw = 2.0 * pi / ((double)n);
 #pragma omp parallel shared(aw, n, w) 
 #pragma omp for nowait
-  for (int i = 0; i < n2; i++) {
-    double arg = aw * ((double)i);
-    w[i * 2 + 0] = cos(arg);
-    w[i * 2 + 1] = sin(arg);
-  }
+    for (int i = 0; i < n2; i++) {
+        double arg = aw * ((double)i);
+        w[i * 2 + 0] = cos(arg);
+        w[i * 2 + 1] = sin(arg);
+    }
 }
 
-static void parseArgs(int argc, char **argv, Opts &o) {
-  if (argc != 3) {
-    std::cout << "Specify nits and number of threads" << std::endl;
-    exit(1);
-  }
-
-  read_value<int>(argv[1], o.nits);
-  read_value<int>(argv[2], o.num_threads);
-}
-
-static void greetings() {
-
-  timestamp();
-  printf("\n");
-  printf("FFT_OPENMP\n");
-  printf("  C/OpenMP version\n");
-  printf("\n");
-  printf("  Demonstrate an implementation of the Fast Fourier Transform\n");
-  printf("  of a complex data vector, using OpenMP for parallel execution.\n");
-
-  printf("\n");
-  printf("  Number of processors available = %d\n", omp_get_num_procs());
-  printf("  Number of threads =              %d\n", omp_get_max_threads());
-  /*
-    Prepare for tests.
-  */
-  printf("\n");
-  printf("  Accuracy check:\n");
-  printf("\n");
-  printf("    FFT ( FFT ( X(1:N) ) ) == N * X(1:N)\n");
-  printf("\n");
-  printf("             N      NITS    Error         Time          Time/Call    "
-         " MFLOPS\n");
-  printf("\n");
-}
-
-static void bye() {
-  printf("\n");
-  printf("FFT_SERIAL:\n");
-  printf("  Normal end of execution.\n");
-  printf("\n");
-  timestamp();
-}
 
 /*
   Purpose:
@@ -179,7 +125,6 @@ static void bye() {
   Discussion:
     The "complex" vector A is actually stored as a double vector B.
     The "complex" vector entry A[I] is stored as:
-
       B[I*2+0], the real part,
       B[I*2+1], the imaginary part.
 */
@@ -187,66 +132,46 @@ int main(int argc, char **argv) {
   Opts o;
   parseArgs(argc, argv, o);
   omp_set_num_threads(o.num_threads);
-  double error;
-  int first;
-  double flops;
-  double fnm1;
-  int i;
-  int icase;
-  int it;
-  int ln2;
   int ln2_max = 20;
-  double mflops;
-  int n;
   int nits = o.nits;
   static double seed;
-  double sgn;
-  double *w;
-  double wtime;
-  double *x;
-  double *y;
-  double *z;
-  double z0;
-  double z1;
   seed = 331.0;
-  n = 1;
+  int n = 1;
   greetings();
   double time = omp_get_wtime();
+
   // LN2 is the log base 2 of N.  Each increase of LN2 doubles N.
-  for (ln2 = 1; ln2 <= ln2_max; ln2++) {
+  for (int ln2 = 1; ln2 <= ln2_max; ln2++) {
     n = 2 * n;
     /*
       Allocate storage for the complex arrays W, X, Y, Z.
-
       We handle the complex arithmetic,
       and store a complex number as a pair of doubles, a complex vector as a
       doubly dimensioned array whose second dimension is 2.
     */
-    w = (double *)malloc(n * sizeof(double));
-    x = (double *)malloc(2 * n * sizeof(double));
-    y = (double *)malloc(2 * n * sizeof(double));
-    z = (double *)malloc(2 * n * sizeof(double));
+    double *w = (double *)malloc(n * sizeof(double));
+    double *x = (double *)malloc(2 * n * sizeof(double));
+    double *y = (double *)malloc(2 * n * sizeof(double));
+    double *z = (double *)malloc(2 * n * sizeof(double));
 
-    first = 1;
+    int first = 1;
 
-    for (icase = 0; icase < 2; icase++) {
+    for (int icase = 0; icase < 2; icase++) {
       if (first) {
-        for (i = 0; i < 2 * n; i = i + 2) {
-          z0 = ggl(&seed);
-          z1 = ggl(&seed);
+        for (int i = 0; i < 2 * n; i = i + 2) {
+          double z0 = ggl(&seed);
+          double z1 = ggl(&seed);
           x[i] = z0;
           z[i] = z0;
           x[i + 1] = z1;
           z[i + 1] = z1;
         }
       } else {
-#pragma omp parallel shared(n, x, z) private(i, z0, z1)
-
+#pragma omp parallel shared(n, x, z) 
 #pragma omp for nowait
-
-        for (i = 0; i < 2 * n; i = i + 2) {
-          z0 = 0.0; /* real part of array */
-          z1 = 0.0; /* imaginary part of array */
+        for (int i = 0; i < 2 * n; i = i + 2) {
+          double z0 = 0.0; /* real part of array */
+          double z1 = 0.0; /* imaginary part of array */
           x[i] = z0;
           z[i] = z0; /* copy of initial real data */
           x[i + 1] = z1;
@@ -257,14 +182,14 @@ int main(int argc, char **argv) {
       cffti(n, w);
       // Transform forward, back
       if (first) {
-        sgn = +1.0;
-        cfft2(n, x, y, w, sgn);
+        double sgn = +1.0;
+        cfft2(n, x, y, w, sgn, step);
         sgn = -1.0;
-        cfft2(n, y, x, w, sgn);
+        cfft2(n, y, x, w, sgn, step);
         // Results should be same as the initial data multiplied by N.
-        fnm1 = 1.0 / (double)n;
-        error = 0.0;
-        for (i = 0; i < 2 * n; i = i + 2) {
+        double fnm1 = 1.0 / (double)n;
+        double error = 0.0;
+        for (int i = 0; i < 2 * n; i = i + 2) {
           error = error + pow(z[i] - fnm1 * x[i], 2) +
                   pow(z[i + 1] - fnm1 * x[i + 1], 2);
         }
@@ -272,19 +197,16 @@ int main(int argc, char **argv) {
         printf("  %12d  %8d  %12e", n, nits, error);
         first = 0;
       } else {
-        wtime = omp_get_wtime();
-        for (it = 0; it < nits; it++) {
-          sgn = +1.0;
-          cfft2(n, x, y, w, sgn);
+        double wtime = omp_get_wtime();
+        for (int it = 0; it < nits; it++) {
+          double sgn = +1.0;
+          cfft2(n, x, y, w, sgn, step);
           sgn = -1.0;
-          cfft2(n, y, x, w, sgn);
+          cfft2(n, y, x, w, sgn, step);
         }
         wtime = omp_get_wtime() - wtime;
-
-        flops = 2.0 * (double)nits * (5.0 * (double)n * (double)ln2);
-
-        mflops = flops / 1.0E+06 / wtime;
-
+        double flops = 2.0 * (double)nits * (5.0 * (double)n * (double)ln2);
+        double mflops = flops / 1.0E+06 / wtime;
         printf("  %12e  %12e  %12f\n", wtime, wtime / (double)(2 * nits),
                mflops);
       }
@@ -304,17 +226,3 @@ int main(int argc, char **argv) {
   std::cout << "Execution Time: " << omp_get_wtime() - time << " second" << std::endl;
   return 0;
 }
-
-/******************************************************************************/
-
-
-/******************************************************************************/
-
-/******************************************************************************/
-
-
-/******************************************************************************/
-
-
-/******************************************************************************/
-
