@@ -11,7 +11,8 @@ To run tests and compare their output, follow the instructions below:
 > run_test.py script uses run_variations.json file.<br />
 > The file __run_variations.json__ contains test cases for each variation in a specific format.<br />
 > It is a list of entries where each entry is a unique run.<br />
-> The entry is a list where first index is the variation (eg sequential or c1 etch) and the second argument is a list<br />
+> The entry is a list where first index is the variation (eg sequential or c1 etch) ,<br />
+> and the second argument is another list in which each entry is a command line argument for the c++ program<br />
 2. [./create_graph.py](./create_graph.py)
 > A graph will be created based on the .json file
 
