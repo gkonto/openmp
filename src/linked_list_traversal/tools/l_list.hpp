@@ -7,8 +7,8 @@ struct Node {
         if (next_) delete next_;
     }
 
-    Node *next_;
-    int data_;
+    Node *next_ = nullptr;
+    int data_ = 0;
 };
 
 extern Node *init_nodes(int num_of_nodes, int value);
