@@ -1,6 +1,7 @@
 # Linked List Traversal
 
 Each folder contains a variation of Linked List Traversal example.
+During the traversal, each node applies fibonacci(33) calculation.
 To run tests and compare their output, follow the instructions below:
 
 0. Compile all variations by executing [./setup.py](./setup.py) script.
@@ -14,6 +15,7 @@ To run tests and compare their output, follow the instructions below:
 > The entry is a list where first index is the variation (eg sequential or c1 etch) and the second argument is a list<br />
 2. [./create_graph.py](./create_graph.py)
 > A graph will be created based on the .json file
+
 
 
 

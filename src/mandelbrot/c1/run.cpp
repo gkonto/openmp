@@ -19,44 +19,48 @@ namespace {
 }
 
 class MatrixInt2D {
-public:
-  MatrixInt2D(int m, int n) : m_(m), n_(n) {
+    public:
+      MatrixInt2D(int m, int n);
+      ~MatrixInt2D();
+        
+      int* operator[](size_t idx) {
+          return a_[idx];
+      }
+    private:
+        int **a_ = nullptr;
+        int m_ = 0;
+        int n_ = 0;
+};
+
+MatrixInt2D::MatrixInt2D(int m, int n) : m_(m), n_(n) {
     a_ = new int *[m_];
     if (!a_) {
-      std::cerr << "\n";
-      std::cerr << "I4PP_NEW - Fatal error!\n";
-      std::cerr << "  Unable to allocate row pointer array.\n";
-      exit(1);
+        std::cerr << "\n";
+        std::cerr << "I4PP_NEW - Fatal error!\n";
+        std::cerr << "  Unable to allocate row pointer array.\n";
+        exit(1);
     }
 
     for (int i = 0; i < m_; i++) {
-      a_[i] = new int[n_];
-      if (a_[i] == NULL) {
-        cerr << "\n";
-        cerr << "I4PP_NEW - Fatal error!\n";
-        cerr << "  Unable to allocate row array.\n";
-        exit(1);
-      }
+        a_[i] = new int[n_];
+        if (a_[i] == NULL) {
+            cerr << "\n";
+            cerr << "I4PP_NEW - Fatal error!\n";
+            cerr << "  Unable to allocate row array.\n";
+            exit(1);
+        }
     }
-  }
+}
 
-  int* operator[](size_t idx) {
-      return a_[idx];
-  }
 
-  ~MatrixInt2D() {
+MatrixInt2D::~MatrixInt2D() {
       for (int i = 0; i < m_; ++i) {
           delete[] a_[i];
       }
 
       delete[] a_;
-  }
+}
 
-private:
-    int **a_ = nullptr;
-    int m_ = 0;
-    int n_ = 0;
-};
 
 static void parseArgs(int argc, char **argv, Opts &o) {
     if (argc != 4) {
@@ -68,6 +72,43 @@ static void parseArgs(int argc, char **argv, Opts &o) {
     read_value<int>(argv[3], o.num_threads);
 }
 
+
+static void greetings(double x_min, double x_max, double y_min, double y_max, int count_max, int m, int n ) {
+    timestamp();
+    std::cout << "\n";
+    std::cout << "MANDELBROT_OPENMP\n";
+    std::cout << "  C++/OpenMP version\n";
+    std::cout << "\n";
+    std::cout << "  Create an ASCII PPM image of the Mandelbrot set.\n";
+    std::cout << "\n";
+    std::cout << "  For each point C = X + i*Y\n";
+    std::cout << "  with X range [" << x_min << "," << x_max << "]\n";
+    std::cout << "  and  Y range [" << y_min << "," << y_max << "]\n";
+    std::cout << "  carry out " << count_max << " iterations of the map\n";
+    std::cout << "  Z(n+1) = Z(n)^2 + C.\n";
+    std::cout << "  If the iterates stay bounded (norm less than 2)\n";
+    std::cout << "  then C is taken to be a member of the set.\n";
+    std::cout << "\n";
+    std::cout << "  An ASCII PPM image of the set is created using\n";
+    std::cout << "    M = " << m << " pixels in the X direction and\n";
+    std::cout << "    N = " << n << " pixels in the Y direction.\n";
+}
+
+
+static void bye(const std::string &filename) {
+    std::cout << "\n";
+    std::cout << "  Graphics data written to \"" << filename << "\".\n";
+
+    // Terminate.
+    std::cout << "\n";
+    std::cout << "MANDELBROT_OPENMP\n";
+    std::cout << "  Normal end of execution.\n";
+    std::cout << "\n";
+    timestamp();
+
+
+}
+
 //****************************************************************************80
 //  Purpose
 //    MAIN is the main program for MANDELBROT_OPENMP.
@@ -75,8 +116,8 @@ static void parseArgs(int argc, char **argv, Opts &o) {
 //    MANDELBROT_OPENMP computes an image of the Mandelbrot set.
 int main(int argc, char **argv)
 {
-    Opts o;
-    parseArgs(argc, argv, o);
+  Opts o;
+  parseArgs(argc, argv, o);
   int m = o.width;
   int n = o.height;
 
@@ -93,25 +134,7 @@ int main(int argc, char **argv)
   MatrixInt2D g = MatrixInt2D(m, n);
   MatrixInt2D r = MatrixInt2D(m, n);
 
-  timestamp();
-  std::cout << "\n";
-  std::cout << "MANDELBROT_OPENMP\n";
-  std::cout << "  C++/OpenMP version\n";
-  std::cout << "\n";
-  std::cout << "  Create an ASCII PPM image of the Mandelbrot set.\n";
-  std::cout << "\n";
-  std::cout << "  For each point C = X + i*Y\n";
-  std::cout << "  with X range [" << x_min << "," << x_max << "]\n";
-  std::cout << "  and  Y range [" << y_min << "," << y_max << "]\n";
-  std::cout << "  carry out " << count_max << " iterations of the map\n";
-  std::cout << "  Z(n+1) = Z(n)^2 + C.\n";
-  std::cout << "  If the iterates stay bounded (norm less than 2)\n";
-  std::cout << "  then C is taken to be a member of the set.\n";
-  std::cout << "\n";
-  std::cout << "  An ASCII PPM image of the set is created using\n";
-  std::cout << "    M = " << m << " pixels in the X direction and\n";
-  std::cout << "    N = " << n << " pixels in the Y direction.\n";
-
+  greetings(x_min, x_max, y_min, y_max, count_max, m, n);
   omp_set_num_threads(o.num_threads);
   double wtime = omp_get_wtime();
   // Carry out the iteration for each pixel, determining COUNT.
@@ -181,15 +204,7 @@ int main(int argc, char **argv)
   }
 
   output.close();
-  std::cout << "\n";
-  std::cout << "  Graphics data written to \"" << filename << "\".\n";
-
-  // Terminate.
-  std::cout << "\n";
-  std::cout << "MANDELBROT_OPENMP\n";
-  std::cout << "  Normal end of execution.\n";
-  std::cout << "\n";
-  timestamp();
+  bye(filename);
 
   return 0;
 }
