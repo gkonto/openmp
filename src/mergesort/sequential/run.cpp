@@ -4,28 +4,10 @@
 #include <iostream>
 #include "omp.h"
 #include "auxiliaries.hpp"
+#include "common.hpp"
 
 #define MAX_SIZE 10000000
 
-
-void generate_list(int * x, int n) {
-   int i,j,t;
-   for (i = 0; i < n; i++)
-     x[i] = i;
-   for (i = 0; i < n; i++) {
-     j = rand() % n;
-     t = x[i];
-     x[i] = x[j];
-     x[j] = t;
-   }
-}
-
-void print_list(int * x, int n) {
-   int i;
-   for (i = 0; i < n; i++) {
-      printf("%d ",x[i]);
-   } 
-}
 
 namespace { 
     struct Opts {
@@ -41,8 +23,7 @@ static void parseArgs(int argc, char **argv, Opts &o) {
     read_value<int>(argv[1], o.size);
 }
 
-void merge(int* array, int start, int end)
-{
+void merge(int* array, int start, int end) {
     int middle = (start + end) / 2;
     int temp_index = 0;
 
@@ -124,7 +105,7 @@ int main(int argc, char **argv)
    stop = omp_get_wtime();
    printf("\nList After Sorting...\n");
    print_list(data, n);
-   printf("\nExecution Time: %g seconds\n",stop-start);
+   printf("\nExecution Time: %g seconds\n", stop-start);
    delete []data;
    delete []tmp;
 }

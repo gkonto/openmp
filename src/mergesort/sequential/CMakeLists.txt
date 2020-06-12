@@ -8,14 +8,18 @@
   SET(ROOT_DIR ../../)
   SET(AUX_DIR ${ROOT_DIR}/auxiliaries)
   SET(PROJECT mergesort)
+  SET(COMMON ../common)
 
   INCLUDE_DIRECTORIES(${AUX_DIR})
+  INCLUDE_DIRECTORIES(${COMMON})
 
 
   SET(SOURCES
       run.cpp
       ${AUX_DIR}/auxiliaries.cpp
       ${AUX_DIR}/auxiliaries.hpp
+      ${COMMON}/common.hpp
+      ${COMMON}/common.cpp
       )
 
   ADD_EXECUTABLE(${PROJECT} ${HEADERS} ${SOURCES})
