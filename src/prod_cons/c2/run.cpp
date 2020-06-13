@@ -8,8 +8,8 @@ struct Opts {
     int num_threads_ = 1;
 };
 
-//TODO this is race free in comparison to the c1
 
+//TODO this is race free in comparison to the c1
 void parseArgs(int argc, char **argv, Opts &o) {
     if (argc != 3) {
         std::cout << "Please provide array size and num threads" << std::endl;
@@ -19,6 +19,7 @@ void parseArgs(int argc, char **argv, Opts &o) {
     read_value<size_t>(argv[1], o.arr_size_);
     read_value<int>(argv[2], o.num_threads_);
 }
+
 
 int main(int argc, char **argv) {
     double sum  = 0.0;
@@ -32,6 +33,7 @@ int main(int argc, char **argv) {
 
     unsigned char *arr = new unsigned char [o.arr_size_];
     double runtime = omp_get_wtime();
+
 #pragma omp parallel sections
     {
 #pragma omp section
@@ -52,7 +54,6 @@ int main(int argc, char **argv) {
             }
 #pragma omp flush
             sum = accumulate(arr, o.arr_size_);
-            
         }
     }
     delete []arr;

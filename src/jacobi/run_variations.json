@@ -1,4 +1,12 @@
 [
+        ["sequential", [400]],
+        ["sequential", [800]],
+        ["sequential", [1600]],
+        ["sequential", [3200]],
+        ["sequential", [6400]],
+        ["sequential", [12800]],
+
+
         ["c1", [400,  1]],
         ["c1", [800,  1]],
         ["c1", [1600,  1]],

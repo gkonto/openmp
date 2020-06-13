@@ -3,7 +3,6 @@
 #include <memory>
 #include "auxiliaries.hpp"
 
-
 //TODO THere is a data race in this. 
 //Find it.
 struct Opts {
