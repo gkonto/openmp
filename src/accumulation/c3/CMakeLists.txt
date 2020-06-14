@@ -3,12 +3,13 @@
   PROJECT(sequential)
   SET(CMAKE_CXX_STANDARD 14)
 
-  ADD_DEFINITIONS("-g -Wall -Wextra -O2 -Wunreachable-code")
+  ADD_DEFINITIONS("-g -fopenmp-simd -Wall -Wextra -O2 -Wunreachable-code")
 
   SET(ROOT_DIR ../../)
   SET(AUX_DIR ${ROOT_DIR}/auxiliaries)
   SET(PROJECT accumulate)
 
+  INCLUDE_DIRECTORIES(${FIB_DIR})
   INCLUDE_DIRECTORIES(${AUX_DIR})
   INCLUDE_DIRECTORIES(${EXAMPLE_DIR})
 

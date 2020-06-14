@@ -22,6 +22,7 @@ int main(int argc, char **argv) {
     long long int fact = 0;
     double start = omp_get_wtime();
 
+#pragma omp simd reduction(+:fact)
     for (size_t i = 0; i < o.factorial_ + 1; i++) {
         fact += i;
     }

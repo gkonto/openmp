@@ -3,7 +3,7 @@
   PROJECT(sequential)
   SET(CMAKE_CXX_STANDARD 14)
 
-  ADD_DEFINITIONS("-g -Wall -Wextra -O0 -Wunreachable-code")
+  ADD_DEFINITIONS("-g -Wall -Wextra -O2 -Wunreachable-code")
 
   SET(ROOT_DIR ../../)
   SET(AUX_DIR ${ROOT_DIR}/auxiliaries)
