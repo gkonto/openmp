@@ -65,12 +65,16 @@ if __name__=="__main__":
         for entry in gen_exp:
             e = None
             prog_w_var = None
-            try:
+            if "c3" in entry[0]:
                 e = Entry(entry[0], entry[1][1])
-                prog_w_var = "{} {} {} {} {}".format(e.prog_path, entry[1][0][0], entry[1][0][1], entry[1][0][2], e.num_threads)
-            except:
-                e = Entry(entry[0], 1)
-                prog_w_var = "{} {} {} {}".format(e.prog_path, entry[1][0][0], entry[1][0][1], entry[1][0][2])
+                prog_w_var = "{} {} {} {}".format(e.prog_path, entry[1][0][0], entry[1][0][1], e.num_threads);
+            else:
+                try:
+                    e = Entry(entry[0], entry[1][1])
+                    prog_w_var = "{} {} {} {} {}".format(e.prog_path, entry[1][0][0], entry[1][0][1], entry[1][0][2], e.num_threads)
+                except:
+                    e = Entry(entry[0], 1)
+                    prog_w_var = "{} {} {} {}".format(e.prog_path, entry[1][0][0], entry[1][0][1], entry[1][0][2])
 
             s = execute_program(prog_w_var)
             time = get_doubles(s)
