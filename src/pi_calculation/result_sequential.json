@@ -1,0 +1,53 @@
+{
+ "system": {
+  "cpu cores": "8", 
+  "MemTotal": "16421544 kB", 
+  "model name": "AMD Opteron(tm) Processor 6128 HE"
+ }, 
+ "Executions": [
+  [
+   "sequential/build/pi 1000000", 
+   0.0322124
+  ], 
+  [
+   "sequential/build/pi 2000000", 
+   0.0604532
+  ], 
+  [
+   "sequential/build/pi 4000000", 
+   0.119242
+  ], 
+  [
+   "sequential/build/pi 8000000", 
+   0.235726
+  ], 
+  [
+   "sequential/build/pi 16000000", 
+   0.467253
+  ], 
+  [
+   "sequential/build/pi 32000000", 
+   0.918661
+  ], 
+  [
+   "sequential/build/pi 64000000", 
+   1.84681
+  ], 
+  [
+   "sequential/build/pi 128000000", 
+   3.69193
+  ], 
+  [
+   "sequential/build/pi 256000000", 
+   7.37264
+  ], 
+  [
+   "sequential/build/pi 512000000", 
+   14.7733
+  ], 
+  [
+   "sequential/build/pi 1024000000", 
+   29.4735
+  ]
+ ]
+}
