@@ -23,7 +23,7 @@ int main(int argc, char **argv) {
     int value = fib(val);
     time = omp_get_wtime() - time;
 
-    std::cout << "Time Elapsed: " << time << std::endl;
     std::cout << "Value: " << value << std::endl;
+    std::cout << "Time Elapsed: " << time << std::endl;
     return 0;
 }

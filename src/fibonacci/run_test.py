@@ -100,9 +100,12 @@ if __name__=="__main__":
         except:
             value = execute_program("{} {}".format(inp.program, inp.exec_val))
 
-        for entry in value:
-            if "Time" in entry:
-                inp.exec_time = re.findall('-?\ *[0-9]+\.?[0-9]*(?:[Ee]\ *-?\ *[0-9]+)?', entry)[0]
+        if "Time" in value:
+            inp.exec_time = re.findall('-?\ *[0-9]+\.?[0-9]*(?:[Ee]\ *-?\ *[0-9]+)?', value)[-1]
+        else:
+            print("Error occured!")
+            exit(1)
+                
 
         results[inp.key_rep()].append(Entry(inp.exec_val, inp.exec_time))
 

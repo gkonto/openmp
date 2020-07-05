@@ -1,5 +1,6 @@
 #!/bin/python
 import platform
+import argparse
 import time
 import json
 import subprocess
@@ -16,15 +17,33 @@ sys.path.insert(1, aux_dir)
 from py_aux import get_processor_name, get_ram, execute_program, get_doubles
 
 THIS_PATH = dirname(abspath(__file__))
-VAR_FILE  = join(THIS_PATH, "run_variations.json")
+
+
+def parse_args():
+    parser = argparse.ArgumentParser(description='Process some integers.')
+    parser.add_argument('input_file', metavar='input', type=str,  help=' a specific format json with the input')
+
+    args = parser.parse_args()
+    
+    return args
+
 
 if __name__=="__main__":
+
+    args = parse_args()
+
+    VAR_FILE  = join(THIS_PATH, args.input_file)
+
     if platform.system() != "Linux" :
         print("Error: This script runs only in linux systems!!");
 
     variants = None
-    with open(VAR_FILE, 'r') as fp:
-        variants  = json.load(fp)
+    try:
+        with open(VAR_FILE, 'r') as fp:
+            variants  = json.load(fp)
+    except:
+        print("No {} exists! Aborting...".format(VAR_FILE))
+        exit(1);
 
     # Get cpu details
     system_details = get_processor_name()
@@ -43,7 +62,7 @@ if __name__=="__main__":
     details["Executions"] = times
     j = json.dumps(details, indent = 1)
 
-    with open("result.json", 'w') as outfile:
+    with open("result_{}".format(args.input_file), 'w') as outfile:
         outfile.write(j)
 
 
