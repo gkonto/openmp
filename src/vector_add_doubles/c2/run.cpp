@@ -41,11 +41,9 @@ int main(int argc, char **argv) {
     double *c = new double[o.size];
 
     //Count time
-    std::cout << "start" << std::endl;
     auto start = omp_get_wtime();
     add_arrays(a, b, c, o.size);
     auto end = omp_get_wtime();
-    std::cout << "end" << std::endl;
 
     // Calculating total time taken by the program.
     std::cout << "Execution Time : " << std::fixed
