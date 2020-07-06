@@ -32,3 +32,10 @@
 *.app
 build/
 auxiliaries_gkonto/
+
+run_variations_small.json
+run_variations_full.json
+result.json
+
+#python precompiled
+*.pyc
