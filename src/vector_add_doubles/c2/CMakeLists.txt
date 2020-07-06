@@ -3,7 +3,7 @@
   PROJECT(sequential)
   SET(CMAKE_CXX_STANDARD 14)
 
-  ADD_DEFINITIONS(" -fopenmp-simd -g -Wall -Wextra -O0 -Wunreachable-code")
+  ADD_DEFINITIONS("-fopenmp -g -Wall -Wextra -O0 -Wunreachable-code")
   ADD_SUBDIRECTORY(addarr)
 
   SET(ROOT_DIR ../../)

@@ -41,14 +41,15 @@ int main(int argc, char **argv) {
     double *c = new double[o.size];
 
     //Count time
-    clock_t start = clock();
+    std::cout << "start" << std::endl;
+    auto start = omp_get_wtime();
     add_arrays(a, b, c, o.size);
-    clock_t end = clock();
+    auto end = omp_get_wtime();
+    std::cout << "end" << std::endl;
 
     // Calculating total time taken by the program.
-    double time_taken = double(end - start) / double(CLOCKS_PER_SEC);
     std::cout << "Execution Time : " << std::fixed
-         << time_taken << std::setprecision(5);
+         << end - start << std::setprecision(5);
     std::cout << " sec " << std::endl;
 
     delete []a;

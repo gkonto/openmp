@@ -19,7 +19,3 @@ To run tests and compare their output, follow the instructions below:
 
 
 
-
-
-
-
