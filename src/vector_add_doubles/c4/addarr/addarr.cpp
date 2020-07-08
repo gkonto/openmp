@@ -1,7 +1,7 @@
 #include <iostream>
 #include "addarr.hpp"
 
-#pragma omp declare simd
+#pragma omp declare simd notinbranch
 double sum(double a, double b) {
     return a + b;
 }

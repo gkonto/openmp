@@ -8,7 +8,7 @@ double sum(double a, double b) {
 
 void add_arrays(double *A, double *B, double *C, size_t size) {
     size_t i = 0;
-#pragma omp simd
+#pragma omp parallel for simd
     for (i = 0; i < size; ++i) {
             C[i] = sum(A[i], B[i]);
     }
