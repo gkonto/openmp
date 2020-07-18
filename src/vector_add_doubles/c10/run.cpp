@@ -37,13 +37,13 @@ int main(int argc, char **argv) {
     srand(time(nullptr));
 
     int dev = omp_get_default_device();
-    double *a_dev = omp_target_alloc(sizeof(double) * o.size, dev);
-    double *b_dev = omp_target_alloc(sizeof(double) * o.size, dev);
+    double *a_dev = (double *)omp_target_alloc(sizeof(double) * o.size, dev);
+    double *b_dev = (double *)omp_target_alloc(sizeof(double) * o.size, dev);
 
     fill_random_arr(a_dev, o.size);
     fill_random_arr(b_dev, o.size);
 
-    double *c_dev = omp_target_alloc(sizeof(double) * o.size, dev);
+    double *c_dev = (double *)omp_target_alloc(sizeof(double) * o.size, dev);
 
     //Count time
     auto start = omp_get_wtime();
