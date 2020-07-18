@@ -36,20 +36,24 @@ int main(int argc, char **argv) {
 
     srand(time(nullptr));
 
+    std::cout << "ENA" << std::endl;
     int dev = omp_get_default_device();
     double *a_dev = (double *)omp_target_alloc(sizeof(double) * o.size, dev);
     double *b_dev = (double *)omp_target_alloc(sizeof(double) * o.size, dev);
+    std::cout << "DUO" << std::endl;
 
     fill_random_arr(a_dev, o.size);
     fill_random_arr(b_dev, o.size);
 
     double *c_dev = (double *)omp_target_alloc(sizeof(double) * o.size, dev);
+    std::cout << "TRIA" << std::endl;
 
     //Count time
     auto start = omp_get_wtime();
     add_arrays(a_dev, b_dev, c_dev, o.size);
     auto end = omp_get_wtime();
 
+    std::cout << "TESSERA" << std::endl;
     // Calculating total time taken by the program.
     std::cout << "Execution Time : " << std::fixed
          << end - start << std::setprecision(5);
@@ -58,6 +62,7 @@ int main(int argc, char **argv) {
     delete []a_dev;
     delete []b_dev;
     delete []c_dev;
+    std::cout << "PENTE" << std::endl;
 
     return 0;
 }
