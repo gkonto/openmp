@@ -25,9 +25,11 @@ void parseArgs(int argc, char **argv, Opts &o) {
 
 static void fill_random_arr(double *arr, size_t size) {
     #pragma omp target is_device_ptr(arr)
-    for (int i = 0; i < size; i++) {
-        arr[i] = double(rand() % 100 + 1);
-    }
+    {
+        for (int i = 0; i < size; i++) {
+            arr[i] = i;
+        }
+    } 
 }
 
 int main(int argc, char **argv) {
@@ -59,9 +61,9 @@ int main(int argc, char **argv) {
          << end - start << std::setprecision(5);
     std::cout << " sec " << std::endl;
 
-    delete []a_dev;
-    delete []b_dev;
-    delete []c_dev;
+    omp_target_free(a_dev, dev);
+    omp_target_free(b_dev, dev);
+    omp_target_free(c_dev, dev);
     std::cout << "PENTE" << std::endl;
 
     return 0;
