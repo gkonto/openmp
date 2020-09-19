@@ -1,14 +1,10 @@
 #include <omp.h>
-#include <iostream>
 #include "integ.hpp"
 
-double pi(long num_steps, int num_threads) {
+double pi(long num_steps) {
     int nthreads = 0;
     double pi = .0;
-
     double step= 1.0/(double)num_steps;
-    omp_set_num_threads(num_threads);
-
 #pragma omp parallel
     {
         int id = omp_get_thread_num();
@@ -19,12 +15,13 @@ double pi(long num_steps, int num_threads) {
             nthreads = nthrds;
         }
 
-        for (int i = id;  i < num_steps; i += nthreads) {
+        for (int i = id; i < num_steps; i += nthreads) {
             x = (i + 0.5)*step;
             sum += 4.0/(1.0 + x*x);
         }
-#pragma omp critical
-        pi += sum * step;
+        sum *= step;
+#pragma omp atomic
+        pi += sum;
     }
 
     return pi;

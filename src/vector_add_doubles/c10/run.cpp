@@ -24,6 +24,7 @@ void parseArgs(int argc, char **argv, Opts &o) {
 }
 
 static void fill_random_arr(double *arr, size_t size) {
+	std::cout  << "Fill_random_arr" << arr << std::endl;
     #pragma omp target is_device_ptr(arr)
     {
         for (int i = 0; i < size; i++) {

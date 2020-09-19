@@ -1,23 +1,26 @@
 #include <omp.h>
 #include "integ.hpp"
 
-double pi(long num_steps, int num_threads) {
-    double pi = .0;
-    double step= 1.0/(double)num_steps;
-    double sum = 0.0;
-    omp_set_num_threads(num_threads);
+#define MIN_BLK 1000000
 
-#pragma omp parallel
-    {
-        double x = 0.0;
+double pi_comp(int Nstart, int Nfinish, double step) {
+    double x = 0.0;
+    double sum = 0.0, sum1 = 0.0, sum2 = 0.0;
 
-#pragma omp for reduction(+:sum)
-        for (int i = 0; i < num_steps; i++) {
-            x = (i + 0.5)*step;
+    if (Nfinish - Nstart < MIN_BLK) {
+        for (int i = Nstart; i < Nfinish; ++i) {
+            x = (i + 0.5) * step;
             sum += 4.0/(1.0 + x*x);
         }
+    } else {
+        int iblk = Nfinish-Nstart;
+#pragma omp task shared(sum1)
+        sum1 = pi_comp(Nstart, Nfinish-iblk/2, step);
+#pragma omp task shared(sum2)
+        sum2 = pi_comp(Nfinish-iblk/2, Nfinish, step);
+#pragma omp taskwait
+        sum = sum1 + sum2;
     }
-    pi = step * sum;
 
-    return pi;
+    return sum;
 }

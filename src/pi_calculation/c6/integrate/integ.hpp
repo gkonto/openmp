@@ -1,7 +1,7 @@
 #ifndef INTEGRATE_HPP
 #define INTEGRATE_HPP
 
-double pi_comp(int Nstart, int Nfinish, double step);
+double pi(long num_steps);
 
 #endif
 

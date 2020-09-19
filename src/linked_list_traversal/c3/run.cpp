@@ -2,44 +2,58 @@
 #include <omp.h>
 #include <vector>
 #include "tools/l_list.hpp"
-#include "fib.hpp"
 #include "auxiliaries.hpp"
 
 #define FIBVAL 33
 
 struct Opts {
     int num_nodes_ = 0;
-    int num_threads_ = 0;
 };
 
 static void parseArgs(int argc, char **argv, Opts &o) {
-    if (argc != 3) {
+    if (argc != 2) {
         std::cout << "Specify number of linked list nodes and num of threads" << std::endl;
         exit(1);
     }
     read_value<int>(argv[1], o.num_nodes_);
-    read_value<int>(argv[2], o.num_threads_);
 }
+
+
+#pragma omp declare target
+static int fib(int n);
+#pragma omp end declare target
+
+
+#pragma omp declare target
+static int fib(int n) {
+    int x = 0, y = 0;
+    if (n < 2) {
+        return n;
+    } else {
+        x = fib(n - 1);
+        y = fib(n - 2);
+        return x + y;
+    }
+}
+#pragma omp end declare target
 
 int main(int argc, char **argv) {
     Opts o;
     parseArgs(argc, argv, o);
 
     Node *head = init_nodes(o.num_nodes_, FIBVAL);
-    omp_set_num_threads(o.num_threads_);
 
     double start = omp_get_wtime();
-    #pragma omp parallel
-    {
-        #pragma omp single
-        {
-            Node *p = head;
-            while (p) {
-            #pragma omp task firstprivate(p)
-                fib(p->data_);
-            p = p->next_;
-            }
-        }
+    Node *p = head;
+    while (p) {
+	    int i = 0;
+    #pragma omp target map(from: i) map(to: p)
+	    {
+
+		    i =  fib(33);
+	    }
+	
+	p = p->next_;
     }
     double end = omp_get_wtime();
 

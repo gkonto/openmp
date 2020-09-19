@@ -1,26 +1,18 @@
 #include <omp.h>
 #include "integ.hpp"
+#include <iostream>
 
-#define MIN_BLK 10000000
+double pi(long num_steps) {
+    double dH = 1.0/(double)num_steps;
+    double dX, dSum = 0.0;
 
-double pi_comp(int Nstart, int Nfinish, double step) {
-    double x = 0.0;
-    double sum = 0.0, sum1 = 0.0, sum2 = 0.0;
+#pragma omp parallel for simd private(dX) \
+    reduction(+:dSum) schedule(simd:static)
+    for (int i = 0; i < num_steps; i++) {
+        dX = dH * ((double) i  + 0.5);
+        dSum += (4.0 / (1.0 + dX * dX));
+    } // End parallel for simd region
 
-    if (Nfinish - Nstart < MIN_BLK) {
-        for (int i = Nstart; i < Nfinish; ++i) {
-            x = (i + 0.5) * step;
-            sum += 4.0/(1.0 + x*x);
-        }
-    } else {
-        int iblk = Nfinish-Nstart;
-#pragma omp task shared(sum1)
-        sum1 = pi_comp(Nstart, Nfinish-iblk/2, step);
-#pragma omp task shared(sum2)
-        sum2 = pi_comp(Nfinish-iblk/2, Nfinish, step);
-#pragma omp taskwait
-        sum = sum1 + sum2;
-    }
-
-    return sum;
+    return dH * dSum;   
 }
+

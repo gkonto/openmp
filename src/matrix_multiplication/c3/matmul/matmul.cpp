@@ -1,25 +1,47 @@
 #include <iostream>
 #include "matmul.hpp"
-#include <omp.h>
 
-
-void matmul(int N, int BS, int **A, int **B, int **C)
+void matmul_1d(int *a, int r1, int c1,
+		int *b, int r2, int c2,
+		int *c, int r3, int c3)
 {
-    int i, j, k, ii, jj, kk;
-    for (i = 0; i < N; i+=BS) {
-        for (j = 0; j < N; j+=BS) {
-            for (k = 0; k < N; k+=BS) {
-            // Note 1: i, j, k, A, B, C are firstprivate by default
-            // Note 2: A, B and C are just pointers
-#pragma omp task private(ii, jj, kk) \
-            depend ( in: A[i:BS][k:BS], B[k:BS][j:BS] ) \
-            depend ( inout: C[i:BS][j:BS] )
-                for (ii = i; ii < i+BS; ii++ )
-                    for (jj = j; jj < j+BS; jj++ )
-                        for (kk = k; kk < k+BS; kk++ )
-                            C[ii][jj] = C[ii][jj] + A[ii][kk] * B[kk][jj];
+	if (c1 != r2) {
+		std::cout << "Wrong matrix dimensions!" << std::endl;
+		return;
+	}
+
+	int a_size = r1 * c1;
+	int b_size = r2 * c2;
+	int c_size = r3 * c3;
+
+#pragma omp target teams distribute parallel for simd map(a[:a_size], b[:b_size], c[:c_size])
+	for (int i = 0; i < r1; ++i) {
+		for (int j = 0; j < c2; ++j) {
+			int temp = 0;
+			for (int k = 0; k < c1; ++k) {
+				temp += a[k + i*c1] * b[j + k*c2];
+			}
+
+			c[j + i * c3] = temp;
+		}
+	}
+}
+
+void matmul(int **A, int r1, int c1,
+        int **B, int r2, int c2,
+        int **&C, int &r3, int &c3) {
+    if (c1 != r2) {
+        std::cout << "Wrong matrix dimensions!" << std::endl;
+        return;
+    }
+
+    for (int i = 0; i < r1; ++i) {
+        for (int j = 0; j < c2; ++j) {
+            int tmp = 0;
+            for (int k = 0; k < c1; ++k) {
+                tmp += A[i][k] * B[k][j];
             }
-        
+            C[i][j] = tmp;
         }
     }
 }

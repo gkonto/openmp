@@ -1,6 +1,5 @@
-**Parallel PI Calculation**
+**Parallel PI calculation**
 
-> :white_check_mark: #pragma_omp_parallel
+> :white_check_mark: #pragma omp parallel 
 
-
-> :heavy_exclamation_mark: false sharing case (?)
+> :white_check_mark: #define PADDING
