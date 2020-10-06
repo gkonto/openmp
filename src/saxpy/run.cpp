@@ -74,7 +74,7 @@ static void fill_random_arr(float *arr, size_t size) {
 
 static void verify(size_t size, float c, float *a, float *b, float *verification)
 {
-	for (int i = 0; i < size; ++i) {
+	for (size_t i = 0; i < size; ++i) {
 		if (c * a[i] + verification[i] != b[i]) {
 			std::cout << "Failed" << std::endl;
 			exit(1);
@@ -104,7 +104,7 @@ int main(int argc, char **argv) {
     saxpy(o.size, c, a, b);
     auto end = omp_get_wtime();
 
-    verify(c, a, b, verification);
+    verify(o.size, c, a, b, verification);
     // Calculating total time taken by the program.
     std::cout << "Execution Time : " << std::fixed
          << end - start << std::setprecision(5);

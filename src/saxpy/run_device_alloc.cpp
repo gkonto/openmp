@@ -68,7 +68,7 @@ void parseArgs(int argc, char **argv, Opts &o) {
 static void fill_random_arr(float *arr, size_t size) {
     #pragma omp target teams distribute parallel for simd  is_device_ptr(arr)
     for (size_t k = 0; k < size; ++k) {
-        arr[k].v_ = (float)(rand()) / RAND_MAX;
+        arr[k] = (float)(rand()) / RAND_MAX;
     }
 }
 
@@ -96,7 +96,7 @@ int main(int argc, char **argv) {
     // std::cout << std::endl;
 
     auto start = omp_get_wtime();
-    saxpy(o.size, c, a, b);
+    saxpy(o.size, c, a_dev, b_dev);
     auto end = omp_get_wtime();
 
     // Calculating total time taken by the program.
