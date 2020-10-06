@@ -1,0 +1,35 @@
+c1               : pragma omp parallel for
+c1_1             : pragma omp parallel for (padding)
+
+
+c2               : pragma omp simd
+c2_1	         : pragma omp simd(declare)
+c2_2             : pragma omp simd(declare notinbranch)
+
+
+c3               : pragma omp parallel for simd
+
+
+c4_1             : pragma omp target 
+c4_1_0           : pragma omp target simd map
+c4_1_1           : pragma omp target distribute
+c4_1_2           : pragma omp target parallel for
+
+c4_1_3           : pragma omp target parallel for simd map
+c4_1_4           : pragma omp target parallel for distribute map
+c4_1_5           : pragma omp target distribute simd map
+c4_1_6           : pragma omp target distribute parallel for simd map
+
+
+c4_3             : pragma omp target teams map
+c4_3_0           : pragma omp target teams distribute map
+c4_3_1           : pragma omp target teams parallel for map
+c4_3_2           : pragma omp target teams simd map
+
+c4_3_3           : pragma omp target teams distribute parallel for map
+c4_3_4           : pragma omp target teams distribute simd map
+c4_3_5           : pragma omp target teams parallel for simd map
+c4_3_6           : pragma omp target teams parallel for simd distribute map
+
+
+c4_4             : pragma omp target teams distribute parallel for simd is_device_ptr

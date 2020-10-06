@@ -72,6 +72,17 @@ static void fill_random_arr(float *arr, size_t size) {
     }
 }
 
+static void verify(size_t size, float c, float *a, float *b, float *verification)
+{
+	for (int i = 0; i < size; ++i) {
+		if (c * a[i] + verification[i] != b[i]) {
+			std::cout << "Failed" << std::endl;
+			exit(1);
+		}
+	}
+}
+
+
 int main(int argc, char **argv) {
     Opts o;
     parseArgs(argc, argv, o);
@@ -79,36 +90,26 @@ int main(int argc, char **argv) {
     srand(time(nullptr));
     float c = float(rand()) / float(RAND_MAX);
     float *a = new float[o.size];
+    float *verification = new float[o.size];
     float *b = new float[o.size];
 
     fill_random_arr(a, o.size);
     fill_random_arr(b, o.size);
 
-    // std::cout << c << std::endl;
-    // for (size_t i = 0; i < o.size; ++i) {
-    //    std::cout << a[i] << " ";
-    // }
-    // std::cout << std::endl;
-    // for (size_t i = 0; i < o.size; ++i) {
-    //     std::cout << (float)b[i] << " ";
-    // }
-    // std::cout << std::endl;
-
+#pragma omp parallel for
+    for (size_t k = 0; k < o.size; ++k) {
+	    verification[k] = b[k];
+    }
     auto start = omp_get_wtime();
     saxpy(o.size, c, a, b);
     auto end = omp_get_wtime();
 
+    verify(c, a, b, verification);
     // Calculating total time taken by the program.
     std::cout << "Execution Time : " << std::fixed
          << end - start << std::setprecision(5);
     std::cout << " sec " << std::endl;
-    // std::cout << std::endl;
-    // for (size_t i = 0; i < o.size; ++i) {
-    //     std::cout << b[i] << " ";
-    // }
-    // std::cout << std::endl;
-    // std::cout << b[0] << std::endl;
-    delete []a;
+   delete []a;
     delete []b;
     
     return 0;
