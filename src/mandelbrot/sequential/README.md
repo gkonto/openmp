@@ -1,1 +1,0 @@
-__Mandelbrot Area calculation__
