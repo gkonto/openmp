@@ -172,4 +172,3 @@ g++ run_device_alloc.cpp ../auxiliaries/auxiliaries.cpp c4_4/saxpy.cpp -I c4_4/ 
 g++ run_device_alloc.cpp ../auxiliaries/auxiliaries.cpp c4_4/saxpy.cpp -I c4_4/ -I ../auxiliaries/ -fno-stack-protector  -foffload=nvptx-none="-O2" --std=c++14 -O2 -fopenmp -Wall -Wextra -o ./builds/c4_4_O2
 # c4_4 simd -std=c++14 -O2
 g++ run_device_alloc.cpp ../auxiliaries/auxiliaries.cpp c4_4/saxpy.cpp -I c4_4/ -I ../auxiliaries/ -fno-stack-protector -fopenmp-simd --std=c++14 -O2 -foffload=nvptx-none="-O2" -fopenmp -Wall -Wextra -o ./builds/c4_4_simd_O2
-

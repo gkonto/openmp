@@ -37,6 +37,7 @@ To μοτίβο (pattern) "map" καλεί τη συνάρτηση f τόσες 
 #include <time.h>
 #include <omp.h>
 #include <iomanip>
+#include <cstdlib>
 #include "saxpy.hpp"
 #include "auxiliaries.hpp"
 
@@ -66,7 +67,7 @@ void parseArgs(int argc, char **argv, Opts &o) {
 
 
 static void fill_random_arr(float *arr, size_t size) {
-    #pragma omp parallel for
+//#pragma omp parallel for
     for (size_t k = 0; k < size; ++k) {
         arr[k] = (float)(rand()) / RAND_MAX;
     }
@@ -75,8 +76,8 @@ static void fill_random_arr(float *arr, size_t size) {
 static void verify(size_t size, float c, float *a, float *b, float *verification)
 {
 	for (size_t i = 0; i < size; ++i) {
-		if (c * a[i] + verification[i] != b[i]) {
-			std::cout << "Failed" << std::endl;
+		if (abs(c * a[i] + verification[i] - b[i]) >= 10e-6) {
+			std::cout << "Failed index: " << i << ". " << c * a[i] + verification[i] << " =! " << b[i] << std::endl;
 			exit(1);
 		}
 	}
@@ -96,7 +97,7 @@ int main(int argc, char **argv) {
     fill_random_arr(a, o.size);
     fill_random_arr(b, o.size);
 
-#pragma omp parallel for
+//#pragma omp parallel for
     for (size_t k = 0; k < o.size; ++k) {
 	    verification[k] = b[k];
     }
