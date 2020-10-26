@@ -1,1 +1,0 @@
-__Linked List Traversal sequential implementation__

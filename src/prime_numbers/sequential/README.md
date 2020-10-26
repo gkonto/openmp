@@ -1,1 +1,0 @@
-**Sequential Prime Number calculation**
