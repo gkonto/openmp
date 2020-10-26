@@ -1,0 +1,144 @@
+builds/c1
+Execution Time : 0.131659 sec 
+
+builds/c1_1
+Execution Time : 3.052594 sec 
+
+builds/c1_1_O2
+Execution Time : 2.175403 sec 
+
+builds/c1_O2
+Execution Time : 0.124181 sec 
+
+builds/c2
+Execution Time : 1.164832 sec 
+
+builds/c2_1
+Execution Time : 1.388980 sec 
+
+builds/c2_1_O2
+Execution Time : 0.167042 sec 
+
+builds/c2_1_O2_simd
+Execution Time : 0.164717 sec 
+
+builds/c2_1_simd
+Execution Time : 1.390522 sec 
+
+builds/c2_2
+Execution Time : 1.130837 sec 
+
+builds/c2_2_O2
+Execution Time : 0.165626 sec 
+
+builds/c2_2_O2_simd
+Execution Time : 0.164165 sec 
+
+builds/c2_2_simd
+Execution Time : 1.129490 sec 
+
+builds/c2_O2
+Execution Time : 0.165415 sec 
+
+builds/c2_O2_simd
+Execution Time : 0.166401 sec 
+
+builds/c2_simd
+Execution Time : 1.145037 sec 
+
+builds/c3
+Execution Time : 0.128059 sec 
+
+builds/c3_O2
+Execution Time : 0.124082 sec 
+
+builds/c3_O2_simd
+Execution Time : 0.127052 sec 
+
+builds/c3_simd
+Execution Time : 0.128630 sec 
+
+builds/c4_1
+Execution Time : 98.586412 sec 
+
+builds/c4_1_0
+Execution Time : 97.678449 sec 
+
+builds/c4_1_0_O2
+Execution Time : 2.775943 sec 
+
+builds/c4_1_0_simd
+Execution Time : 98.306196 sec 
+
+builds/c4_1_0_simd_O2
+Execution Time : 2.767433 sec 
+
+builds/c4_1_2
+Execution Time : 13.827624 sec 
+
+builds/c4_1_2_O2
+Execution Time : 4.331167 sec 
+
+builds/c4_1_3
+Execution Time : 14.129215 sec 
+
+builds/c4_1_3_O2
+Execution Time : 1.493669 sec 
+
+builds/c4_1_3_simd
+Execution Time : 14.144595 sec 
+
+builds/c4_1_3_simd_O2
+Execution Time : 1.497033 sec 
+
+builds/c4_1_O2
+Execution Time : 28.714291 sec 
+
+builds/c4_3
+Failed index: 8. 0.928635 =! 2.33064
+
+builds/c4_3_0
+Failed index: 31632589. 1.30544 =! 0.305437
+
+builds/c4_3_0_O2
+Failed index: 44991273. 1.48461 =! 0.484613
+
+builds/c4_3_3
+Failed index: 18319125. 1.06486 =! 0.0648631
+
+builds/c4_3_3_O2
+Failed index: 12907795. 1.23085 =! 0.230845
+
+builds/c4_3_4
+Failed index: 73757640. 1.03033 =! 0.0303304
+
+builds/c4_3_4_O2
+Failed index: 8951535. 1.50237 =! 0.50237
+
+builds/c4_3_4_simd
+Failed index: 33144029. 1.55422 =! 0.554225
+
+builds/c4_3_4_simd_O2
+Failed index: 11943903. 1.04729 =! 0.047286
+
+builds/c4_3_O2
+Failed index: 56. 0.57054 =! 3.72192
+
+builds/c4_4
+Execution Time : 0.311983 sec 
+
+builds/c4_4_O2
+Execution Time : 0.019195 sec 
+
+builds/c4_4_simd
+Execution Time : 0.313034 sec 
+
+builds/c4_4_simd_O2
+Execution Time : 0.019085 sec 
+
+builds/serial
+Execution Time : 1.183519 sec 
+
+builds/serial_O2
+Execution Time : 0.210601 sec 
+

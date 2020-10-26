@@ -1,0 +1,1 @@
+g++ run.cpp fibonacci.cpp ../auxiliaries/auxiliaries.cpp serial/calculate.cpp -I ../auxiliaries -I serial/ -fopenmp -o ./builds/test
