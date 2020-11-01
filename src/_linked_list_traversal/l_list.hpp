@@ -24,6 +24,7 @@ class Lnode {
 		}
 
 		const T &data() const { return val_;}
+		Lnode<T> *next() const { return next_; }
 
 		void forNext(FOR_EVERY_FUN fn, void *args) {
 			fn(*this, args);
@@ -48,6 +49,16 @@ class Llist {
 
 		~Llist() {
 			delete head_;
+		}
+
+		size_t size() const {
+			Lnode<T> *node = head_;
+			size_t size = 0;
+			for (; node;) {
+				++size;
+				node = node->next();
+			}
+			return size;
 		}
 
 		void forEveryNode(FOR_EVERY_FUN fn, void *args) {

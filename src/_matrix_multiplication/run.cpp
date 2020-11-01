@@ -12,11 +12,12 @@ namespace {
         int dim1 = 0;
         int dim2 = 0;
         int dim3 = 0;
+	bool verify = false;
     };
 }
 
 void parseArgs(int argc, char **argv, Opts &o) {
-    if (argc != 4) {
+    if (argc < 4) {
         std::cout << "Specify three dimensions for matrix mult!" << std::endl;
         exit(1);
     }
@@ -24,6 +25,9 @@ void parseArgs(int argc, char **argv, Opts &o) {
     read_value<int>(argv[1], o.dim1);
     read_value<int>(argv[2], o.dim2);
     read_value<int>(argv[3], o.dim3);
+    if (argc == 5) {
+	    read_value<bool>(argv[4], o.verify);
+    }
 }
 
 int main(int argc, char **argv) {
@@ -50,7 +54,7 @@ int main(int argc, char **argv) {
 
     //Count time
     start = clock();
-    matmul_1d(A, o.dim1, o.dim2, B, o.dim2, o.dim3, C, r3, c3);
+    matmul(A, o.dim1, o.dim2, B, o.dim2, o.dim3, C, r3, c3);
     end = clock();
 
 
@@ -61,7 +65,9 @@ int main(int argc, char **argv) {
     std::cout << " sec " << std::endl;
 
     // Verification
-    //verify_1d(A, B, C, o.dim1, o.dim2, o.dim3);
+    if (o.verify) {
+	    verify_1d(A, B, C, o.dim1, o.dim2, o.dim3);
+    }
 
     delete[] A;
     delete[] B;

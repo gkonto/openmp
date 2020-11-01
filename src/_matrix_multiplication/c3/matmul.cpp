@@ -1,7 +1,15 @@
 #include <iostream>
 #include "matmul.hpp"
 
-void matmul_1d(int *a, int r1, int c1,
+
+/*
+ * COMMENT
+ * runtime error Illegal memory access
+ * needs map!
+ */
+
+#ifdef SINGLE_POINTER
+void matmul(int *a, int r1, int c1,
 		int *b, int r2, int c2,
 		int *c, int r3, int c3)
 {
@@ -10,11 +18,8 @@ void matmul_1d(int *a, int r1, int c1,
 		return;
 	}
 
-	int a_size = r1 * c1;
-	int b_size = r2 * c2;
-	int c_size = r3 * c3;
-
-#pragma omp target teams distribute parallel for simd map(a[:a_size], b[:b_size], c[:c_size])
+#pragma omp target
+#pragma omp parallel for 
 	for (int i = 0; i < r1; ++i) {
 		for (int j = 0; j < c2; ++j) {
 			int temp = 0;
@@ -26,7 +31,7 @@ void matmul_1d(int *a, int r1, int c1,
 		}
 	}
 }
-
+#else
 void matmul(int **A, int r1, int c1,
         int **B, int r2, int c2,
         int **&C, int &r3, int &c3) {
@@ -45,3 +50,4 @@ void matmul(int **A, int r1, int c1,
         }
     }
 }
+#endif

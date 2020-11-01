@@ -1,7 +1,8 @@
 #include <iostream>
 #include "matmul.hpp"
 
-void matmul_1d(int *a, int r1, int c1,
+#ifdef SINGLE_POINTER
+void matmul(int *a, int r1, int c1,
 		int *b, int r2, int c2,
 		int *c, int r3, int c3)
 {
@@ -9,8 +10,7 @@ void matmul_1d(int *a, int r1, int c1,
 		std::cout << "Wrong matrix dimensions!" << std::endl;
 		return;
 	}
-
-#pragma omp parallel for collapse(2)
+#pragma omp simd
 	for (int i = 0; i < r1; ++i) {
 		for (int j = 0; j < c2; ++j) {
 			int temp = 0;
@@ -22,7 +22,7 @@ void matmul_1d(int *a, int r1, int c1,
 		}
 	}
 }
-
+#else
 void matmul(int **A, int r1, int c1,
         int **B, int r2, int c2,
         int **&C, int &r3, int &c3) {
@@ -41,3 +41,4 @@ void matmul(int **A, int r1, int c1,
         }
     }
 }
+#endif

@@ -2,6 +2,7 @@
 #include <iostream>
 #include "tools.hpp"
 
+
 int **create_matrix(int rows, int cols) {
     int **mat = new int *[rows];
     for (int i = 0; i < rows; ++i) {
@@ -83,5 +84,18 @@ void verify_1d(int *a, int *b, int *c, int d1, int d2, int d3)
 	show_matrix_1d(a, d1, d2);
 	show_matrix_1d(b, d2, d3);
 	show_matrix_1d(c, d1, d3);
+
+	for (int i = 0; i < d1; ++i) {
+		for (int j = 0; j < d3; ++j) {
+			int temp = 0;
+			for (int k = 0; k < d2; ++k) {
+				temp += a[k + i * d2] * b[j + k * d3];
+			}
+			if (c[j + i * d3] != temp) {
+				std::cout << "FAILED!!! Wrong results..." << std::endl;
+				exit(1);
+			}
+		}
+	}
 
 }
