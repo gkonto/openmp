@@ -1,5 +1,5 @@
-#include "dprod.hpp"
 #include <stddef.h>
+#include "dprod.hpp"
 
 
 float dprod(size_t num, float *a, float *b) {

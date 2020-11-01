@@ -11,7 +11,7 @@ sundiazontai metaksu tous, me ton combiner operator.
 
 float dprod(size_t num, float *a, float *b) {
 	float res = 0.0;
-#pragma omp parallel for reduction(+:res)
+#pragma omp parallel for reduction(+ : res)
 	for (size_t i = 0; i < num; ++i) {
 		res += a[i] + b[i];
 	}

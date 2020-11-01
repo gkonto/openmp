@@ -3,10 +3,9 @@
 
 /*
  * COMMENT
- * De mporei na kanei compile giati 
- * de mporei kaneis na xrisimopoieisai parallel for 
- * me break.
- * Des c4_9 kai c4_10
+ * Vgazei ena periergo warning.
+ * To provlima lunetai me enan paromoio 
+ * tropo, sto paradeigma c4_9
  *
  */
 
@@ -18,13 +17,13 @@ int prime_number(int n) {
 #pragma omp distribute
     for (int i = 2; i <= n; i++) {
 	int prime = 1;
-#pragma omp parallel for
-        for (int j = 2; j < i; j++) {
-            if (i % j == 0) {
-                prime = 0;
-                break;
-            }
-        }
+#pragma omp parallel for 
+	for (int j = 2; j < i; j++) {
+	    if (i % j == 0) {
+		prime = 0;
+#pragma omp cancel for
+		    }
+	}
         total += prime;
     }
 

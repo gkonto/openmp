@@ -61,9 +61,19 @@
 #g++ run.cpp ../auxiliaries/auxiliaries.cpp c4_6/prime.cpp -I ../auxiliaries -I c4_6/ -fno-stack-protector -foffload=nvptx-none -Wall -Wextra -fopenmp -o ./builds/c4_6
 #g++ run.cpp ../auxiliaries/auxiliaries.cpp c4_6/prime.cpp -I ../auxiliaries -I c4_6/ -fno-stack-protector -foffload=nvptx-none -Wall -Wextra -fopenmp -O2 -o ./builds/c4_6_O2
 
-g++ run.cpp ../auxiliaries/auxiliaries.cpp c4_7/prime.cpp -I ../auxiliaries -I c4_7/ -fno-stack-protector -foffload=nvptx-none -Wall -Wextra -fopenmp -o ./builds/c4_7
-g++ run.cpp ../auxiliaries/auxiliaries.cpp c4_7/prime.cpp -I ../auxiliaries -I c4_7/ -fno-stack-protector -foffload=nvptx-none -Wall -Wextra -fopenmp -O2 -o ./builds/c4_7_O2
-g++ run.cpp ../auxiliaries/auxiliaries.cpp c4_7/prime.cpp -I ../auxiliaries -I c4_7/ -fno-stack-protector -foffload=nvptx-none -Wall -Wextra -fopenmp -fopenmp-simd -o ./builds/c4_7_simd
-g++ run.cpp ../auxiliaries/auxiliaries.cpp c4_7/prime.cpp -I ../auxiliaries -I c4_7/ -fno-stack-protector -foffload=nvptx-none -Wall -Wextra -fopenmp -fopenmp-simd -O2 -o ./builds/c4_7_O2_simd
+#g++ run.cpp ../auxiliaries/auxiliaries.cpp c4_7/prime.cpp -I ../auxiliaries -I c4_7/ -fno-stack-protector -foffload=nvptx-none -Wall -Wextra -fopenmp -o ./builds/c4_7
+#g++ run.cpp ../auxiliaries/auxiliaries.cpp c4_7/prime.cpp -I ../auxiliaries -I c4_7/ -fno-stack-protector -foffload=nvptx-none -Wall -Wextra -fopenmp -O2 -o ./builds/c4_7_O2
+#g++ run.cpp ../auxiliaries/auxiliaries.cpp c4_7/prime.cpp -I ../auxiliaries -I c4_7/ -fno-stack-protector -foffload=nvptx-none -Wall -Wextra -fopenmp -fopenmp-simd -o ./builds/c4_7_simd
+#g++ run.cpp ../auxiliaries/auxiliaries.cpp c4_7/prime.cpp -I ../auxiliaries -I c4_7/ -fno-stack-protector -foffload=nvptx-none -Wall -Wextra -fopenmp -fopenmp-simd -O2 -o ./builds/c4_7_O2_simd
 
-#g++ run.cpp ../auxiliaries/auxiliaries.cpp c5/calculate.cpp -I c5/ -I ../auxiliaries/ -fno-stack-protector -foffload=nvptx-none -fopenmp -Wall -Wextra -o ./builds/c5_simd
+#g++ run.cpp ../auxiliaries/auxiliaries.cpp c4_8/prime.cpp -I ../auxiliaries -I c4_8/ -fno-stack-protector -foffload=nvptx-none -Wall -Wextra -fopenmp -o ./builds/c4_8
+#g++ run.cpp ../auxiliaries/auxiliaries.cpp c4_8/prime.cpp -I ../auxiliaries -I c4_8/ -fno-stack-protector -foffload=nvptx-none -Wall -Wextra -fopenmp -O2 -o ./builds/c4_8_O2
+#g++ run.cpp ../auxiliaries/auxiliaries.cpp c4_8/prime.cpp -I ../auxiliaries -I c4_8/ -fno-stack-protector -foffload=nvptx-none -Wall -Wextra -fopenmp -fopenmp-simd -o ./builds/c4_8_simd
+#g++ run.cpp ../auxiliaries/auxiliaries.cpp c4_8/prime.cpp -I ../auxiliaries -I c4_8/ -fno-stack-protector -foffload=nvptx-none -Wall -Wextra -fopenmp -fopenmp-simd -O2 -o ./builds/c4_8_O2_simd
+
+g++ run.cpp ../auxiliaries/auxiliaries.cpp c4_9/prime.cpp -I ../auxiliaries -I c4_9/ -fno-stack-protector -foffload=nvptx-none -Wall -Wextra -fopenmp -o ./builds/c4_9
+g++ run.cpp ../auxiliaries/auxiliaries.cpp c4_9/prime.cpp -I ../auxiliaries -I c4_9/ -fno-stack-protector -foffload=nvptx-none -Wall -Wextra -fopenmp -O2 -o ./builds/c4_9_O2
+
+g++ run.cpp ../auxiliaries/auxiliaries.cpp c4_10/prime.cpp -I ../auxiliaries -I c4_10/ -fno-stack-protector -foffload=nvptx-none -Wall -Wextra -fopenmp -o ./builds/c4_10
+g++ run.cpp ../auxiliaries/auxiliaries.cpp c4_10/prime.cpp -I ../auxiliaries -I c4_10/ -fno-stack-protector -foffload=nvptx-none -Wall -Wextra -fopenmp -O2 -o ./builds/c4_10_O2
+
