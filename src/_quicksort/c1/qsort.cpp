@@ -34,3 +34,8 @@ void qsort(int array[], size_t low, size_t high)
 }
 
 
+
+void qsort_wrapper(int array[], size_t low, size_t high)
+{
+    qsort(array, low, high);
+}

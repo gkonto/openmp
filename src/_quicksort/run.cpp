@@ -36,16 +36,20 @@ using namespace std;
 namespace {
 	struct Opts {
 		size_t size = 0;
+		bool verify = false;
 	};
 }
 
 void parseArgs(int argc, char **argv, Opts &o) {
-    if (argc != 2) {
+    if (argc < 2) {
         std::cout << "Specify array size!" << std::endl;
         exit(1);
     }
 
     read_value<size_t>(argv[1], o.size);
+    if (argc == 3) {
+        read_value<bool>(argv[2], o.verify);
+    }
 }
 
 
@@ -63,6 +67,16 @@ void printArray(int array[], int size) {
 	}
 }
 
+void verify(int *a, size_t size) {
+    size_t i = size;
+    for (i = 1; i < size; ++i) {
+        if (a[i - 1] > a[i]) {
+            std::cout << "FAILED: Numbers are not sorted!!!" << std::endl;
+            exit(1);
+        }
+    }
+}
+
 // Driver code
 int main(int argc, char **argv) {
 	Opts o;
@@ -76,13 +90,16 @@ int main(int argc, char **argv) {
 	//int n = sizeof(data) / sizeof(data[0]);
 	//printArray(a, o.size);
 	auto start = omp_get_wtime();
-	qsort(a, 0, o.size - 1);
+	qsort_wrapper(a, 0, o.size - 1);
 	auto end = omp_get_wtime();
 	std::cout << "Execution time: " << std::fixed << end-start << 
 		std::setprecision(5);
 	std::cout << " sec " << std::endl;
 
-	cout << "Sorted array in ascending order: \n";
-	printArray(a, o.size);
+    std::cout << o.verify << std::endl;
+    if (o.verify) {
+        std::cout << "pote" << std::endl;
+        verify(a, o.size);
+    }
 	delete []a;
 }

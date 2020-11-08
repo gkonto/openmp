@@ -29,11 +29,18 @@ void qsort(int array[], size_t low, size_t high)
 			qsort(array, low, pi - 1);
 		}
 #pragma omp task
-
 		{
 			qsort(array, pi + 1, high);
 		}
 	}
+}
+
+void qsort_wrapper(int array[], size_t low, size_t high)
+{
+#pragma omp single
+    {
+        qsort(array, 0, high);
+    }
 }
 
 
