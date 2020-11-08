@@ -14,8 +14,8 @@ size_t partition(int array[], size_t low, size_t high)
 		if (array[j] <= pivot) {
 #pragma omp critical 
 			{
-			++i;
-	}
+				++i;
+			}
 			std::swap(array[i], array[j]);
 		}
 	}

@@ -24,6 +24,7 @@
 #include <omp.h>
 #include <iomanip>
 #include <cstdlib>
+#include <cmath>
 #include "auxiliaries.hpp"
 #include "dprod.hpp"
 
@@ -53,16 +54,28 @@ static void fill_random_arr(float *arr, size_t size) {
     }
 }
 
+void show(size_t size, float *a, float *b) {
+	float temp = 0.0;
+	for (size_t i = 0; i < size; ++i) {
+		std::cout << a[i] << " " << b[i] << " --> " << a[i] * b[i] << std::endl;
+		temp += a[i] * b[i];
+	}
+	std::cout << "Result: " << temp << std::endl;
+}
+
 
 void verify(size_t size, float *a, float *b, float got) {
 	float temp = 0.0;
 	for (size_t i = 0; i < size; ++i) {
-		std::cout << a[i] << " " << b[i] << std::endl;
-		temp += a[i] + b[i];
+		std::cout << a[i] << " " << b[i] << " --> " << a[i] * b[i] << std::endl;
+		temp += a[i] * b[i];
 	}
 
-	if (!(abs(got - temp) < 1e-6)) {
-		std::cout << "FAILED! Not correct result... ---> Expected: " << temp << ". Got: " << temp << std::endl;
+	std::cout << "Verification result: " << temp << std::endl;
+	std::cout << "In verification Gor: " << got << std::endl;
+
+	if (!(fabs(got - temp) < 1e-4)) {
+		std::cout << "FAILED! Not correct result... ---> Expected: " << temp << ". Got: " << got << std::endl;
 		exit(1);
 	}
 }
@@ -80,6 +93,7 @@ int main(int argc, char **argv)
 	fill_random_arr(a, o.size);
 	fill_random_arr(b, o.size);
 
+	show(o.size, a, b);
 	auto start = omp_get_wtime();
 	float got = dprod(o.size, a, b);
 	auto end = omp_get_wtime();

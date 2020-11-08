@@ -34,4 +34,5 @@
 #g++ run.cpp fibonacci.cpp ../auxiliaries/auxiliaries.cpp c5/calculate.cpp -I ../auxiliaries -I c5/ -fopenmp -o ./builds/c5
 #g++ run.cpp fibonacci.cpp ../auxiliaries/auxiliaries.cpp c5/calculate.cpp -I ../auxiliaries -I c5/ -fopenmp -O2 -o ./builds/c5_O2
 
-g++ run.cpp ../auxiliaries/auxiliaries.cpp c5/calculate.cpp -I c5/ -I ../auxiliaries/ -fno-stack-protector -foffload=nvptx-none -fopenmp -Wall -Wextra -o ./builds/c5_simd
+g++ run.cpp ../auxiliaries/auxiliaries.cpp c5/calculate.cpp -I c5/ -I ../auxiliaries/ -fno-stack-protector -foffload=nvptx-none -fopenmp -Wall -Wextra -o ./builds/c5
+g++ run.cpp ../auxiliaries/auxiliaries.cpp c5/calculate.cpp -I c5/ -I ../auxiliaries/ -fno-stack-protector -foffload=nvptx-none="-O2" -fopenmp -Wall -Wextra -o -O2 ./builds/c5_O2
