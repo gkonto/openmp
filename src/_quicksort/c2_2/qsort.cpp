@@ -32,6 +32,7 @@ void qsort(int array[], int low, int high)
 		{
 			qsort(array, pi + 1, high);
 		}
+#pragma omp taskwait
 	}
 }
 

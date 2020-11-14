@@ -1,4 +1,16 @@
 #include "qsort.hpp"
+#include <iostream>
+
+
+/* COMMENT
+ * Polu periergo.
+ * Eno de kanei compile xoris "-O2", me "-O2" kanei kanonika.
+ */
+
+#pragma omp declare target
+void qsort(int array[], int low, int high);
+int partition(int array[], int low, int high);
+#pragma omp end declare target
 
 // Function to  partition the array on the basis of pibot element.
 int partition(int array[], int low, int high) 
@@ -24,11 +36,9 @@ void qsort(int array[], int low, int high)
 {
 	if (low < high) {
 		int pi = partition(array, low, high);
-#pragma omp task
 		{
 			qsort(array, low, pi - 1);
 		}
-#pragma omp task
 		{
 			qsort(array, pi + 1, high);
 		}
@@ -37,10 +47,8 @@ void qsort(int array[], int low, int high)
 
 void qsort_wrapper(int array[], int low, int high)
 {
-#pragma omp single
+#pragma omp target map(tofrom: array[low : high])
     {
         qsort(array, low, high);
     }
 }
-
-

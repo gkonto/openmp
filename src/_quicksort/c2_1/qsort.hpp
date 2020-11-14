@@ -3,7 +3,7 @@
 
 #include <iomanip>
 
-void qsort(int *array, size_t low, size_t high);
-void qsort_wrapper(int *array, size_t low, size_t high);
+void qsort(int *array, int low, int high);
+void qsort_wrapper(int *array, int low, int high);
 
 #endif
