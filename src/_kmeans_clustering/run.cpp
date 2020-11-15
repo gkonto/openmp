@@ -18,15 +18,16 @@ double randf(double m)
 point gen_xy(int count, double radius)
 {
 	double ang, r;
-	point p, pt = (Point *)malloc(sizeof(Point) * count);
+	point p = nullptr;
+    Point *pt = (Point *)malloc(sizeof(Point) * count);
  
 	/* note: this is not a uniform 2-d distribution */
-	for (p = pt + count; p-- > pt;) {
+    for (int i = 0; i < count; ++i) {
 		ang = randf(2 * M_PI);
 		r = randf(radius);
 		p->x = r * cos(ang);
 		p->y = r * sin(ang);
-	}
+    }
  
 	return pt;
 }
