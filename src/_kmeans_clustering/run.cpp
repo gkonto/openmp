@@ -4,7 +4,7 @@
 #include <iostream>
 #include "auxiliaries.hpp"
  
-typedef struct { double x, y; int group; } point_t, *point;
+typedef struct { double x, y; int group; } point_t, *point, Point;
  
 double randf(double m)
 {
@@ -145,28 +145,15 @@ void print_eps(point pts, int len, point cent, int n_cluster)
 	if (scale > H / (max_y - min_y)) scale = H / (max_y - min_y);
 	cx = (max_x + min_x) / 2;
 	cy = (max_y + min_y) / 2;
- 
-	printf("%%!PS-Adobe-3.0\n%%%%BoundingBox: -5 -5 %d %d\n", W + 10, H + 10);
-	printf( "/l {rlineto} def /m {rmoveto} def\n"
-		"/c { .25 sub exch .25 sub exch .5 0 360 arc fill } def\n"
-		"/s { moveto -2 0 m 2 2 l 2 -2 l -2 -2 l closepath "
-		"	gsave 1 setgray fill grestore gsave 3 setlinewidth"
-		" 1 setgray stroke grestore 0 setgray stroke }def\n"
-	);
+
 	for_n {
-		printf("%g %g %g setrgbcolor\n",
-			colors[3*i], colors[3*i + 1], colors[3*i + 2]);
+		printf("0_Cluster_center %g %g\n", (c->x - cx) * scale + W / 2, (c->y - cy) * scale + H / 2);
 		for_len {
 			if (p->group != i) continue;
-			printf("%.3f %.3f c\n",
-				(p->x - cx) * scale + W / 2,
-				(p->y - cy) * scale + H / 2);
+			printf("%.3f %.3f\n", (p->x - cx) * scale + W / 2, (p->y - cy) * scale + H / 2);
 		}
-		printf("\n0 setgray %g %g s\n",
-			(c->x - cx) * scale + W / 2,
-			(c->y - cy) * scale + H / 2);
 	}
-	printf("\n%%%%EOF");
+
 	free(colors);
 #	undef for_n
 #	undef for_len
@@ -176,18 +163,47 @@ void print_eps(point pts, int len, point cent, int n_cluster)
 #define K 11
 namespace {
     struct Opts {
-        int num_cl;
-        int num_p;
+        int num_cl = 0;
+        int num_p = 0;
+        bool verify = false;
     };
 }
 
 void parseArgs(int argc, char **argv, Opts &o) {
-    if (argc != 3) {
+    if (argc < 3) {
         std::cout << "Specify num clusters and num points" << std::endl;
         exit(1);
     }
     read_value<int>(argv[1], o.num_cl);
     read_value<int>(argv[2], o.num_p);
+
+    if (argc == 4) {
+        read_value<bool>(argv[3], o.verify);
+    }
+}
+
+
+void verify(Point *v, int num_p, Point *centers, int num_c) {
+    std::cout << "Veryfing... " << std::endl;
+
+    for (int i = 0; i < num_p; ++i) {
+        double min_dist = HUGE_VAL;
+        Point *closer_p = nullptr;
+
+        int closer_cluster = -1;
+        for (int j = 0; j < num_c; ++j) {
+            double tmp_dist = dist2(&v[i], &centers[j]);
+            if (min_dist > tmp_dist) {
+                min_dist = tmp_dist;
+                closer_cluster = j;
+            }
+        }
+        if (closer_cluster != v[i].group) {
+            std::cout << "There is a closer cluster" << std::endl;
+            exit(1);
+        }
+    }
+    std::cout << "Successfull verification!" << std::endl;
 }
 
 int main(int argc, char **argv)
@@ -197,7 +213,12 @@ int main(int argc, char **argv)
 	int i;
 	point v = gen_xy(o.num_p, 10);
 	point c = lloyd(v, o.num_p, o.num_cl);
+
 	print_eps(v, o.num_p, c, o.num_cl);
+
+    if (o.verify) {
+        verify(v, o.num_p, c, o.num_cl);
+    }
 	// free(v); free(c);
 	return 0;
 }
