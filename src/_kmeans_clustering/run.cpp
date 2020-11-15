@@ -4,11 +4,7 @@
 #include <iostream>
 #include "auxiliaries.hpp"
  
-typedef struct { 
-    double x = 0.0;
-    double y = 0.0;
-    int group; 
-} *point, Point;
+typedef struct { double x, y; int group; } point_t, *point;
  
 double randf(double m)
 {
@@ -18,16 +14,15 @@ double randf(double m)
 point gen_xy(int count, double radius)
 {
 	double ang, r;
-	point p = nullptr;
-    Point *pt = (Point *)malloc(sizeof(Point) * count);
+	point p, pt = (point)malloc(sizeof(point_t) * count);
  
 	/* note: this is not a uniform 2-d distribution */
-    for (int i = 0; i < count; ++i) {
+	for (p = pt + count; p-- > pt;) {
 		ang = randf(2 * M_PI);
 		r = randf(radius);
 		p->x = r * cos(ang);
 		p->y = r * sin(ang);
-    }
+	}
  
 	return pt;
 }
@@ -38,7 +33,8 @@ inline double dist2(point a, point b)
 	return x*x + y*y;
 }
  
-inline int nearest(point pt, point cent, int n_cluster, double *d2)
+inline int
+nearest(point pt, point cent, int n_cluster, double *d2)
 {
 	int i, min_i;
 	point c;
@@ -89,7 +85,7 @@ point lloyd(point pts, int len, int n_cluster)
 	int i, j, min_i;
 	int changed;
  
-	point cent = (Point *)malloc(sizeof(Point) * n_cluster), p, c;
+	point cent = (point)malloc(sizeof(point_t) * n_cluster), p, c;
  
 	/* assign init grouping randomly */
 	//for_len p->group = j % n_cluster;
@@ -178,36 +174,30 @@ void print_eps(point pts, int len, point cent, int n_cluster)
  
 #define PTS 100000
 #define K 11
-
 namespace {
     struct Opts {
-        int num_clusters_ = 0;
-        int num_points_ = 0;
-        bool verify = false;
+        int num_cl;
+        int num_p;
     };
 }
- 
+
 void parseArgs(int argc, char **argv, Opts &o) {
-    if (argc < 3) {
-        std::cout << "Specify num_of_clusters first and num of points secondly" << std::endl;
+    if (argc != 3) {
+        std::cout << "Specify num clusters and num points" << std::endl;
         exit(1);
     }
-    read_value<int>(argv[1], o.num_clusters_);
-    read_value<int>(argv[2], o.num_points_);
-    if (argc == 4) {
-        read_value<bool>(argv[3], o.verify);
-    }
+    read_value<int>(argv[1], o.num_cl);
+    read_value<int>(argv[2], o.num_p);
 }
-
 
 int main(int argc, char **argv)
 {
-    Opts o ;
+    Opts o;
     parseArgs(argc, argv, o);
-
-	Point *v = gen_xy(o.num_points_, 10);
-	Point *c = lloyd(v, o.num_points_, o.num_clusters_);
-	print_eps(v, o.num_points_, c, o.num_clusters_);
+	int i;
+	point v = gen_xy(o.num_p, 10);
+	point c = lloyd(v, o.num_p, o.num_cl);
+	print_eps(v, o.num_p, c, o.num_cl);
 	// free(v); free(c);
 	return 0;
 }
