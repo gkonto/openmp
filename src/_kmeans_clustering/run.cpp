@@ -4,7 +4,11 @@
 #include <iostream>
 #include "auxiliaries.hpp"
  
-typedef struct { double x, y; int group; } point_t, *point;
+typedef struct { 
+    double x = 0.0;
+    double y = 0.0;
+    int group; 
+} point_t, *point, Point;
  
 double randf(double m)
 {
@@ -14,7 +18,7 @@ double randf(double m)
 point gen_xy(int count, double radius)
 {
 	double ang, r;
-	point p, pt = (point)malloc(sizeof(point_t) * count);
+	point p, pt = (Point *)malloc(sizeof(point_t) * count);
  
 	/* note: this is not a uniform 2-d distribution */
 	for (p = pt + count; p-- > pt;) {
@@ -33,8 +37,7 @@ inline double dist2(point a, point b)
 	return x*x + y*y;
 }
  
-inline int
-nearest(point pt, point cent, int n_cluster, double *d2)
+inline int nearest(point pt, point cent, int n_cluster, double *d2)
 {
 	int i, min_i;
 	point c;
@@ -85,7 +88,7 @@ point lloyd(point pts, int len, int n_cluster)
 	int i, j, min_i;
 	int changed;
  
-	point cent = (point)malloc(sizeof(point_t) * n_cluster), p, c;
+	point cent = (Point *)malloc(sizeof(point_t) * n_cluster), p, c;
  
 	/* assign init grouping randomly */
 	//for_len p->group = j % n_cluster;
@@ -171,7 +174,9 @@ void print_eps(point pts, int len, point cent, int n_cluster)
 #	undef for_n
 #	undef for_len
 }
-
+ 
+#define PTS 100000
+#define K 11
 
 namespace {
     struct Opts {
@@ -193,13 +198,14 @@ void parseArgs(int argc, char **argv, Opts &o) {
     }
 }
 
+
 int main(int argc, char **argv)
 {
     Opts o ;
     parseArgs(argc, argv, o);
 
-	point v = gen_xy(o.num_points_, 10);
-	point c = lloyd(v, o.num_points_, o.num_clusters_);
+	Point *v = gen_xy(o.num_points_, 10);
+	Point *c = lloyd(v, o.num_points_, o.num_clusters_);
 	print_eps(v, o.num_points_, c, o.num_clusters_);
 	// free(v); free(c);
 	return 0;
