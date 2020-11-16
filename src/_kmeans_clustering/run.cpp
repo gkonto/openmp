@@ -39,21 +39,26 @@ inline double dist2(Point *a, Point *b)
  
 inline int nearest(Point *pt, Point *cent, int n_cluster, double *d2)
 {
-	int i, min_i;
-	point c;
+	int i = 0, min_i = 0;
 	double d, min_d;
+
+    for (i = 0; i < n_cluster; ++i) {
+        min_d = HUGE_VAL;
+        min_i = pt->group;
+        for (i = 0; i < n_cluster; ++i) {
+            if (min_d > (d = dist2(&cent[i], pt))) {
+                min_d = d;
+                min_i = i;
+            }
+        }
+    }
  
 #	define for_n for (c = cent, i = 0; i < n_cluster; i++, c++)
-	for_n {
-		min_d = HUGE_VAL;
-		min_i = pt->group;
-		for_n {
-			if (min_d > (d = dist2(c, pt))) {
-				min_d = d; min_i = i;
-			}
-		}
-	}
-	if (d2) *d2 = min_d;
+   
+    if (d2) {
+        *d2 = min_d;
+    }
+
 	return min_i;
 }
  
@@ -68,18 +73,23 @@ void kpp(Point *pts, int len, Point *cent, int n_cent)
 	cent[0] = pts[ rand() % len ];
 	for (n_cluster = 1; n_cluster < n_cent; n_cluster++) {
 		sum = 0;
-		for_len {
-			nearest(p, cent, n_cluster, d + j);
-			sum += d[j];
-		}
+        for (j = 0; j < len; ++j) {
+            nearest(&pts[j], cent, n_cluster, &d[j]);
+            sum += d[j];
+        }
+
 		sum = randf(sum);
-		for_len {
-			if ((sum -= d[j]) > 0) continue;
-			cent[n_cluster] = pts[j];
-			break;
-		}
+        for (j = 0; j < len; ++j) {
+            if ((sum -= d[j]) > 0) continue;
+            cent[n_cluster] = pts[j];
+            break;
+        }
 	}
-	for_len p->group = nearest(p, cent, n_cluster, 0);
+
+	//for_len p->group = nearest(p, cent, n_cluster, 0);
+    for (j = 0; j < len; ++j) {
+        pts[j].group = nearest(&pts[j], cent, n_cluster, 0);
+    }
 	free(d);
 }
  
