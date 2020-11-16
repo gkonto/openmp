@@ -4,11 +4,11 @@
 #include <iostream>
 #include "auxiliaries.hpp"
  
-typedef struct { 
+typedef struct Point { 
     double x = 0.0;
     double y = 0.0;
     int group = 0;
-} *point, Point;
+} Point, *point;
  
 double randf(double m)
 {
@@ -18,7 +18,7 @@ double randf(double m)
 Point *gen_xy(int count, double radius)
 {
 	double ang, r;
-	point p, pt = (point)malloc(sizeof(Point) * count);
+	point p, pt = (Point *)malloc(sizeof(Point) * count);
  
 	/* note: this is not a uniform 2-d distribution */
 	for (p = pt + count; p-- > pt;) {
@@ -57,7 +57,7 @@ inline int nearest(Point *pt, Point *cent, int n_cluster, double *d2)
 	return min_i;
 }
  
-void kpp(point pts, int len, point cent, int n_cent)
+void kpp(Point *pts, int len, Point *cent, int n_cent)
 {
 #	define for_len for (j = 0, p = pts; j < len; j++, p++)
 	int i, j;
