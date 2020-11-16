@@ -4,7 +4,11 @@
 #include <iostream>
 #include "auxiliaries.hpp"
  
-typedef struct { double x, y; int group; } point_t, *point, Point;
+typedef struct { 
+    double x = 0.0;
+    double y = 0.0;
+    int group = 0;
+} point_t, *point, Point;
  
 double randf(double m)
 {
