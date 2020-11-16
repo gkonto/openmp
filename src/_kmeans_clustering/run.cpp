@@ -15,7 +15,7 @@ double randf(double m)
 	return m * rand() / (RAND_MAX - 1.);
 }
  
-point gen_xy(int count, double radius)
+Point *gen_xy(int count, double radius)
 {
 	double ang, r;
 	point p, pt = (point)malloc(sizeof(Point) * count);
@@ -31,14 +31,13 @@ point gen_xy(int count, double radius)
 	return pt;
 }
  
-inline double dist2(point a, point b)
+inline double dist2(Point *a, Point *b)
 {
 	double x = a->x - b->x, y = a->y - b->y;
 	return x*x + y*y;
 }
  
-inline int
-nearest(point pt, point cent, int n_cluster, double *d2)
+inline int nearest(Point *pt, Point *cent, int n_cluster, double *d2)
 {
 	int i, min_i;
 	point c;
