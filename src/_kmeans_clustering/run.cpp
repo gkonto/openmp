@@ -8,7 +8,7 @@ typedef struct {
     double x = 0.0;
     double y = 0.0;
     int group = 0;
-} point_t, *point, Point;
+} *point, Point;
  
 double randf(double m)
 {
@@ -18,7 +18,7 @@ double randf(double m)
 point gen_xy(int count, double radius)
 {
 	double ang, r;
-	point p, pt = (point)malloc(sizeof(point_t) * count);
+	point p, pt = (point)malloc(sizeof(Point) * count);
  
 	/* note: this is not a uniform 2-d distribution */
 	for (p = pt + count; p-- > pt;) {
@@ -89,7 +89,7 @@ point lloyd(point pts, int len, int n_cluster)
 	int i, j, min_i;
 	int changed;
  
-	point cent = (point)malloc(sizeof(point_t) * n_cluster), p, c;
+	point cent = (point)malloc(sizeof(Point) * n_cluster), p, c;
  
 	/* assign init grouping randomly */
 	//for_len p->group = j % n_cluster;
