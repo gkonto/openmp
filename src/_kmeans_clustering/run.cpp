@@ -10,10 +10,12 @@ typedef struct Point {
     int group = 0;
 } Point, *point;
  
+
 double randf(double m)
 {
 	return m * rand() / (RAND_MAX - 1.);
 }
+
  
 Point *gen_xy(int count, double radius)
 {
@@ -31,16 +33,18 @@ Point *gen_xy(int count, double radius)
 	return pt;
 }
  
+
 inline double dist2(Point *a, Point *b)
 {
 	double x = a->x - b->x, y = a->y - b->y;
 	return x*x + y*y;
 }
  
+
 inline int nearest(Point *pt, Point *cent, int n_cluster, double *d2)
 {
 	int i = 0, min_i = 0;
-	double d, min_d;
+	double d = 0.0, min_d = 0.0;
 
     for (i = 0; i < n_cluster; ++i) {
         min_d = HUGE_VAL;
@@ -62,12 +66,14 @@ inline int nearest(Point *pt, Point *cent, int n_cluster, double *d2)
 	return min_i;
 }
  
+
 void kpp(Point *pts, int len, Point *cent, int n_cent)
 {
 #	define for_len for (j = 0, p = pts; j < len; j++, p++)
-	int i, j;
-	int n_cluster;
-	double sum, *d = (double *)malloc(sizeof(double) * len);
+	int i = 0, j = 0;
+	int n_cluster = 0;
+	double sum = 0.0;
+    double *d = (double *)malloc(sizeof(double) * len);
  
 	point p, c;
 	cent[0] = pts[ rand() % len ];
@@ -93,6 +99,7 @@ void kpp(Point *pts, int len, Point *cent, int n_cent)
 	free(d);
 }
  
+
 point lloyd(point pts, int len, int n_cluster)
 {
 	int i, j, min_i;
@@ -108,26 +115,41 @@ point lloyd(point pts, int len, int n_cluster)
  
 	do {
 		/* group element for centroids are used as counters */
-		for_n { c->group = 0; c->x = c->y = 0; }
-		for_len {
-			c = cent + p->group;
-			c->group++;
-			c->x += p->x; c->y += p->y;
-		}
-		for_n { c->x /= c->group; c->y /= c->group; }
+        for (int i = 0; i < n_cluster; ++i) {
+            Point *p_point = &cent[i];
+            p_point->group = 0;
+            p_point->x = 0.0;
+            p_point->y = 0.0;
+        }
+
+        for (int j = 0; j < len; ++j) {
+            c = cent + pts[j].group;
+            c->group++;
+            c->x += pts[j].x;
+            c->y += pts[j].y;
+        }
+        
+        for (int i = 0; i < n_cluster; ++i) {
+            cent[i].x /= cent[i].group;
+            cent[i].y /= cent[i].group;
+
+        }
  
 		changed = 0;
 		/* find closest centroid of each point */
-		for_len {
-			min_i = nearest(p, cent, n_cluster, 0);
-			if (min_i != p->group) {
-				changed++;
-				p->group = min_i;
-			}
-		}
+        for (j = 0; j < len; ++j) {
+            min_i = nearest(&pts[j], cent, n_cluster, 0);
+            if (min_i != pts[j].group) {
+                changed++;
+                pts[j].group = min_i;
+                
+            }
+        }
 	} while (changed > (len >> 10)); /* stop when 99.9% of points are good */
  
-	for_n { c->group = i; }
+    for (int i = 0; i < n_cluster; ++i) {
+        cent[i].group = i;
+    }
  
 	return cent;
 }
