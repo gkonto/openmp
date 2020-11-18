@@ -163,24 +163,50 @@ void print_eps(point pts, int len, point cent, int n_cluster)
 	double min_x, max_x, min_y, max_y, scale, cx, cy;
 	double *colors = (double *)malloc(sizeof(double) * n_cluster * 3);
  
+    for (int i = 0; i < n_cluster; ++i) {
+		colors[3*i + 0] = (3 * (i + 1) % 11)/11.;
+		colors[3*i + 1] = (7 * i % 11)/11.;
+		colors[3*i + 2] = (9 * i % 11)/11.;
+    }
+    /*
 	for_n {
 		colors[3*i + 0] = (3 * (i + 1) % 11)/11.;
 		colors[3*i + 1] = (7 * i % 11)/11.;
 		colors[3*i + 2] = (9 * i % 11)/11.;
 	}
+    */
  
 	max_x = max_y = -(min_x = min_y = HUGE_VAL);
+    for (int j = 0; j < len; ++j) {
+		if (max_x < pts[j].x) max_x = pts[j].x;
+		if (min_x > pts[j].x) min_x = pts[j].x;
+		if (max_y < pts[j].y) max_y = pts[j].y;
+		if (min_y > pts[j].y) min_y = pts[j].y;
+
+    }
+    /*
 	for_len {
 		if (max_x < p->x) max_x = p->x;
 		if (min_x > p->x) min_x = p->x;
 		if (max_y < p->y) max_y = p->y;
 		if (min_y > p->y) min_y = p->y;
 	}
+    */
 	scale = W / (max_x - min_x);
 	if (scale > H / (max_y - min_y)) scale = H / (max_y - min_y);
 	cx = (max_x + min_x) / 2;
 	cy = (max_y + min_y) / 2;
 
+    for (int i = 0; i < n_cluster; ++i) {
+		printf("0_Cluster_center %g %g\n", (cent[i].x - cx) * scale + W / 2, (cent[i].y - cy) * scale + H / 2);
+        for (int j = 0; j < len; ++j) {
+            if (pts[j].group != i) continue;
+			printf("%.3f %.3f\n", (pts[j].x - cx) * scale + W / 2, (pts[j].y - cy) * scale + H / 2);
+        }
+
+    }
+
+    /*
 	for_n {
 		printf("0_Cluster_center %g %g\n", (c->x - cx) * scale + W / 2, (c->y - cy) * scale + H / 2);
 		for_len {
@@ -188,6 +214,7 @@ void print_eps(point pts, int len, point cent, int n_cluster)
 			printf("%.3f %.3f\n", (p->x - cx) * scale + W / 2, (p->y - cy) * scale + H / 2);
 		}
 	}
+    */
 
 	free(colors);
 #	undef for_n
