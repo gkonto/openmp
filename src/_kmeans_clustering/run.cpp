@@ -4,12 +4,20 @@
 #include <iostream>
 #include "auxiliaries.hpp"
  
-typedef struct Point { 
-    double x = 0.0;
-    double y = 0.0;
-    int group = 0;
-} Point, *point;
- 
+namespace {
+    struct Point { 
+        double x = 0.0;
+        double y = 0.0;
+        int group = 0;
+    };
+      
+    struct Opts {
+        int num_cl = 0;
+        int num_p = 0;
+        bool verify = false;
+    };
+}
+
 
 double randf(double m)
 {
@@ -57,8 +65,6 @@ inline int nearest(Point *pt, Point *cent, int n_cluster, double *d2)
         }
     }
  
-#	define for_n for (c = cent, i = 0; i < n_cluster; i++, c++)
-   
     if (d2) {
         *d2 = min_d;
     }
@@ -69,13 +75,12 @@ inline int nearest(Point *pt, Point *cent, int n_cluster, double *d2)
 
 void kpp(Point *pts, int len, Point *cent, int n_cent)
 {
-#	define for_len for (j = 0, p = pts; j < len; j++, p++)
 	int i = 0, j = 0;
 	int n_cluster = 0;
 	double sum = 0.0;
     double *d = (double *)malloc(sizeof(double) * len);
  
-	point p, c;
+	Point *p = nullptr, *c = nullptr;
 	cent[0] = pts[ rand() % len ];
 	for (n_cluster = 1; n_cluster < n_cent; n_cluster++) {
 		sum = 0;
@@ -92,7 +97,6 @@ void kpp(Point *pts, int len, Point *cent, int n_cent)
         }
 	}
 
-	//for_len p->group = nearest(p, cent, n_cluster, 0);
     for (j = 0; j < len; ++j) {
         pts[j].group = nearest(&pts[j], cent, n_cluster, 0);
     }
@@ -100,15 +104,16 @@ void kpp(Point *pts, int len, Point *cent, int n_cent)
 }
  
 
-point lloyd(point pts, int len, int n_cluster)
+Point *lloyd(Point *pts, int len, int n_cluster)
 {
 	int i, j, min_i;
 	int changed;
  
-	point cent = (point)malloc(sizeof(Point) * n_cluster), p, c;
+	Point *cent = (Point *)malloc(sizeof(Point) * n_cluster);
+    Point *p = nullptr;
+    Point *c = nullptr;
  
 	/* assign init grouping randomly */
-	//for_len p->group = j % n_cluster;
  
 	/* or call k++ init */
 	kpp(pts, len, cent, n_cluster);
@@ -154,12 +159,13 @@ point lloyd(point pts, int len, int n_cluster)
 	return cent;
 }
  
-void print_eps(point pts, int len, point cent, int n_cluster)
+void print_eps(Point *pts, int len, Point *cent, int n_cluster)
 {
 #	define W 400
 #	define H 400
 	int i, j;
-	point p, c;
+	Point *p = nullptr;
+    Point *c = nullptr;
 	double min_x, max_x, min_y, max_y, scale, cx, cy;
 	double *colors = (double *)malloc(sizeof(double) * n_cluster * 3);
  
@@ -168,13 +174,7 @@ void print_eps(point pts, int len, point cent, int n_cluster)
 		colors[3*i + 1] = (7 * i % 11)/11.;
 		colors[3*i + 2] = (9 * i % 11)/11.;
     }
-    /*
-	for_n {
-		colors[3*i + 0] = (3 * (i + 1) % 11)/11.;
-		colors[3*i + 1] = (7 * i % 11)/11.;
-		colors[3*i + 2] = (9 * i % 11)/11.;
-	}
-    */
+    
  
 	max_x = max_y = -(min_x = min_y = HUGE_VAL);
     for (int j = 0; j < len; ++j) {
@@ -184,14 +184,7 @@ void print_eps(point pts, int len, point cent, int n_cluster)
 		if (min_y > pts[j].y) min_y = pts[j].y;
 
     }
-    /*
-	for_len {
-		if (max_x < p->x) max_x = p->x;
-		if (min_x > p->x) min_x = p->x;
-		if (max_y < p->y) max_y = p->y;
-		if (min_y > p->y) min_y = p->y;
-	}
-    */
+    
 	scale = W / (max_x - min_x);
 	if (scale > H / (max_y - min_y)) scale = H / (max_y - min_y);
 	cx = (max_x + min_x) / 2;
@@ -206,30 +199,9 @@ void print_eps(point pts, int len, point cent, int n_cluster)
 
     }
 
-    /*
-	for_n {
-		printf("0_Cluster_center %g %g\n", (c->x - cx) * scale + W / 2, (c->y - cy) * scale + H / 2);
-		for_len {
-			if (p->group != i) continue;
-			printf("%.3f %.3f\n", (p->x - cx) * scale + W / 2, (p->y - cy) * scale + H / 2);
-		}
-	}
-    */
-
 	free(colors);
-#	undef for_n
-#	undef for_len
 }
- 
-#define PTS 100000
-#define K 11
-namespace {
-    struct Opts {
-        int num_cl = 0;
-        int num_p = 0;
-        bool verify = false;
-    };
-}
+
 
 void parseArgs(int argc, char **argv, Opts &o) {
     if (argc < 3) {
@@ -273,8 +245,8 @@ int main(int argc, char **argv)
     Opts o;
     parseArgs(argc, argv, o);
 	int i;
-	point v = gen_xy(o.num_p, 10);
-	point c = lloyd(v, o.num_p, o.num_cl);
+	Point *v = gen_xy(o.num_p, 10);
+	Point *c = lloyd(v, o.num_p, o.num_cl);
 
 	print_eps(v, o.num_p, c, o.num_cl);
 
