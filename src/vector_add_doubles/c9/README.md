@@ -1,1 +1,0 @@
-__ Matrix Multiplication simple sequential implementation__

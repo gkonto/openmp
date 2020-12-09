@@ -1,7 +1,0 @@
-[
-        ["sequential", ["random_matrix_100"]],
-        ["sequential", ["random_matrix_1200"]],
-        ["sequential", ["random_matrix_1400"]]
-]
-
-

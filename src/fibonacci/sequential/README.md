@@ -1,1 +1,0 @@
-**Sequential Fibonacci Calculation**

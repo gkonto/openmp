@@ -1,1 +1,0 @@
-g++-7  run.cpp  -O0 ../../auxiliaries/auxiliaries.cpp addarr/addarr.cpp ../tools.cpp -I ../ -I ../../auxiliaries/ -I addarr/ -Wall -fopenmp -fno-stack-protector -DOPENMP -foffload=nvptx-none -o exec

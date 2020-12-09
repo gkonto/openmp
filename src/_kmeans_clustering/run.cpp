@@ -75,29 +75,26 @@ inline int nearest(Point *pt, Point *cent, int n_cluster, double *d2)
 
 void kpp(Point *pts, int len, Point *cent, int n_cent)
 {
-	int i = 0, j = 0;
-	int n_cluster = 0;
-	double sum = 0.0;
     double *d = (double *)malloc(sizeof(double) * len);
- 
-	Point *p = nullptr, *c = nullptr;
+    int n_cluster = 0;
+
 	cent[0] = pts[ rand() % len ];
 	for (n_cluster = 1; n_cluster < n_cent; n_cluster++) {
-		sum = 0;
-        for (j = 0; j < len; ++j) {
+		double sum = 0;
+        for (int j = 0; j < len; ++j) {
             nearest(&pts[j], cent, n_cluster, &d[j]);
             sum += d[j];
         }
 
 		sum = randf(sum);
-        for (j = 0; j < len; ++j) {
+        for (int j = 0; j < len; ++j) {
             if ((sum -= d[j]) > 0) continue;
             cent[n_cluster] = pts[j];
             break;
         }
 	}
 
-    for (j = 0; j < len; ++j) {
+    for (int j = 0; j < len; ++j) {
         pts[j].group = nearest(&pts[j], cent, n_cluster, 0);
     }
 	free(d);
@@ -106,12 +103,10 @@ void kpp(Point *pts, int len, Point *cent, int n_cent)
 
 Point *lloyd(Point *pts, int len, int n_cluster)
 {
-	int i, j, min_i;
-	int changed;
+	int changed = 0;
  
 	Point *cent = (Point *)malloc(sizeof(Point) * n_cluster);
-    Point *p = nullptr;
-    Point *c = nullptr;
+
  
 	/* assign init grouping randomly */
  
@@ -128,7 +123,7 @@ Point *lloyd(Point *pts, int len, int n_cluster)
         }
 
         for (int j = 0; j < len; ++j) {
-            c = cent + pts[j].group;
+            Point *c = cent + pts[j].group;
             c->group++;
             c->x += pts[j].x;
             c->y += pts[j].y;
@@ -142,8 +137,8 @@ Point *lloyd(Point *pts, int len, int n_cluster)
  
 		changed = 0;
 		/* find closest centroid of each point */
-        for (j = 0; j < len; ++j) {
-            min_i = nearest(&pts[j], cent, n_cluster, 0);
+        for (int j = 0; j < len; ++j) {
+            int min_i = nearest(&pts[j], cent, n_cluster, 0);
             if (min_i != pts[j].group) {
                 changed++;
                 pts[j].group = min_i;
@@ -159,13 +154,11 @@ Point *lloyd(Point *pts, int len, int n_cluster)
 	return cent;
 }
  
+
 void print_eps(Point *pts, int len, Point *cent, int n_cluster)
 {
 #	define W 400
 #	define H 400
-	int i, j;
-	Point *p = nullptr;
-    Point *c = nullptr;
 	double min_x, max_x, min_y, max_y, scale, cx, cy;
 	double *colors = (double *)malloc(sizeof(double) * n_cluster * 3);
  
@@ -222,7 +215,6 @@ void verify(Point *v, int num_p, Point *centers, int num_c) {
 
     for (int i = 0; i < num_p; ++i) {
         double min_dist = HUGE_VAL;
-        Point *closer_p = nullptr;
 
         int closer_cluster = -1;
         for (int j = 0; j < num_c; ++j) {
@@ -240,11 +232,12 @@ void verify(Point *v, int num_p, Point *centers, int num_c) {
     std::cout << "Successfull verification!" << std::endl;
 }
 
+
 int main(int argc, char **argv)
 {
     Opts o;
     parseArgs(argc, argv, o);
-	int i;
+
 	Point *v = gen_xy(o.num_p, 10);
 	Point *c = lloyd(v, o.num_p, o.num_cl);
 
