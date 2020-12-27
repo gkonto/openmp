@@ -44,9 +44,9 @@ int main(int argc, char **argv) {
     int r3 = o.dim1;
     int c3 = o.dim3;
 
-    clock_t start = clock();
+    clock_t start = omp_get_wtime();
     int *C = new int [r3 * c3];
-    clock_t end = clock();
+    clock_t end = omp_get_wtime();
     double time_taken = double(end - start) / double(CLOCKS_PER_SEC);
     std::cout << "Allocation Time : " << std::fixed
          << time_taken << std::setprecision(5);

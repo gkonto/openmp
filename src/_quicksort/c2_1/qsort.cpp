@@ -40,6 +40,7 @@ void qsort(int array[], int low, int high)
 
 void qsort_wrapper(int array[], int low, int high)
 {
+#pragma omp parallel
 #pragma omp single
     {
         qsort(array, 0, high);

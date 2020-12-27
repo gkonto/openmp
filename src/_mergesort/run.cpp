@@ -2,9 +2,11 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <iostream>
+#include <iomanip>
 #include <cstdlib>
 #include "mergesort.hpp"
 #include "auxiliaries.hpp"
+#include <omp.h>
 
 /* UTILITY FUNCTIONS */
 /* Function to print an array */
@@ -41,6 +43,18 @@ static void fill_random_array(int *arr, int size)
         arr[i] = rand() % 10000000;
     }
 }
+
+static void verify(int *a, int size)
+{
+    for (size_t i = 1; i < size; ++i) {
+        if (a[i] < a[i-1]) {
+            std::cout << "Verification failed! Aborinting ..." << std::endl;
+            exit(1);
+        }
+    }
+
+    std::cout << "Successfull verification" << std::endl;
+}
  
 /* Driver code */
 int main(int argc, char **argv)
@@ -52,12 +66,13 @@ int main(int argc, char **argv)
     fill_random_array(arr, o.size);
     //int arr[] = { 12, 11, 13, 5, 6, 7 };
  
-    printf("Given array is \n");
-    printArray(arr, o.size);
- 
+	auto start = omp_get_wtime();
     mergeSort_wrapper(arr, 0, o.size - 1);
- 
-    printf("\nSorted array is \n");
-    printArray(arr, o.size);
+	auto end = omp_get_wtime();
+	std::cout << "Execution time: " << std::fixed << end-start << 
+		std::setprecision(5) << std::endl;
+    if (o.verify) {
+        verify(arr, o.size);
+    }
     return 0;
 }
