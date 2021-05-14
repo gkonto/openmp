@@ -5,9 +5,11 @@
  */
 #include <iostream>
 #include <math.h>
+#include <iomanip>
 #include <stddef.h>
 #include <auxiliaries.hpp>
 #include "dft.hpp"
+#include <omp.h>
 
 void compute_dft_real_pair(const double inreal[], const double inimag[],
 		double outreal[], double outimag[], size_t n, int inverse) {
@@ -45,19 +47,18 @@ void pprint(double *arr, int size) {
 namespace {
     struct Opts{
         int size = 0;
-	bool verify = false;
+	bool verify = true;
     };
 }
 
 
 void parseArgs(int argc, char **argv, Opts &o) {
-    if (argc < 3) {
+    if (argc < 2) {
         std::cout << "Specify three dimensions for matrix mult!" << std::endl;
         exit(1);
     }
 
     read_value<int>(argv[1], o.size);
-    read_value<bool>(argv[2], o.verify);
 }
 
 
@@ -85,28 +86,24 @@ int main( int argc, char **argv ) {
     double *real = new double[o.size];
     double *imag = new double[o.size];
     fill_arr(real, o.size);
-    //fill_arr(imag, o.size);
+    fill_arr(imag, o.size);
     double *real_out = new double[o.size];
     double *imag_out = new double[o.size];
     double *ireal_out = nullptr;
     double *iimag_out = nullptr;
 
+
+    double start = omp_get_wtime();
     dft(real, imag, real_out, imag_out, o.size, 0);
-
-    //pprint(real, o.size);
-    //pprint(imag, o.size);
-
-    //pprint(real_out, o.size);
-    //pprint(imag_out, o.size);
+    double end = omp_get_wtime();
 
     if (o.verify) {
         ireal_out = new double[o.size];
         iimag_out = new double[o.size];
         compute_dft_real_pair(real_out, imag_out, ireal_out, iimag_out, o.size, 1);
-        //pprint(ireal_out, o.size);
-        //pprint(iimag_out, o.size);
         verify(real, imag, ireal_out, iimag_out, o.size);
     }
+    std::cout << "Execution Time: " << std::fixed << std::setprecision(3) << end - start << " sec" << std::endl;
 
     delete []real;
     delete []imag;

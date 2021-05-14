@@ -1,6 +1,7 @@
 #include <iostream>
 #include "matmul.hpp"
 
+#define SINGLE_POINTER
 
 #ifdef SINGLE_POINTER
 void matmul(int *a, int r1, int c1,

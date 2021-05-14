@@ -3,8 +3,11 @@
 #include <sstream>
 #include <time.h>
 #include <stdlib.h>
+#include <omp.h>
+#include <iomanip>
 #include "matmul.hpp"
 #include "auxiliaries.hpp"
+#include <iomanip>
 #include "tools.hpp"
 
 namespace {
@@ -30,11 +33,12 @@ void parseArgs(int argc, char **argv, Opts &o) {
     }
 }
 
+
 int main(int argc, char **argv) {
     Opts o;
     parseArgs(argc, argv, o);
 
-    srand(time(nullptr));
+    //srand(time(nullptr));
     int *A = new int [o.dim1 * o.dim2];
     int *B = new int [o.dim2 * o.dim3];
 
@@ -44,24 +48,18 @@ int main(int argc, char **argv) {
     int r3 = o.dim1;
     int c3 = o.dim3;
 
-    clock_t start = omp_get_wtime();
     int *C = new int [r3 * c3];
-    clock_t end = omp_get_wtime();
-    double time_taken = double(end - start) / double(CLOCKS_PER_SEC);
-    std::cout << "Allocation Time : " << std::fixed
-         << time_taken << std::setprecision(5);
-    std::cout << " sec " << std::endl;
 
     //Count time
-    start = clock();
+    double start = omp_get_wtime();
     matmul(A, o.dim1, o.dim2, B, o.dim2, o.dim3, C, r3, c3);
-    end = clock();
+    double end = omp_get_wtime();
 
 
     // Calculating total time taken by the program.
-    time_taken = double(end - start) / double(CLOCKS_PER_SEC);
-    std::cout << "Multiplication Time : " << std::fixed
-         << time_taken << std::setprecision(5);
+    double time_passed = end - start;
+    std::cout << "Multiplication Time : " << std::fixed <<
+         std::setprecision(3) << time_passed << std::setprecision(5);
     std::cout << " sec " << std::endl;
 
     // Verification

@@ -17,8 +17,8 @@ sundiazontai metaksu tous, me ton combiner operator.
  * ki sto pdf examples 4.0.2 eno leei oti ginetai (sel235)
  * stin pragmatikotita de ginetai. des c3_9
  */
-float dprod(size_t num, float *a, float *b) {
-	float res = 0.0;
+double dprod(size_t num, double *a, double *b) {
+	double res = 0.0;
 #pragma omp target teams map(res) map(tofrom: a[0:num], b[0:num])
 #pragma omp distribute parallel for 
 		for (size_t i = 0; i < num; ++i) {

@@ -3,6 +3,6 @@
 
 #include "../l_list.hpp"
 
-void calculate(Llist<int> &l);
+int calculate(Llist<int> &l);
 
 #endif

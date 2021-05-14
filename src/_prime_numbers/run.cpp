@@ -4,6 +4,7 @@
 #include <stdio.h>
 #include <omp.h>
 #include <stdlib.h>
+#include <iomanip>
 
 
 namespace {
@@ -74,7 +75,7 @@ int main(int argc, char **argv) {
     Logger l;
     double start = omp_get_wtime();
     int primes = prime_number_sweep(o.max);
-    std::cout << "Execution Time: " << omp_get_wtime() - start << " seconds"<< std::endl;
+    std::cout << "Execution Time: " << std::fixed << std::setprecision(3) << omp_get_wtime() - start << " seconds"<< std::endl;
     std::cout << "Prime numbers: " << primes << std::endl;
     return 0;
 }

@@ -1,0 +1,231 @@
+OpenMP Processor affinity test
+https://www.glennklockwood.com/hpc-howtos/process-affinity.html
+https://pages.tacc.utexas.edu/~eijkhout/pcse/html/omp-affinity.html
+
+1. muactl -H : check the number of sockets and cores in your system
+$ numactl -H
+available: 4 nodes (0-3)
+node 0 cpus: 0 1 2 3
+node 0 size: 3944 MB
+node 0 free: 2956 MB
+node 1 cpus: 4 5 6 7
+node 1 size: 4030 MB
+node 1 free: 2227 MB
+node 2 cpus: 12 13 14 15
+node 2 size: 4030 MB
+node 2 free: 2258 MB
+node 3 cpus: 8 9 10 11
+node 3 size: 4030 MB
+node 3 free: 2201 MB
+node distances:
+node   0   1   2   3 
+  0:  10  16  16  16 
+  1:  16  10  16  16 
+  2:  16  16  10  16 
+  3:  16  16  16  10 
+
+2. Compile gcc -fopenmp omp_binding.c
+
+3. Run as is several times: check OS sceduling
+
+Hello world from thread 13 of 16 running on cpu 12!
+Hello world from thread 15 of 16 running on cpu 14!
+Hello world from thread 1 of 16 running on cpu  0!
+Hello world from thread 14 of 16 running on cpu 13!
+Hello world from thread 2 of 16 running on cpu  1!
+Hello world from thread 11 of 16 running on cpu 10!
+Hello world from thread 16 of 16 running on cpu 15!
+Hello world from thread 3 of 16 running on cpu  2!
+Hello world from thread 12 of 16 running on cpu 11!
+Hello world from thread 5 of 16 running on cpu  4!
+Hello world from thread 4 of 16 running on cpu  3!
+Hello world from thread 6 of 16 running on cpu  5!
+Hello world from thread 9 of 16 running on cpu  8!
+Hello world from thread 10 of 16 running on cpu  9!
+Hello world from thread 8 of 16 running on cpu  7!
+Hello world from thread 7 of 16 running on cpu  6!
+...
+Hello world from thread 14 of 16 running on cpu 13!
+Hello world from thread 15 of 16 running on cpu 14!
+Hello world from thread 13 of 16 running on cpu 12!
+Hello world from thread 2 of 16 running on cpu  1!
+Hello world from thread 5 of 16 running on cpu  4!
+Hello world from thread 1 of 16 running on cpu  0!
+Hello world from thread 16 of 16 running on cpu 15!
+Hello world from thread 3 of 16 running on cpu  2!
+Hello world from thread 4 of 16 running on cpu  3!
+Hello world from thread 8 of 16 running on cpu  7!
+Hello world from thread 6 of 16 running on cpu  5!
+Hello world from thread 9 of 16 running on cpu  8!
+Hello world from thread 7 of 16 running on cpu  6!
+Hello world from thread 10 of 16 running on cpu  9!
+Hello world from thread 12 of 16 running on cpu 11!
+Hello world from thread 11 of 16 running on cpu 10!
+...
+
+4. Before run: export OMP_PLACES="{0}"
+
+Hello world from thread 8 of 16 running on cpu  0!
+Hello world from thread 7 of 16 running on cpu  0!
+Hello world from thread 11 of 16 running on cpu  0!
+Hello world from thread 10 of 16 running on cpu  0!
+Hello world from thread 12 of 16 running on cpu  0!
+Hello world from thread 13 of 16 running on cpu  0!
+Hello world from thread 14 of 16 running on cpu  0!
+Hello world from thread 6 of 16 running on cpu  0!
+Hello world from thread 15 of 16 running on cpu  0!
+Hello world from thread 1 of 16 running on cpu  0!
+Hello world from thread 16 of 16 running on cpu  0!
+Hello world from thread 5 of 16 running on cpu  0!
+Hello world from thread 4 of 16 running on cpu  0!
+Hello world from thread 9 of 16 running on cpu  0!
+Hello world from thread 3 of 16 running on cpu  0!
+Hello world from thread 2 of 16 running on cpu  0!
+
+5. Before run: export OMP_PLACES="{10}"
+
+Hello world from thread 8 of 16 running on cpu 10!
+Hello world from thread 1 of 16 running on cpu 10!
+Hello world from thread 11 of 16 running on cpu 10!
+Hello world from thread 7 of 16 running on cpu 10!
+Hello world from thread 12 of 16 running on cpu 10!
+Hello world from thread 13 of 16 running on cpu 10!
+Hello world from thread 14 of 16 running on cpu 10!
+Hello world from thread 15 of 16 running on cpu 10!
+Hello world from thread 16 of 16 running on cpu 10!
+Hello world from thread 9 of 16 running on cpu 10!
+Hello world from thread 10 of 16 running on cpu 10!
+Hello world from thread 6 of 16 running on cpu 10!
+Hello world from thread 5 of 16 running on cpu 10!
+Hello world from thread 4 of 16 running on cpu 10!
+Hello world from thread 3 of 16 running on cpu 10!
+Hello world from thread 2 of 16 running on cpu 10!
+
+6. Before run: export OMP_PLACES="{0,1}"
+
+Hello world from thread 1 of 16 running on cpu  0!
+Hello world from thread 4 of 16 running on cpu  1!
+Hello world from thread 12 of 16 running on cpu  1!
+Hello world from thread 11 of 16 running on cpu  1!
+Hello world from thread 2 of 16 running on cpu  0!
+Hello world from thread 10 of 16 running on cpu  1!
+Hello world from thread 16 of 16 running on cpu  0!
+Hello world from thread 7 of 16 running on cpu  1!
+Hello world from thread 14 of 16 running on cpu  0!
+Hello world from thread 8 of 16 running on cpu  1!
+Hello world from thread 15 of 16 running on cpu  0!
+Hello world from thread 9 of 16 running on cpu  1!
+Hello world from thread 13 of 16 running on cpu  0!
+Hello world from thread 6 of 16 running on cpu  1!
+Hello world from thread 5 of 16 running on cpu  0!
+Hello world from thread 3 of 16 running on cpu  1!
+
+7. Before run: export OMP_PLACES="{0:4}" or export OMP_PLACES="{0:4:1}"
+
+Hello world from thread 4 of 16 running on cpu  3!
+Hello world from thread 3 of 16 running on cpu  2!
+Hello world from thread 1 of 16 running on cpu  0!
+Hello world from thread 10 of 16 running on cpu  2!
+Hello world from thread 16 of 16 running on cpu  0!
+Hello world from thread 2 of 16 running on cpu  1!
+Hello world from thread 9 of 16 running on cpu  3!
+Hello world from thread 6 of 16 running on cpu  2!
+Hello world from thread 13 of 16 running on cpu  0!
+Hello world from thread 7 of 16 running on cpu  2!
+Hello world from thread 14 of 16 running on cpu  1!
+Hello world from thread 15 of 16 running on cpu  0!
+Hello world from thread 12 of 16 running on cpu  1!
+Hello world from thread 8 of 16 running on cpu  0!
+Hello world from thread 5 of 16 running on cpu  2!
+Hello world from thread 11 of 16 running on cpu  0!
+
+8. Before run: export OMP_PLACES="{0:4:2}" for i=0; i<0+4; i += 2
+   
+Hello world from thread 3 of 16 running on cpu  4!
+Hello world from thread 1 of 16 running on cpu  0!
+Hello world from thread 2 of 16 running on cpu  6!
+Hello world from thread 15 of 16 running on cpu  0!
+Hello world from thread 11 of 16 running on cpu  4!
+Hello world from thread 14 of 16 running on cpu  6!
+Hello world from thread 13 of 16 running on cpu  6!
+Hello world from thread 5 of 16 running on cpu  6!
+Hello world from thread 6 of 16 running on cpu  6!
+Hello world from thread 12 of 16 running on cpu  6!
+Hello world from thread 7 of 16 running on cpu  0!
+Hello world from thread 4 of 16 running on cpu  6!
+Hello world from thread 9 of 16 running on cpu  0!
+Hello world from thread 8 of 16 running on cpu  6!
+Hello world from thread 16 of 16 running on cpu  2!
+Hello world from thread 10 of 16 running on cpu  0!
+  
+9. Before run: export OMP_PLACES="{4:4:1}" for i=4; i<4+4; i++
+
+Hello world from thread 2 of 16 running on cpu  6!
+Hello world from thread 3 of 16 running on cpu  7!
+Hello world from thread 4 of 16 running on cpu  4!
+Hello world from thread 16 of 16 running on cpu  5!
+Hello world from thread 11 of 16 running on cpu  6!
+Hello world from thread 15 of 16 running on cpu  5!
+Hello world from thread 8 of 16 running on cpu  5!
+Hello world from thread 6 of 16 running on cpu  7!
+Hello world from thread 9 of 16 running on cpu  5!
+Hello world from thread 10 of 16 running on cpu  5!
+Hello world from thread 1 of 16 running on cpu  4!
+Hello world from thread 14 of 16 running on cpu  5!
+Hello world from thread 7 of 16 running on cpu  7!
+Hello world from thread 13 of 16 running on cpu  7!
+Hello world from thread 5 of 16 running on cpu  4!
+Hello world from thread 12 of 16 running on cpu  7!
+
+10. Before run: export OMP_PLACES="{0},{4},{8},{12}"
+
+Hello world from thread 14 of 16 running on cpu 12!
+Hello world from thread 1 of 16 running on cpu  0!
+Hello world from thread 9 of 16 running on cpu  8!
+Hello world from thread 4 of 16 running on cpu  0!
+Hello world from thread 11 of 16 running on cpu  8!
+Hello world from thread 6 of 16 running on cpu  4!
+Hello world from thread 3 of 16 running on cpu  0!
+Hello world from thread 13 of 16 running on cpu 12!
+Hello world from thread 10 of 16 running on cpu  8!
+Hello world from thread 2 of 16 running on cpu  0!
+Hello world from thread 5 of 16 running on cpu  4!
+Hello world from thread 15 of 16 running on cpu 12!
+Hello world from thread 16 of 16 running on cpu 12!
+Hello world from thread 12 of 16 running on cpu  8!
+Hello world from thread 8 of 16 running on cpu  4!
+Hello world from thread 7 of 16 running on cpu  4!
+
+11. Before run: export OMP_PLACES="{0:2:1}, {4:2:1}" for i=0; i<0+2; i++ and for i=4; i<4+2; i++
+
+Hello world from thread 8 of 16 running on cpu  1!
+Hello world from thread 10 of 16 running on cpu  5!
+Hello world from thread 2 of 16 running on cpu  0!
+Hello world from thread 11 of 16 running on cpu  5!
+Hello world from thread 7 of 16 running on cpu  1!
+Hello world from thread 14 of 16 running on cpu  5!
+Hello world from thread 9 of 16 running on cpu  4!
+Hello world from thread 4 of 16 running on cpu  0!
+Hello world from thread 5 of 16 running on cpu  1!
+Hello world from thread 16 of 16 running on cpu  5!
+Hello world from thread 1 of 16 running on cpu  0!
+Hello world from thread 6 of 16 running on cpu  0!
+Hello world from thread 12 of 16 running on cpu  4!
+Hello world from thread 15 of 16 running on cpu  5!
+Hello world from thread 13 of 16 running on cpu  4!
+Hello world from thread 3 of 16 running on cpu  0!
+
+OMP_PROC_BIND are: false, true, master, close, spread .
+
+    false: set no binding
+    true: lock threads to a core
+    master: collocate threads with the master thread
+    close: place threads close to the master in the places list
+    spread: spread out threads as much as possible 
+
+12. Compile gcc -fopenmp omp_binding_forex.c
+13. Before run: export OMP_PLACES="{0,1,2,3}"
+                export OMP_PROC_BIND=true
+
+Thread with same number runs on the same core (see res)
+

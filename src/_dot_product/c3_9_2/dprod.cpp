@@ -13,8 +13,8 @@ sundiazontai metaksu tous, me ton combiner operator.
 /* COMMENT
  * auto vgazei sosta apotelesmata se sxesi me ta alla duo
  */
-float dprod(size_t num, float *a, float *b) {
-	float res = 0.0;
+double dprod(size_t num, double *a, double *b) {
+	double res = 0.0;
 #pragma omp target teams defaultmap(tofrom : scalar) map(to: a[0:num], b[0:num]) reduction(+ : res)
 #pragma omp distribute parallel for reduction(+ : res)
 		for (size_t i = 0; i < num; ++i) {

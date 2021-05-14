@@ -7,13 +7,7 @@
 struct particle
 {
 	double val;
-	double pad1;
-	double pad2;
-	double pad3;
-	double pad4;
-	double pad5;
-	double pad6;
-	double pad7;
+    double pad[7] = {0.};
 };
 
 double pi(long num_steps) {

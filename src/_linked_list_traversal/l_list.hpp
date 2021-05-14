@@ -2,6 +2,9 @@
 #define LINKED_LIST
 
 #include <iostream>
+
+int randI();
+
 template<typename T>
 class Lnode;
 

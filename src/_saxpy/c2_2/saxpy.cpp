@@ -13,6 +13,6 @@ float do_work(float a, float b, float c)
 void saxpy(size_t n, float a, const float *x, float *y) {
     #pragma omp simd 
     for (size_t i = 0; i < n; ++i) {
-        y[i] = a * x[i] + y[i]; //TODO
+        y[i] = do_work(a, x[i], y[i]);
     }
 }

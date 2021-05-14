@@ -1,12 +1,17 @@
 #include "calculate.hpp"
-#include "../fibonacci.hpp"
+#include <thread>
 
 
-void calcFib(Lnode<int> &node, void *args) {
-	fib(node.data());
+void dowork(Lnode<int> &node, void *args) {
+    int *num_nodes = static_cast<int *>(args);
+    std::this_thread::sleep_for(std::chrono::nanoseconds(rand() % 5 + 1));
+    *num_nodes += node.data();
 }
 
+int calculate(Llist<int> &l) {
 
-void calculate(Llist<int> &l) {
-	l.forEveryNode(calcFib, nullptr);
+    int number_of_nodes = 0;
+	l.forEveryNode(dowork, &number_of_nodes);
+
+    return number_of_nodes;
 }

@@ -15,8 +15,8 @@ sundiazontai metaksu tous, me ton combiner operator.
  * Vevaia to verification vgazei lathos. Alla fainetai to got me to expected na einai to idio.
  * Ara isos kano lathos sto verification
  */
-float dprod(size_t num, float *a, float *b) {
-	float res = 0.0;
+double dprod(size_t num, double *a, double *b) {
+	double res = 0.0;
 #pragma omp target  map(tofrom: res) map(to: a[0:num], b[0:num])
 #pragma omp teams reduction(+ : res)
 #pragma omp distribute parallel for reduction(+ : res)

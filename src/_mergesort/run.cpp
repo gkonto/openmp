@@ -4,6 +4,7 @@
 #include <iostream>
 #include <iomanip>
 #include <cstdlib>
+#include <iomanip>
 #include "mergesort.hpp"
 #include "auxiliaries.hpp"
 #include <omp.h>
@@ -64,13 +65,15 @@ int main(int argc, char **argv)
 
     int *arr = new int[o.size];
     fill_random_array(arr, o.size);
+
     //int arr[] = { 12, 11, 13, 5, 6, 7 };
  
 	auto start = omp_get_wtime();
     mergeSort_wrapper(arr, 0, o.size - 1);
 	auto end = omp_get_wtime();
-	std::cout << "Execution time: " << std::fixed << end-start << 
+	std::cout << "Execution time: " << std::fixed <<  std::setprecision(3) << end-start << 
 		std::setprecision(5) << std::endl;
+
     if (o.verify) {
         verify(arr, o.size);
     }

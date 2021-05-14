@@ -2,6 +2,7 @@
 #include <math.h>
 #include "auxiliaries.hpp"
 #include "prod_cons.hpp"
+#include <iomanip>
 #include <omp.h>
 
 namespace {
@@ -26,10 +27,20 @@ int main(int argc, char **argv)
     parseArgs(argc, argv, o);
 
     double start = omp_get_wtime();
-    producer_consumer(o.size);
+    int total = producer_consumer(o.size);
     double end = omp_get_wtime();
 
-    double time_taken = end - start;
-    std::cout << "Calculation time: " << time_taken << " sec" << std::endl;
+    int ver = 0;
+    for (int i = 0; i < o.size; i++) {
+        ver += i;
+    }
+
+    if (ver != total) {
+        std::cout << "Failed Verification!" << std::endl;
+        std::cout << "Expected: " << ver << " Got: " << total <<  std::endl;
+        exit(1);
+    }
+
+    std::cout << "Calculation time: " << std::fixed << std::setprecision(3) << end - start << " sec" << std::endl;
     return 0;
 }

@@ -76,11 +76,51 @@ static void fill_random_arr(float *arr, size_t size) {
 static void verify(size_t size, float c, float *a, float *b, float *verification)
 {
 	for (size_t i = 0; i < size; ++i) {
-		if (abs(c * a[i] + verification[i] - b[i]) >= 10e-6) {
+		if (abs(c * a[i] + verification[i] - b[i]) >= 1e-6) {
 			std::cout << "Failed index: " << i << ". " << c * a[i] + verification[i] << " =! " << b[i] << std::endl;
 			exit(1);
 		}
 	}
+}
+
+struct Containers
+{
+    explicit Containers(size_t containers_size);
+    ~Containers();
+
+    void setRandomValues();
+
+    size_t m_size;
+    float *m_a;
+    float *m_verification;
+    float *m_b;
+};
+
+Containers::Containers(size_t containers_size)
+    : m_size(containers_size)
+{
+    srand(time(nullptr));
+    m_a = new float[containers_size];
+    m_verification = new float[containers_size];
+    m_b = new float[containers_size];
+}
+
+Containers::~Containers()
+{
+    delete []m_a;
+    delete []m_b;
+    delete []m_verification;
+}
+
+void Containers::setRandomValues()
+{
+    fill_random_arr(m_a, m_size);
+    fill_random_arr(m_b, m_size);
+
+//#pragma omp parallel for
+    for (size_t k = 0; k < m_size; ++k) {
+	    m_verification[k] = m_b[k];
+    }
 }
 
 
@@ -88,30 +128,19 @@ int main(int argc, char **argv) {
     Opts o;
     parseArgs(argc, argv, o);
 
-    srand(time(nullptr));
-    float c = float(rand()) / float(RAND_MAX);
-    float *a = new float[o.size];
-    float *verification = new float[o.size];
-    float *b = new float[o.size];
+    Containers c(o.size);
 
-    fill_random_arr(a, o.size);
-    fill_random_arr(b, o.size);
-
-//#pragma omp parallel for
-    for (size_t k = 0; k < o.size; ++k) {
-	    verification[k] = b[k];
-    }
+    c.setRandomValues();
+    float cons = float(rand()) / float(RAND_MAX);
+    
     auto start = omp_get_wtime();
-    saxpy(o.size, c, a, b);
+    saxpy(c.m_size, cons, c.m_a, c.m_b);
     auto end = omp_get_wtime();
 
-    verify(o.size, c, a, b, verification);
-    // Calculating total time taken by the program.
+    verify(c.m_size, cons, c.m_a, c.m_b, c.m_verification);
+
     std::cout << "Execution Time : " << std::fixed
          << end - start << std::setprecision(5);
     std::cout << " sec " << std::endl;
-   delete []a;
-    delete []b;
-    
     return 0;
 }

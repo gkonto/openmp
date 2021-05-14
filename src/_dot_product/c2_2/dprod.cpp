@@ -10,12 +10,12 @@ sundiazontai metaksu tous, me ton combiner operator.
 */
 
 #pragma omp declare simd notinbranch
-float mult(float *a, float *b) {
+double mult(double *a, double *b) {
 	return *a * *b;
 }
 
-float dprod(size_t num, float *a, float *b) {
-	float res = 0.0;
+double dprod(size_t num, double *a, double *b) {
+	double res = 0.0;
 #pragma omp simd reduction(+ : res)
 	for (size_t i = 0; i < num; ++i) {
 		res += mult(&a[i], &b[i]);

@@ -1,16 +1,28 @@
 #include "calculate.hpp"
-#include "../fibonacci.hpp"
+#include <thread>
+#include <vector>
 
-void calculate(Llist<int> &l) {
+using namespace std;
 
+int calculate(Llist<int> &l) {
 	Lnode<int> *node = l.head();
 	size_t nodes_num = l.size();
+    std::vector<int> nodes(nodes_num);
 
-#pragma omp parallel for schedule(static)
-	for (int i = 0; i < nodes_num; ++i) {
-		fib(node->data());
+    for (size_t i = 0; i < nodes_num; ++i) {
+        nodes[i] = node->data();
 		node = node->next();
+    }
+    int num_nodes = 0;
+
+#pragma omp parallel for schedule(static, 10) shared(num_nodes)
+	for (size_t i = 0; i < nodes_num; ++i) {
+        this_thread::sleep_for(chrono::nanoseconds(randI()));
+#pragma omp atomic
+        num_nodes += nodes[i];
 	}
+
+    return num_nodes;
 }
 
 

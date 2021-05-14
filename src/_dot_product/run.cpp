@@ -47,15 +47,16 @@ void parseArgs(int argc, char **argv, Opts &o)
 	}
 }
 
-static void fill_random_arr(float *arr, size_t size) {
-//#pragma omp parallel for
+static void fill_random_arr(double *a, double *b,  size_t size) {
     for (size_t k = 0; k < size; ++k) {
-        arr[k] = (float)(rand()) / RAND_MAX;
+        a[k] = (double)(rand()) / RAND_MAX;
+        b[k] = (double)(rand()) / RAND_MAX;
     }
 }
 
-void show(size_t size, float *a, float *b) {
-	float temp = 0.0;
+void show(size_t size, double *a, double *b) {
+	double temp = 0.0;
+#pragma omp parallel for reduction(+: temp)
 	for (size_t i = 0; i < size; ++i) {
 		std::cout << a[i] << " " << b[i] << " --> " << a[i] * b[i] << std::endl;
 		temp += a[i] * b[i];
@@ -64,17 +65,17 @@ void show(size_t size, float *a, float *b) {
 }
 
 
-void verify(size_t size, float *a, float *b, float got) {
-	float temp = 0.0;
+void verify(size_t size, double *a, double *b, double got) {
+	double temp = 0.0;
+#pragma omp parallel for reduction(+:temp)
 	for (size_t i = 0; i < size; ++i) {
-		std::cout << a[i] << " " << b[i] << " --> " << a[i] * b[i] << std::endl;
 		temp += a[i] * b[i];
 	}
 
 	std::cout << "Verification result: " << temp << std::endl;
 	std::cout << "In verification Gor: " << got << std::endl;
 
-	if (!(fabs(got - temp) < 1e-4)) {
+	if (!(fabs(got - temp) < 1e-3)) {
 		std::cout << "FAILED! Not correct result... ---> Expected: " << temp << ". Got: " << got << std::endl;
 		exit(1);
 	}
@@ -88,14 +89,12 @@ int main(int argc, char **argv)
 
 	srand(time(nullptr));
 
-	float *a = new float[o.size];
-	float *b = new float[o.size];
-	fill_random_arr(a, o.size);
-	fill_random_arr(b, o.size);
+	double *a = new double[o.size];
+	double *b = new double[o.size];
+	fill_random_arr(a, b, o.size);
 
-	show(o.size, a, b);
 	auto start = omp_get_wtime();
-	float got = dprod(o.size, a, b);
+	double got = dprod(o.size, a, b);
 	auto end = omp_get_wtime();
 
 	if (o.verify) {

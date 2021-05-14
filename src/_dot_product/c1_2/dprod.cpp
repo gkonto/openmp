@@ -9,11 +9,11 @@ diladi tou telous tou vrogxou parallilopoihsis, oi diaforetikes idiotikes metabl
 sundiazontai metaksu tous, me ton combiner operator.
 */
 
-float dprod(size_t num, float *a, float *b) {
-	float res = 0.0;
+double dprod(size_t num, double *a, double *b) {
+	double res = 0.0;
 #pragma omp parallel shared(res)
 	{
-		float temp = 0.0;
+		double temp = 0.0;
 
 #pragma omp for 
 		for (size_t i = 0; i < num; ++i) {

@@ -2,6 +2,6 @@
 #define DPROD_HPP
 #include <stddef.h>
 
-float dprod(size_t num, float *a, float *b);
+double dprod(size_t num, double *a, double *b);
 
 #endif

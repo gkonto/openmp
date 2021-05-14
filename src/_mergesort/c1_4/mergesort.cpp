@@ -22,6 +22,7 @@ void mergeSort(int arr[], int l, int r)
         {
             mergeSort(arr, m + 1, r);
         }
+        std::cout << l << " " << m << " " << r << std::endl;
 #pragma omp task depend(in: x, y)
         {
             merge(arr, l, m, r);

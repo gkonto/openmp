@@ -2,8 +2,6 @@
 #include <cstddef>
 
 //TODO compile with -O0 -O2 and std==c++14
-
-
 #pragma omp declare simd uniform(a)
 float do_work(float a, float b, float c)
 {

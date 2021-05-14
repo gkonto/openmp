@@ -1,4 +1,5 @@
 #include "calculate.hpp"
+#include <thread>
 
 /* 
  * COMMENT
@@ -22,7 +23,7 @@ void calculate(Llist<int> &l) {
 
 #pragma omp simd
 	for (int i = 0; i < nodes_num; ++i) {
-		fib(node->data());
+        std::this_thread::sleep_for(std::chrono::milliseconds(node.data()));
 		node = node->next();
 	}
 }

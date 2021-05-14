@@ -56,7 +56,7 @@ void parseArgs(int argc, char **argv, Opts &o) {
 static void fill_random_arr(int *arr, size_t size) {
 //#pragma omp parallel for
     for (size_t k = 0; k < size; ++k) {
-        arr[k] = (int)(rand() % 10);
+        arr[k] = (int)(rand() % 100000);
     }
 }
 
@@ -69,7 +69,6 @@ void printArray(int array[], int size) {
 
 void verify(int *a, size_t size) {
     size_t i = size;
-    printArray(a, size);
     for (i = 1; i < size; ++i) {
         if (a[i - 1] > a[i]) {
             std::cout << "FAILED: Numbers are not sorted!!!" << std::endl;
@@ -85,18 +84,17 @@ int main(int argc, char **argv) {
 	int *a = new int[o.size];
 	fill_random_arr(a, o.size);
 
-	//int data[] = {8, 7, 6, 1, 0, 9, 2};
-	//int n = sizeof(data) / sizeof(data[0]);
-    printArray(a, o.size);
 	auto start = omp_get_wtime();
 	qsort_wrapper(a, 0, o.size - 1);
 	auto end = omp_get_wtime();
-	std::cout << "Execution time: " << std::fixed << end-start << 
+	std::cout << "Execution time: " << std::fixed << 
+        std::setprecision(3) << end-start << 
 		std::setprecision(5);
 	std::cout << " sec " << std::endl;
 
     if (o.verify) {
         verify(a, o.size);
+
     }
 	delete []a;
 }

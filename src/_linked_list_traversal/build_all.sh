@@ -1,38 +1,40 @@
-#g++ run.cpp fibonacci.cpp ../auxiliaries/auxiliaries.cpp serial/calculate.cpp -I ../auxiliaries -I serial/ -fopenmp -o ./builds/serial
-#g++ run.cpp fibonacci.cpp ../auxiliaries/auxiliaries.cpp serial/calculate.cpp -I ../auxiliaries -I serial/ -fopenmp -O2 -o ./builds/serial_O2
+rm -f ./builds/*
 
-#g++ run.cpp fibonacci.cpp ../auxiliaries/auxiliaries.cpp c1/calculate.cpp -I ../auxiliaries -I c1/ -fopenmp -o ./builds/c1
-#g++ run.cpp fibonacci.cpp ../auxiliaries/auxiliaries.cpp c1/calculate.cpp -I ../auxiliaries -I c1/ -fopenmp -O2 -o ./builds/c1_O2
+<<COMMENT2
+g++ run.cpp ../auxiliaries/auxiliaries.cpp serial/calculate.cpp -I serial/ -I ../auxiliaries/ -Wall -Wextra -std=c++14\
+    -fopt-info-vec=builds/alt1.log -O2 -fno-inline -fopenmp -o ./builds/Alt1
 
-#g++ run.cpp fibonacci.cpp ../auxiliaries/auxiliaries.cpp c1_1/calculate.cpp -I ../auxiliaries -I c1_1/ -fopenmp -o ./builds/c1_1
-#g++ run.cpp fibonacci.cpp ../auxiliaries/auxiliaries.cpp c1_1/calculate.cpp -I ../auxiliaries -I c1_1/ -fopenmp -O2 -o ./builds/c1_1_O2
+g++ run.cpp ../auxiliaries/auxiliaries.cpp c1/calculate.cpp -I c1/ -I ../auxiliaries/ -Wall -Wextra -std=c++14\
+    -fopt-info-vec=builds/alt2.log -O2 -fno-tree-vectorize -fno-inline -fopenmp -o ./builds/Alt2
+g++ run.cpp ../auxiliaries/auxiliaries.cpp c1/calculate.cpp -I c1/ -I ../auxiliaries/ -Wall -Wextra -std=c++14\
+    -fopt-info-vec=builds/alt3.log -O2 -ftree-vectorize -fno-inline -fopenmp -o ./builds/Alt3
 
-#g++ run.cpp fibonacci.cpp ../auxiliaries/auxiliaries.cpp c1_2/calculate.cpp -I ../auxiliaries -I c1_2/ -fopenmp -o ./builds/c1_2
-#g++ run.cpp fibonacci.cpp ../auxiliaries/auxiliaries.cpp c1_2/calculate.cpp -I ../auxiliaries -I c1_2/ -fopenmp -O2 -o ./builds/c1_2_O2
+g++ run.cpp ../auxiliaries/auxiliaries.cpp c1_1/calculate.cpp -I c1_1/ -I ../auxiliaries/ -Wall -Wextra -std=c++14\
+    -fopt-info-vec=builds/alt4.log -O2 -fno-tree-vectorize -fno-inline -fopenmp -o ./builds/Alt4
+g++ run.cpp ../auxiliaries/auxiliaries.cpp c1_1/calculate.cpp -I c1_1/ -I ../auxiliaries/ -Wall -Wextra -std=c++14\
+   -fopt-info-vec=builds/alt5.log -O2 -ftree-vectorize -fno-inline -fopenmp -o ./builds/Altr5
 
-#g++ run.cpp fibonacci.cpp ../auxiliaries/auxiliaries.cpp c1_3/calculate.cpp -I ../auxiliaries -I c1_3/ -fopenmp -o ./builds/c1_3
-#g++ run.cpp fibonacci.cpp ../auxiliaries/auxiliaries.cpp c1_3/calculate.cpp -I ../auxiliaries -I c1_3/ -fopenmp -O2 -o ./builds/c1_3_O2
-#g++ run.cpp fibonacci.cpp ../auxiliaries/auxiliaries.cpp c1_3/calculate.cpp -I ../auxiliaries -I c1_3/ -fopenmp -fopenmp-simd -o ./builds/c1_3_simd
-#g++ run.cpp fibonacci.cpp ../auxiliaries/auxiliaries.cpp c1_3/calculate.cpp -I ../auxiliaries -I c1_3/ -fopenmp -fopenmp-simd -O2 -o ./builds/c1_3_O2_simd
+g++ run.cpp ../auxiliaries/auxiliaries.cpp c1_2/calculate.cpp -I c1_2/ -I ../auxiliaries/ -Wall -Wextra -std=c++14\
+    -fopt-info-vec=builds/alt6.log -O2 -fno-tree-vectorize -fno-inline -fopenmp -o ./builds/Alt6
+g++ run.cpp ../auxiliaries/auxiliaries.cpp c1_2/calculate.cpp -I c1_2/ -I ../auxiliaries/ -Wall -Wextra -std=c++14\
+    -fopt-info-vec=builds/alt7.log -O2 -ftree-vectorize -fno-inline -fopenmp -o ./builds/Alt7
 
-#g++ run.cpp fibonacci.cpp ../auxiliaries/auxiliaries.cpp c2/calculate.cpp -I ../auxiliaries -I c2/ -fopenmp -o ./builds/c2
-#g++ run.cpp fibonacci.cpp ../auxiliaries/auxiliaries.cpp c2/calculate.cpp -I ../auxiliaries -I c2/ -fopenmp -O2 -o ./builds/c2_O2
+#g++ run.cpp ../auxiliaries/auxiliaries.cpp c1_3/calculate.cpp -I c1_3/ -I ../auxiliaries/ -Wall -Wextra -std=c++14\
+#    -fopt-info-vec=builds/alt8.log -O2 -fno-tree-vectorize -fno-inline -fopenmp -o ./builds/Alt8
+#g++ run.cpp ../auxiliaries/auxiliaries.cpp c1_3/calculate.cpp -I c1_3/ -I ../auxiliaries/ -Wall -Wextra -std=c++14\
+#    -fopt-info-vec=builds/alt9.log -O2 -ftree-vectorize -fno-inline -fopenmp -o ./builds/Alt9
+#g++ run.cpp ../auxiliaries/auxiliaries.cpp c1_3/calculate.cpp -I c1_3/ -I ../auxiliaries/ -Wall -Wextra -std=c++14\
+#    -fopt-info-vec=builds/alt10.log -O2 -fno-inline -fopenmp -o ./builds/Alt10
 
-#g++ run.cpp ../auxiliaries/auxiliaries.cpp c3/calculate.cpp -I ../auxiliaries -I c3/ -fopenmp  -o ./builds/c3
-#g++ run.cpp ../auxiliaries/auxiliaries.cpp c3/calculate.cpp -I ../auxiliaries -I c3/ -fopenmp -O2 -o ./builds/c3_O2
-#g++ run.cpp ../auxiliaries/auxiliaries.cpp c3/calculate.cpp -I ../auxiliaries -I c3/ -fopenmp -fopenmp-simd -o ./builds/c3_simd
-#g++ run.cpp ../auxiliaries/auxiliaries.cpp c3/calculate.cpp -I ../auxiliaries -I c3/ -fopenmp -O2 -fopenmp-simd -o ./builds/c3_O2_simd
+g++ run.cpp ../auxiliaries/auxiliaries.cpp c2/calculate.cpp -I c2/ -I ../auxiliaries/ -Wall -Wextra -std=c++14\
+    -fopt-info-vec=builds/alt11.log -O2 -fno-tree-vectorize -fno-inline -fopenmp -o ./builds/Alt11
+g++ run.cpp ../auxiliaries/auxiliaries.cpp c2/calculate.cpp -I c2/ -I ../auxiliaries/ -Wall -Wextra -std=c++14\
+    -fopt-info-vec=builds/alt12.log -O2 -ftree-vectorize -fno-inline -fopenmp -o ./builds/Alt12
 
-#g++ run.cpp ../auxiliaries/auxiliaries.cpp c3_1/calculate.cpp -I ../auxiliaries -I c3_1/ -fopenmp  -o ./builds/c3_1
-#g++ run.cpp ../auxiliaries/auxiliaries.cpp c3_1/calculate.cpp -I ../auxiliaries -I c3_1/ -fopenmp -O2 -o ./builds/c3_1_O2
-#g++ run.cpp ../auxiliaries/auxiliaries.cpp c3_1/calculate.cpp -I ../auxiliaries -I c3_1/ -fopenmp -fopenmp-simd -o ./builds/c3_1_simd
-#g++ run.cpp ../auxiliaries/auxiliaries.cpp c3_1/calculate.cpp -I ../auxiliaries -I c3_1/ -fopenmp -O2 -fopenmp-simd -o ./builds/c3_1_O2_simd
-
-#g++ run.cpp fibonacci.cpp ../auxiliaries/auxiliaries.cpp c4/calculate.cpp -I ../auxiliaries -I c4/ -fopenmp -o ./builds/c4
-#g++ run.cpp fibonacci.cpp ../auxiliaries/auxiliaries.cpp c4/calculate.cpp -I ../auxiliaries -I c4/ -fopenmp -O2 -o ./builds/c4_O2
-
-#g++ run.cpp fibonacci.cpp ../auxiliaries/auxiliaries.cpp c5/calculate.cpp -I ../auxiliaries -I c5/ -fopenmp -o ./builds/c5
-#g++ run.cpp fibonacci.cpp ../auxiliaries/auxiliaries.cpp c5/calculate.cpp -I ../auxiliaries -I c5/ -fopenmp -O2 -o ./builds/c5_O2
-
-g++ run.cpp ../auxiliaries/auxiliaries.cpp c5/calculate.cpp -I c5/ -I ../auxiliaries/ -fno-stack-protector -foffload=nvptx-none -fopenmp -Wall -Wextra -o ./builds/c5
-g++ run.cpp ../auxiliaries/auxiliaries.cpp c5/calculate.cpp -I c5/ -I ../auxiliaries/ -fno-stack-protector -foffload=nvptx-none="-O2" -fopenmp -Wall -Wextra -o -O2 ./builds/c5_O2
+COMMENT2
+g++ run.cpp ../auxiliaries/auxiliaries.cpp c2_1/calculate.cpp -I c2_1/ -I ../auxiliaries/ -Wall -Wextra -std=c++14\
+    -fopt-info-vec=builds/alt13.log -O2 -fno-tree-vectorize -fno-inline -fopenmp -o ./builds/Alt13
+g++ run.cpp ../auxiliaries/auxiliaries.cpp c2_1/calculate.cpp -I c2_1/ -I ../auxiliaries/ -Wall -Wextra -std=c++14\
+    -fopt-info-vec=builds/alt14.log -O2 -ftree-vectorize -fno-inline -fopenmp -o ./builds/Alt14
+<<COMMENT1
+COMMENT1

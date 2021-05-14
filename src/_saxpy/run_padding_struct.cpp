@@ -32,11 +32,13 @@ DAXPY, ενώ για μιγαδικούς αριθμούς ονομάζεται 
 ονομάζονται uniform, οι παράμετροι που είναι μεταβλητές σε κάθε κλίση της f ονομάζονται varying. 
 To μοτίβο (pattern) "map" καλεί τη συνάρτηση f τόσες φορές όσες και ο αριθμός των στοιχείων του διανύσματος.
 
+
 */
 #include <iostream>
 #include <time.h>
 #include <omp.h>
 #include <iomanip>
+#include <cstdlib>
 #include "saxpy.hpp"
 #include "auxiliaries.hpp"
 
@@ -66,50 +68,81 @@ void parseArgs(int argc, char **argv, Opts &o) {
 
 
 static void fill_random_arr(float64 *arr, size_t size) {
-    #pragma omp parallel for
+//#pragma omp parallel for
     for (size_t k = 0; k < size; ++k) {
         arr[k].v_ = (float)(rand()) / RAND_MAX;
     }
 }
 
+static void verify(size_t size, float c, float64 *a, float64 *b, float64 *verification)
+{
+	for (size_t i = 0; i < size; ++i) {
+		if (abs(c * a[i].v_ + verification[i].v_ - b[i].v_) >= 1e-6) {
+			std::cout << "Failed index: " << i << ". " << c * a[i].v_ + verification[i].v_ << " =! " << b[i].v_ << std::endl;
+			exit(1);
+		}
+	}
+}
+
+struct Containers
+{
+    explicit Containers(size_t containers_size);
+    ~Containers();
+
+    void setRandomValues();
+
+    size_t m_size;
+    float64 *m_a;
+    float64 *m_verification;
+    float64 *m_b;
+};
+
+Containers::Containers(size_t containers_size)
+    : m_size(containers_size)
+{
+    srand(time(nullptr));
+    m_a = new float64[containers_size];
+    m_verification = new float64[containers_size];
+    m_b = new float64[containers_size];
+}
+
+Containers::~Containers()
+{
+    delete []m_a;
+    delete []m_b;
+    delete []m_verification;
+}
+
+void Containers::setRandomValues()
+{
+    fill_random_arr(m_a, m_size);
+    fill_random_arr(m_b, m_size);
+
+//#pragma omp parallel for
+    for (size_t k = 0; k < m_size; ++k) {
+	    m_verification[k] = m_b[k];
+    }
+}
+
+
 int main(int argc, char **argv) {
     Opts o;
     parseArgs(argc, argv, o);
 
-    srand(time(nullptr));
-    float c = float(rand()) / float(RAND_MAX);
-    float64 *a = new float64[o.size];
-    float64 *b = new float64[o.size];
+    Containers c(o.size);
 
-    fill_random_arr(a, o.size);
-    fill_random_arr(b, o.size);
-
-    // std::cout << c << std::endl;
-    // for (size_t i = 0; i < o.size; ++i) {
-    //    std::cout << a[i] << " ";
-    // }
-    // std::cout << std::endl;
-    // for (size_t i = 0; i < o.size; ++i) {
-    //     std::cout << (float)b[i] << " ";
-    // }
-    // std::cout << std::endl;
-
+    c.setRandomValues();
+    float cons = float(rand()) / float(RAND_MAX);
+    
     auto start = omp_get_wtime();
-    saxpy(o.size, c, a, b);
+    saxpy(c.m_size, cons, c.m_a, c.m_b);
     auto end = omp_get_wtime();
 
-    // Calculating total time taken by the program.
+    verify(c.m_size, cons, c.m_a, c.m_b, c.m_verification);
+
     std::cout << "Execution Time : " << std::fixed
          << end - start << std::setprecision(5);
     std::cout << " sec " << std::endl;
-    // std::cout << std::endl;
-    // for (size_t i = 0; i < o.size; ++i) {
-    //     std::cout << b[i] << " ";
-    // }
-    // std::cout << std::endl;
-    // std::cout << b[0] << std::endl;
-    delete []a;
-    delete []b;
-    
     return 0;
 }
+

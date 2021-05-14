@@ -1,76 +1,56 @@
-#g++ run.cpp ./serial/matmul.cpp ../auxiliaries/auxiliaries.cpp ./tools.cpp -I ./serial/ -I ../auxiliaries -Wextra -Wall --std=c++14 -O0 -fopenmp -o ./builds/serial
-#g++ run.cpp ./serial/matmul.cpp ../auxiliaries/auxiliaries.cpp ./tools.cpp -I ./serial/ -I ../auxiliaries -Wextra -Wall --std=c++14 -O2 -fopenmp -o ./builds/serial_O2
+rm -f ./builds/*
 
-#g++ run.cpp ./c1/matmul.cpp ../auxiliaries/auxiliaries.cpp ./tools.cpp -I ./c1/ -I ../auxiliaries --std=c++14 -O0 -fopenmp -o ./builds/c1
-#g++ run.cpp ./c1/matmul.cpp ../auxiliaries/auxiliaries.cpp ./tools.cpp -I ./c1/ -I ../auxiliaries --std=c++14 -O2 -fopenmp -o ./builds/c1_O2
+<<COMMENT1
+g++ run.cpp ../auxiliaries/auxiliaries.cpp tools.cpp serial/matmul.cpp -I serial/ -I ../auxiliaries/ -Wall -Wextra -std=c++14\
+    -fopt-info-vec=builds/alt1.log -O2 -fno-inline -fno-tree-vectorize -fopenmp -o ./builds/Alt1
+g++ run.cpp ../auxiliaries/auxiliaries.cpp tools.cpp serial/matmul.cpp -I serial/ -I ../auxiliaries/ -Wall -Wextra -std=c++14\
+    -fopt-info-vec=builds/alt2.log -O2 -fno-inline -ftree-vectorize -fopenmp -o ./builds/Alt2
 
-#g++ run.cpp ./c1_1/matmul.cpp ../auxiliaries/auxiliaries.cpp ./tools.cpp -I ./c1_1/ -I ../auxiliaries --std=c++14 -O0 -fopenmp -o ./builds/c1_1
-#g++ run.cpp ./c1_1/matmul.cpp ../auxiliaries/auxiliaries.cpp ./tools.cpp -I ./c1_1/ -I ../auxiliaries --std=c++14 -O2 -fopenmp -o ./builds/c1_1_O2
+g++ run.cpp ../auxiliaries/auxiliaries.cpp tools.cpp c1/matmul.cpp -I c1/ -I ../auxiliaries/ -Wall -Wextra -std=c++14\
+    -fopt-info-vec=builds/alt3.log -O2 -fno-inline -fno-tree-vectorize -fopenmp -o ./builds/Alt3
+g++ run.cpp ../auxiliaries/auxiliaries.cpp tools.cpp c1/matmul.cpp -I c1/ -I ../auxiliaries/ -Wall -Wextra -std=c++14\
+    -fopt-info-vec=builds/alt4.log -O2 -fno-inline -ftree-vectorize -fopenmp -o ./builds/Alt4
 
-#g++ run.cpp ./c1_2/matmul.cpp ../auxiliaries/auxiliaries.cpp ./tools.cpp -I ./c1_2/ -I ../auxiliaries --std=c++14 -O0 -fopenmp -o ./builds/c1_2
-#g++ run.cpp ./c1_2/matmul.cpp ../auxiliaries/auxiliaries.cpp ./tools.cpp -I ./c1_2/ -I ../auxiliaries --std=c++14 -O2 -fopenmp -o ./builds/c1_2_O2
+g++ run.cpp ../auxiliaries/auxiliaries.cpp tools.cpp c1_1/matmul.cpp -I c1_1/ -I ../auxiliaries/ -Wall -Wextra -std=c++14\
+    -fopt-info-vec=builds/alt5.log -O2 -fno-inline -fno-tree-vectorize -fopenmp -o ./builds/Alt5
+g++ run.cpp ../auxiliaries/auxiliaries.cpp tools.cpp c1_1/matmul.cpp -I c1_1/ -I ../auxiliaries/ -Wall -Wextra -std=c++14\
+    -fopt-info-vec=builds/alt6.log -O2 -fno-inline -ftree-vectorize -fopenmp -o ./builds/Alt6
 
-#g++ run.cpp ./c1_3/matmul.cpp ../auxiliaries/auxiliaries.cpp ./tools.cpp -I ./c1_3/ -I ../auxiliaries --std=c++14 -O0 -fopenmp -o ./builds/c1_3
-#g++ run.cpp ./c1_3/matmul.cpp ../auxiliaries/auxiliaries.cpp ./tools.cpp -I ./c1_3/ -I ../auxiliaries --std=c++14 -O2 -fopenmp -o ./builds/c1_3_O2
+g++ run.cpp ../auxiliaries/auxiliaries.cpp tools.cpp c2_1/matmul.cpp -I c2_1/ -I ../auxiliaries/ -Wall -Wextra -std=c++14\
+    -fopt-info-vec=builds/alt7.log -O2 -fno-inline -fno-tree-vectorize -fopenmp -o ./builds/Alt7
+g++ run.cpp ../auxiliaries/auxiliaries.cpp tools.cpp c2_1/matmul.cpp -I c2_1/ -I ../auxiliaries/ -Wall -Wextra -std=c++14\
+    -fopt-info-vec=builds/alt8.log -O2 -fno-inline -ftree-vectorize -fopenmp -o ./builds/Alt8
+g++ run.cpp ../auxiliaries/auxiliaries.cpp tools.cpp c2_1/matmul.cpp -I c2_1/ -I ../auxiliaries/ -Wall -Wextra -std=c++14\
+    -fopt-info-vec=builds/alt9.log -O2 -fopenmp -fno-inline -fopenmp-simd -o ./builds/Alt9
 
-#g++ run.cpp ./c1_4/matmul.cpp ../auxiliaries/auxiliaries.cpp ./tools.cpp -I ./c1_4/ -I ../auxiliaries --std=c++14 -O0 -fopenmp -o ./builds/c1_4
-#g++ run.cpp ./c1_4/matmul.cpp ../auxiliaries/auxiliaries.cpp ./tools.cpp -I ./c1_4/ -I ../auxiliaries --std=c++14 -O2 -fopenmp -o ./builds/c1_4_O2
+g++ run.cpp ../auxiliaries/auxiliaries.cpp tools.cpp c3_2/matmul.cpp -I c3_2/ -I ../auxiliaries/ -Wall -Wextra -std=c++14\
+    -fopt-info-vec=builds/alt10.log -O2 -foffload=nvptx-none="-O2" -fno-stack-protector -fno-inline -ftree-vectorize -fopenmp -o ./builds/Alt10
+g++ run.cpp ../auxiliaries/auxiliaries.cpp tools.cpp c3_2/matmul.cpp -I c3_2/ -I ../auxiliaries/ -Wall -Wextra -std=c++14\
+    -fopt-info-vec=builds/alt11.log -O2 -foffload=nvptx-none="-O2" -fno-stack-protector -fno-tree-vectorize -fopenmp -fno-inline -o ./builds/Alt11
 
-#g++ run.cpp ./c2/matmul.cpp ../auxiliaries/auxiliaries.cpp ./tools.cpp -I ./c2/ -I ../auxiliaries --std=c++14 -O0 -fopenmp -o ./builds/c2
-#g++ run.cpp ./c2/matmul.cpp ../auxiliaries/auxiliaries.cpp ./tools.cpp -I ./c2/ -I ../auxiliaries --std=c++14 -O2 -fopenmp -o ./builds/c2_O2
-#g++ run.cpp ./c2/matmul.cpp ../auxiliaries/auxiliaries.cpp ./tools.cpp -I ./c2/ -I ../auxiliaries --std=c++14 -O0 -fopenmp -fopenmp-simd -o ./builds/c2_simd
-#g++ run.cpp ./c2/matmul.cpp ../auxiliaries/auxiliaries.cpp ./tools.cpp -I ./c2/ -I ../auxiliaries --std=c++14 -O2 -fopenmp -fopenmp-simd -o ./builds/c2_O2_simd
+COMMENT1
+g++ run.cpp ../auxiliaries/auxiliaries.cpp tools.cpp c3_3/matmul.cpp -I c3_3/ -I ../auxiliaries/ -Wall -Wextra -std=c++14\
+    -fopt-info-vec=builds/alt12.log -O2 -foffload=nvptx-none="-O2" -fno-stack-protector -fno-inline -ftree-vectorize -fopenmp -o ./builds/Alt12
+g++ run.cpp ../auxiliaries/auxiliaries.cpp tools.cpp c3_3/matmul.cpp -I c3_3/ -I ../auxiliaries/ -Wall -Wextra -std=c++14\
+    -fopt-info-vec=builds/alt13.log -O2 -foffload=nvptx-none="-O2" -fno-stack-protector -fno-tree-vectorize -fopenmp -fno-inline -o ./builds/Alt13
+g++ run.cpp ../auxiliaries/auxiliaries.cpp tools.cpp c3_3/matmul.cpp -I c3_3/ -I ../auxiliaries/ -Wall -Wextra -std=c++14\
+    -fopt-info-vec=builds/alt14.log -O2 -foffload=nvptx-none="-O2" -fno-stack-protector -fopenmp -fno-inline -o ./builds/Alt14
+<<COMMENT2
 
-#g++ run.cpp ./c2_1/matmul.cpp ../auxiliaries/auxiliaries.cpp ./tools.cpp -I ./c2_1/ -I ../auxiliaries --std=c++14 -O0 -fopenmp -o ./builds/c2_1
-#g++ run.cpp ./c2_1/matmul.cpp ../auxiliaries/auxiliaries.cpp ./tools.cpp -I ./c2_1/ -I ../auxiliaries --std=c++14 -O2 -fopenmp -o ./builds/c2_1_O2
-#g++ run.cpp ./c2_1/matmul.cpp ../auxiliaries/auxiliaries.cpp ./tools.cpp -I ./c2_1/ -I ../auxiliaries --std=c++14 -O0 -fopenmp -fopenmp-simd -o ./builds/c2_1_simd
-#g++ run.cpp ./c2_1/matmul.cpp ../auxiliaries/auxiliaries.cpp ./tools.cpp -I ./c2_1/ -I ../auxiliaries --std=c++14 -O2 -fopenmp -fopenmp-simd -o ./builds/c2_1_O2_simd
-#
-#g++ run.cpp ./c3/matmul.cpp ../auxiliaries/auxiliaries.cpp ./tools.cpp -I ./c3/ -I ../auxiliaries -fno-stack-protector -foffload=nvptx-none -Wall -Wextra --std=c++14 -O0 -fopenmp -o ./builds/c3
-#g++ run.cpp ./c3/matmul.cpp ../auxiliaries/auxiliaries.cpp ./tools.cpp -I ./c3/ -I ../auxiliaries -fno-stack-protector -foffload=nvptx-none="-O2" -Wall -Wextra --std=c++14 -O2 -fopenmp -o ./builds/c3_O2
+g++ run.cpp ../auxiliaries/auxiliaries.cpp tools.cpp c3_4/matmul.cpp -I c3_4/ -I ../auxiliaries/ -Wall -Wextra -std=c++14\
+    -fopt-info-vec=builds/alt15.log -O2 -foffload=nvptx-none="-O2" -fno-stack-protector -fno-inline -ftree-vectorize -fopenmp -o ./builds/Alt15
+g++ run.cpp ../auxiliaries/auxiliaries.cpp tools.cpp c3_4/matmul.cpp -I c3_4/ -I ../auxiliaries/ -Wall -Wextra -std=c++14\
+    -fopt-info-vec=builds/alt16.log -O2 -foffload=nvptx-none="-O2" -fno-stack-protector -fno-tree-vectorize -fopenmp -fno-inline -o ./builds/Alt16
 
-#g++ run.cpp ./c3_1/matmul.cpp ../auxiliaries/auxiliaries.cpp ./tools.cpp -I ./c3_1/ -I ../auxiliaries -fno-stack-protector -foffload=nvptx-none -Wall -Wextra --std=c++14 -O0 -fopenmp -o ./builds/c3_1
-#g++ run.cpp ./c3_1/matmul.cpp ../auxiliaries/auxiliaries.cpp ./tools.cpp -I ./c3_1/ -I ../auxiliaries -fno-stack-protector -foffload=nvptx-none="-O2" -Wall -Wextra --std=c++14 -O2 -fopenmp -o ./builds/c3_1_O2
+g++ run.cpp ../auxiliaries/auxiliaries.cpp tools.cpp c3_12/matmul.cpp -I c3_12/ -I ../auxiliaries/ -Wall -Wextra -std=c++14\
+    -fopt-info-vec=builds/alt17.log -O2 -foffload=nvptx-none="-O2" -fno-stack-protector -fno-inline -ftree-vectorize -fopenmp -o ./builds/Alt17
+g++ run.cpp ../auxiliaries/auxiliaries.cpp tools.cpp c3_12/matmul.cpp -I c3_12/ -I ../auxiliaries/ -Wall -Wextra -std=c++14\
+    -fopt-info-vec=builds/alt18.log -O2 -foffload=nvptx-none="-O2" -fno-stack-protector -fno-tree-vectorize -fopenmp -fno-inline -o ./builds/Alt18
 
-#g++ run.cpp ./c3_2/matmul.cpp ../auxiliaries/auxiliaries.cpp ./tools.cpp -I ./c3_2/ -I ../auxiliaries -fno-stack-protector -foffload=nvptx-none -Wall -Wextra --std=c++14 -O0 -fopenmp -o ./builds/c3_2
-#g++ run.cpp ./c3_2/matmul.cpp ../auxiliaries/auxiliaries.cpp ./tools.cpp -I ./c3_2/ -I ../auxiliaries -fno-stack-protector -foffload=nvptx-none="-O2" -Wall -Wextra --std=c++14 -O2 -fopenmp -o ./builds/c3_2_O2
-
-#g++ run.cpp ./c3_3/matmul.cpp ../auxiliaries/auxiliaries.cpp ./tools.cpp -I ./c3_3/ -I ../auxiliaries -fno-stack-protector -foffload=nvptx-none -Wall -Wextra --std=c++14 -O0 -fopenmp -o ./builds/c3_3
-#g++ run.cpp ./c3_3/matmul.cpp ../auxiliaries/auxiliaries.cpp ./tools.cpp -I ./c3_3/ -I ../auxiliaries -fno-stack-protector -foffload=nvptx-none="-O2" -Wall -Wextra --std=c++14 -O2 -fopenmp -o ./builds/c3_3_O2
-#g++ run.cpp ./c3_3/matmul.cpp ../auxiliaries/auxiliaries.cpp ./tools.cpp -I ./c3_3/ -I ../auxiliaries -fno-stack-protector -foffload=nvptx-none -Wall -Wextra --std=c++14 -O0 -fopenmp -fopenmp-simd -o ./builds/c3_3_simd
-#g++ run.cpp ./c3_3/matmul.cpp ../auxiliaries/auxiliaries.cpp ./tools.cpp -I ./c3_3/ -I ../auxiliaries -fno-stack-protector -foffload=nvptx-none="-O2" -Wall -Wextra --std=c++14 -O2 -fopenmp -fopenmp-simd -o ./builds/c3_3_O2_simd
-
-#g++ run.cpp ./c3_4/matmul.cpp ../auxiliaries/auxiliaries.cpp ./tools.cpp -I ./c3_4/ -I ../auxiliaries -fno-stack-protector -foffload=nvptx-none -Wall -Wextra --std=c++14 -O0 -fopenmp -o ./builds/c3_4
-#g++ run.cpp ./c3_4/matmul.cpp ../auxiliaries/auxiliaries.cpp ./tools.cpp -I ./c3_4/ -I ../auxiliaries -fno-stack-protector -foffload=nvptx-none="-O2" -Wall -Wextra --std=c++14 -O2 -fopenmp -o ./builds/c3_4_O2
-#
-#g++ run.cpp ./c3_5/matmul.cpp ../auxiliaries/auxiliaries.cpp ./tools.cpp -I ./c3_5/ -I ../auxiliaries -fno-stack-protector -foffload=nvptx-none -Wall -Wextra --std=c++14 -O0 -fopenmp -o ./builds/c3_5
-#g++ run.cpp ./c3_5/matmul.cpp ../auxiliaries/auxiliaries.cpp ./tools.cpp -I ./c3_5/ -I ../auxiliaries -fno-stack-protector -foffload=nvptx-none="-O2" -Wall -Wextra --std=c++14 -O2 -fopenmp -o ./builds/c3_5_O2
-#g++ run.cpp ./c3_5/matmul.cpp ../auxiliaries/auxiliaries.cpp ./tools.cpp -I ./c3_5/ -I ../auxiliaries -fno-stack-protector -foffload=nvptx-none -Wall -Wextra --std=c++14 -O0 -fopenmp -fopenmp-simd -o ./builds/c3_5_simd
-#g++ run.cpp ./c3_5/matmul.cpp ../auxiliaries/auxiliaries.cpp ./tools.cpp -I ./c3_5/ -I ../auxiliaries -fno-stack-protector -foffload=nvptx-none="-O2" -Wall -Wextra --std=c++14 -O2 -fopenmp -fopenmp-simd -o ./builds/c3_5_O2_simd
-
-#g++ run.cpp ./c3_6/matmul.cpp ../auxiliaries/auxiliaries.cpp ./tools.cpp -I ./c3_6/ -I ../auxiliaries -fno-stack-protector -foffload=nvptx-none -Wall -Wextra --std=c++14 -O0 -fopenmp -o ./builds/c3_6
-#g++ run.cpp ./c3_6/matmul.cpp ../auxiliaries/auxiliaries.cpp ./tools.cpp -I ./c3_6/ -I ../auxiliaries -fno-stack-protector -foffload=nvptx-none="-O2" -Wall -Wextra --std=c++14 -O2 -fopenmp -o ./builds/c3_6_O2
-
-#g++ run.cpp ./c3_7/matmul.cpp ../auxiliaries/auxiliaries.cpp ./tools.cpp -I ./c3_7/ -I ../auxiliaries -fno-stack-protector -foffload=nvptx-none -Wall -Wextra --std=c++14 -O0 -fopenmp -o ./builds/c3_7
-#g++ run.cpp ./c3_7/matmul.cpp ../auxiliaries/auxiliaries.cpp ./tools.cpp -I ./c3_7/ -I ../auxiliaries -fno-stack-protector -foffload=nvptx-none="-O2" -Wall -Wextra --std=c++14 -O2 -fopenmp -o ./builds/c3_7_O2
-
-#g++ run.cpp ./c3_8/matmul.cpp ../auxiliaries/auxiliaries.cpp ./tools.cpp -I ./c3_8/ -I ../auxiliaries -fno-stack-protector -foffload=nvptx-none -Wall -Wextra --std=c++14 -O0 -fopenmp -o ./builds/c3_8
-#g++ run.cpp ./c3_8/matmul.cpp ../auxiliaries/auxiliaries.cpp ./tools.cpp -I ./c3_8/ -I ../auxiliaries -fno-stack-protector -foffload=nvptx-none="-O2" -Wall -Wextra --std=c++14 -O2 -fopenmp -o ./builds/c3_8_O2
-#
-#g++ run.cpp ./c3_9/matmul.cpp ../auxiliaries/auxiliaries.cpp ./tools.cpp -I ./c3_9/ -I ../auxiliaries -fno-stack-protector -foffload=nvptx-none -Wall -Wextra --std=c++14 -O0 -fopenmp -o ./builds/c3_9
-#g++ run.cpp ./c3_9/matmul.cpp ../auxiliaries/auxiliaries.cpp ./tools.cpp -I ./c3_9/ -I ../auxiliaries -fno-stack-protector -foffload=nvptx-none="-O2" -Wall -Wextra --std=c++14 -O2 -fopenmp -o ./builds/c3_9_O2
-
-#g++ run.cpp ./c3_10/matmul.cpp ../auxiliaries/auxiliaries.cpp ./tools.cpp -I ./c3_10/ -I ../auxiliaries -fno-stack-protector -foffload=nvptx-none -Wall -Wextra --std=c++14 -O0 -fopenmp -o ./builds/c3_10
-#g++ run.cpp ./c3_10/matmul.cpp ../auxiliaries/auxiliaries.cpp ./tools.cpp -I ./c3_10/ -I ../auxiliaries -fno-stack-protector -foffload=nvptx-none="-O2" -Wall -Wextra --std=c++14 -O2 -fopenmp -o ./builds/c3_10_O2
-
-#g++ run.cpp ./c3_11/matmul.cpp ../auxiliaries/auxiliaries.cpp ./tools.cpp -I ./c3_11/ -I ../auxiliaries -fno-stack-protector -foffload=nvptx-none -Wall -Wextra --std=c++14 -O0 -fopenmp -o ./builds/c3_11
-#g++ run.cpp ./c3_11/matmul.cpp ../auxiliaries/auxiliaries.cpp ./tools.cpp -I ./c3_11/ -I ../auxiliaries -fno-stack-protector -foffload=nvptx-none="-O2" -Wall -Wextra --std=c++14 -O2 -fopenmp -o ./builds/c3_11_O2
-
-#g++ run.cpp ./c3_12/matmul.cpp ../auxiliaries/auxiliaries.cpp ./tools.cpp -I ./c3_12/ -I ../auxiliaries -fno-stack-protector -foffload=nvptx-none -Wall -Wextra --std=c++14 -O0 -fopenmp -o ./builds/c3_12
-#g++ run.cpp ./c3_12/matmul.cpp ../auxiliaries/auxiliaries.cpp ./tools.cpp -I ./c3_12/ -I ../auxiliaries -fno-stack-protector -foffload=nvptx-none="-O2" -Wall -Wextra --std=c++14 -O2 -fopenmp -o ./builds/c3_12_O2
-
-g++ run.cpp ./c3_13/matmul.cpp ../auxiliaries/auxiliaries.cpp ./tools.cpp -I ./c3_13/ -I ../auxiliaries -fno-stack-protector -foffload=nvptx-none -Wall -Wextra --std=c++14 -O0 -fopenmp -o ./builds/c3_13
-g++ run.cpp ./c3_13/matmul.cpp ../auxiliaries/auxiliaries.cpp ./tools.cpp -I ./c3_13/ -I ../auxiliaries -fno-stack-protector -foffload=nvptx-none="-O2" -Wall -Wextra --std=c++14 -O2 -fopenmp -o ./builds/c3_13_O2
-#
-#g++ run.cpp ./c4/matmul.cpp ../auxiliaries/auxiliaries.cpp ./tools.cpp -I ./c4/ -I ../auxiliaries --std=c++14 -O0 -fopenmp -o ./builds/c4_O0
-#g++ run.cpp ./c4/matmul.cpp ../auxiliaries/auxiliaries.cpp ./tools.cpp -I ./c4/ -I ../auxiliaries --std=c++14 -O2 -fopenmp -o ./builds/c4_O2
+g++ run.cpp ../auxiliaries/auxiliaries.cpp tools.cpp c4/matmul.cpp -I c4/ -I ../auxiliaries/ -Wall -Wextra -std=c++14\
+    -fopt-info-vec=builds/alt19.log -O2 -foffload=nvptx-none="-O2" -fno-stack-protector -fno-inline -ftree-vectorize -fopenmp -o ./builds/Alt19
+g++ run.cpp ../auxiliaries/auxiliaries.cpp tools.cpp c4/matmul.cpp -I c4/ -I ../auxiliaries/ -Wall -Wextra -std=c++14\
+    -fopt-info-vec=builds/alt20.log -O2 -foffload=nvptx-none="-O2" -fno-stack-protector -fno-tree-vectorize -fopenmp -fno-inline -o ./builds/Alt20
+g++ run.cpp ../auxiliaries/auxiliaries.cpp tools.cpp c4/matmul.cpp -I c4/ -I ../auxiliaries/ -Wall -Wextra -std=c++14\
+    -fopt-info-vec=builds/alt21.log -O2 -foffload=nvptx-none="-O2" -fno-stack-protector -fopenmp -fno-inline -o ./builds/Alt21
+COMMENT2

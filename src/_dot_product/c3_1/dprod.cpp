@@ -11,16 +11,16 @@ sundiazontai metaksu tous, me ton combiner operator.
 
 /*
 #pragma omp declare target
-extern float mult(float a, float b);
+extern double mult(double a, double b);
 #pragma omp end declare target
 */
 
-float mult(float a, float b) {
+double mult(double a, double b) {
 	return a * b;
 }
 
-float dprod(size_t num, float *a, float *b) {
-	float res = 0.0;
+double dprod(size_t num, double *a, double *b) {
+	double res = 0.0;
 #pragma omp target 
 #pragma omp parallel for reduction(+ : res)
 	for (size_t i = 0; i < num; ++i) {

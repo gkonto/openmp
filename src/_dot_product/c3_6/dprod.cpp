@@ -13,8 +13,8 @@ sundiazontai metaksu tous, me ton combiner operator.
  */
 
 
-float dprod(size_t num, float *a, float *b) {
-	float res = 0.0;
+double dprod(size_t num, double *a, double *b) {
+	double res = 0.0;
 #pragma omp target map(tofrom: res) map(to: a[0:num], b[0:num])
 #pragma omp teams
 #pragma omp distribute reduction(+ : res)

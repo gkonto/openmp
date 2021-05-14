@@ -1,174 +1,192 @@
-# Serial 
-g++ run.cpp ../auxiliaries/auxiliaries.cpp serial_/saxpy.cpp -I serial_/ -I ../auxiliaries/ -fopenmp -Wall -Wextra -o ./builds/serial
-# Serial --std=c++14 -O2
-g++ run.cpp ../auxiliaries/auxiliaries.cpp serial_/saxpy.cpp -I serial_/ -I ../auxiliaries/ -fopenmp -Wall -std=c++14 -O2 -Wextra -o ./builds/serial_O2
+rm -f builds/*
+<<COMMENT2
+# Serial
+#Alt1
+g++ run.cpp ../auxiliaries/auxiliaries.cpp serial_/saxpy.cpp -I serial_/ -I ../auxiliaries/\
+    -fopt-info-vec=builds/alt1.log -fno-inline -fno-tree-vectorize -fopenmp -Wall  -Wextra -std=c++14 -O2 -o ./builds/Alt1
 
-# c1 
-g++ run.cpp ../auxiliaries/auxiliaries.cpp c1/saxpy.cpp -I c1/ -I ../auxiliaries/ -fopenmp -Wall -Wextra -o ./builds/c1
-# c1 --std=c++14 -O2
-g++ run.cpp ../auxiliaries/auxiliaries.cpp c1/saxpy.cpp -I c1/ -I ../auxiliaries/ -fopenmp -Wall -Wextra -std=c++14 -O2 -o ./builds/c1_O2
+#Alt2
+g++ run.cpp ../auxiliaries/auxiliaries.cpp serial_/saxpy.cpp -I serial_/ -I ../auxiliaries/\
+    -fopt-info-vec=builds/alt2.log -fno-inline -ftree-vectorize -fopenmp -Wall  -Wextra -std=c++14 -O2 -o ./builds/Alt2
+#Alt3
+g++ run.cpp ../auxiliaries/auxiliaries.cpp serial_/saxpy.cpp -I serial_/ -I ../auxiliaries/\
+    -fopt-info-vec=builds/alt3.log -fno-inline -fopenmp -Wall  -Wextra -std=c++14 -O2 -o ./builds/Alt3
 
-# c1_1
-g++ run_padding_struct.cpp ../auxiliaries/auxiliaries.cpp c1_1/saxpy.cpp -I c1_1/ -I ../auxiliaries/ -fopenmp -Wall -Wextra -o ./builds/c1_1
-# c1_1 --std=c++14 -O2
-g++ run_padding_struct.cpp ../auxiliaries/auxiliaries.cpp c1_1/saxpy.cpp -I c1_1/ -I ../auxiliaries/ -fopenmp -Wall -Wextra -std=c++14 -O2 -o ./builds/c1_1_O2
 
-# c2 
-g++ run.cpp ../auxiliaries/auxiliaries.cpp c2/saxpy.cpp -I c2/ -I ../auxiliaries/ -fopenmp -Wall -Wextra -o ./builds/c2
-# c2  simd
-g++ run.cpp ../auxiliaries/auxiliaries.cpp c2/saxpy.cpp -I c2/ -I ../auxiliaries/ -fopenmp -fopenmp-simd -Wall -Wextra -o ./builds/c2_simd
-# c2 --std=c++14 -O2
-g++ run.cpp ../auxiliaries/auxiliaries.cpp c2/saxpy.cpp -I c2/ -I ../auxiliaries/ -fopenmp -Wall -Wextra -std=c++14 -O2 -o ./builds/c2_O2
-# c2 --std=c++14 -O2 -fopenmp-simd
-g++ run.cpp ../auxiliaries/auxiliaries.cpp c2/saxpy.cpp -I c2/ -I ../auxiliaries/ -fopenmp -fopenmp-simd -Wall -Wextra -std=c++14 -O2 -o ./builds/c2_O2_simd
 
-# c2_1
-g++ run.cpp ../auxiliaries/auxiliaries.cpp c2_1/saxpy.cpp -I c2_1/ -I ../auxiliaries/ -fopenmp -Wall -Wextra -o ./builds/c2_1
-# c2_1  simd
-g++ run.cpp ../auxiliaries/auxiliaries.cpp c2_1/saxpy.cpp -I c2_1/ -I ../auxiliaries/ -fopenmp -fopenmp-simd -Wall -Wextra -o ./builds/c2_1_simd
-# c2_1 --std=c++14 -O2
-g++ run.cpp ../auxiliaries/auxiliaries.cpp c2_1/saxpy.cpp -I c2_1/ -I ../auxiliaries/ -fopenmp -Wall -Wextra -std=c++14 -O2 -o ./builds/c2_1_O2
-# c2_1 --std=c++14 -O2 -fopenmp-simd
-g++ run.cpp ../auxiliaries/auxiliaries.cpp c2_1/saxpy.cpp -I c2_1/ -I ../auxiliaries/ -fopenmp -fopenmp-simd -Wall -Wextra -std=c++14 -O2 -o ./builds/c2_1_O2_simd
+#Alt4
+g++ run.cpp ../auxiliaries/auxiliaries.cpp c1/saxpy.cpp -I c1/ -I ../auxiliaries/\
+    -fopt-info-vec=builds/vec_no_info.log -fno-inline -fno-tree-vectorize -fopenmp -Wall  -Wextra -std=c++14 -O2 -o ./builds/alt4
 
-# c2_2
-g++ run.cpp ../auxiliaries/auxiliaries.cpp c2_2/saxpy.cpp -I c2_2/ -I ../auxiliaries/ -fopenmp -Wall -Wextra -o ./builds/c2_2
-# c2_2  simd
-g++ run.cpp ../auxiliaries/auxiliaries.cpp c2_2/saxpy.cpp -I c2_2/ -I ../auxiliaries/ -fopenmp -fopenmp-simd -Wall -Wextra -o ./builds/c2_2_simd
-# c2_2 --std=c++14 -O2
-g++ run.cpp ../auxiliaries/auxiliaries.cpp c2_2/saxpy.cpp -I c2_2/ -I ../auxiliaries/ -fopenmp -Wall -Wextra -std=c++14 -O2 -o ./builds/c2_2_O2
-# c2_2 --std=c++14 -O2 -fopenmp-simd
-g++ run.cpp ../auxiliaries/auxiliaries.cpp c2_2/saxpy.cpp -I c2_2/ -I ../auxiliaries/ -fopenmp -fopenmp-simd -Wall -Wextra -std=c++14 -O2 -o ./builds/c2_2_O2_simd
+#Alt5
+g++ run.cpp ../auxiliaries/auxiliaries.cpp c1/saxpy.cpp -I c1/ -I ../auxiliaries/\
+    -fopt-info-vec=builds/vec_info.log -fno-inline -ftree-vectorize -fopenmp -Wall  -Wextra -std=c++14 -O2 -o ./builds/alt5
+
+
+#Alt6
+g++ run_padding_struct.cpp ../auxiliaries/auxiliaries.cpp c1_1/saxpy.cpp -I c1_1/ -I ../auxiliaries/\
+    -fopt-info-vec=builds/vec_no_info.log -fno-inline -fno-tree-vectorize -fopenmp -Wall  -Wextra -std=c++14 -O2 -o ./builds/Alt6
+#Alt7
+g++ run_padding_struct.cpp ../auxiliaries/auxiliaries.cpp c1_1/saxpy.cpp -I c1_1/ -I ../auxiliaries/\
+    -fopt-info-vec=builds/vec_info.log -fno-inline -ftree-vectorize -fopenmp -Wall  -Wextra -std=c++14 -O2 -o ./builds/Alt7
+
+#Alt8
+g++ run.cpp ../auxiliaries/auxiliaries.cpp c2/saxpy.cpp -I c2/ -I ../auxiliaries/\
+    -fopt-info-vec=builds/alt7.log -fno-inline -fno-tree-vectorize -fopenmp -Wall  -Wextra -std=c++14 -O2 -o ./builds/Alt8
+#Alt9
+g++ run.cpp ../auxiliaries/auxiliaries.cpp c2/saxpy.cpp -I c2/ -I ../auxiliaries/\
+    -fopt-info-vec=builds/alt8.log -fno-inline -ftree-vectorize -fopenmp -Wall  -Wextra -std=c++14 -O2 -o ./builds/Alt9
+#Alt10
+g++ run.cpp ../auxiliaries/auxiliaries.cpp c2/saxpy.cpp -I c2/ -I ../auxiliaries/\
+    -fopt-info-vec=builds/alt9.log -fno-inline  -fopenmp -Wall  -Wextra -std=c++14 -O2 -o ./builds/Alt10
+
+#Alt11
+g++ run.cpp ../auxiliaries/auxiliaries.cpp c2_0_1/saxpy.cpp -I c2_0_1/ -I ../auxiliaries/\
+    -fopt-info-vec=builds/alt11.log -fno-inline -fno-tree-vectorize -fopenmp -fopenmp-simd  -Wall  -Wextra -std=c++14 -O2 -o ./builds/Alt11
+#Alt12
+g++ run.cpp ../auxiliaries/auxiliaries.cpp c2_0_1/saxpy.cpp -I c2_0_1/ -I ../auxiliaries/\
+    -fopt-info-vec=builds/alt12.log -fno-inline -ftree-vectorize -fopenmp -fopenmp-simd -Wall -Wextra -std=c++14 -O2 -o ./builds/Alt12
+#Alt13
+g++ run.cpp ../auxiliaries/auxiliaries.cpp c2_0_1/saxpy.cpp -I c2_0_1/ -I ../auxiliaries/\
+    -fopt-info-vec=builds/alt13.log -fno-inline -fopenmp -fopenmp-simd -Wall -Wextra -std=c++14 -O2 -o ./builds/Alt13
+
+#Alt14
+g++ run.cpp ../auxiliaries/auxiliaries.cpp c2_1/saxpy.cpp -I c2_1/ -I ../auxiliaries/\
+    -fopt-info-vec=builds/alt14.log -fno-inline -fno-tree-vectorize -fopenmp -fopenmp-simd  -Wall  -Wextra -std=c++14 -O2 -o ./builds/Alt14
+#Alt15
+g++ run.cpp ../auxiliaries/auxiliaries.cpp c2_1/saxpy.cpp -I c2_1/ -I ../auxiliaries/\
+    -fopt-info-vec=builds/alt15.log -fno-inline -ftree-vectorize -fopenmp -fopenmp-simd -Wall -Wextra -std=c++14 -O2 -o ./builds/Alt15
+#Alt16
+g++ run.cpp ../auxiliaries/auxiliaries.cpp c2_1/saxpy.cpp -I c2_1/ -I ../auxiliaries/\
+    -fopt-info-vec=builds/alt16.log -fno-inline -fopenmp -fopenmp-simd -Wall -Wextra -std=c++14 -O2 -o ./builds/Alt16
+
+#Alt17
+g++ run.cpp ../auxiliaries/auxiliaries.cpp c2_2/saxpy.cpp -I c2_2/ -I ../auxiliaries/\
+    -fopt-info-vec=builds/alt17.log -fno-inline -fno-tree-vectorize -fopenmp -fopenmp-simd  -Wall  -Wextra -std=c++14 -O2 -o ./builds/Alt17
+#Alt18
+g++ run.cpp ../auxiliaries/auxiliaries.cpp c2_2/saxpy.cpp -I c2_2/ -I ../auxiliaries/\
+    -fopt-info-vec=builds/alt18.log -fno-inline -ftree-vectorize -fopenmp -fopenmp-simd -Wall -Wextra -std=c++14 -O2 -o ./builds/Alt18
+#Alt19
+g++ run.cpp ../auxiliaries/auxiliaries.cpp c2_2/saxpy.cpp -I c2_2/ -I ../auxiliaries/\
+    -fopt-info-vec=builds/alt19.log -fno-inline -fopenmp -fopenmp-simd -Wall -Wextra -std=c++14 -O2 -o ./builds/Alt19
+
 
 # c3
 g++ run.cpp ../auxiliaries/auxiliaries.cpp c3/saxpy.cpp -I c3/ -I ../auxiliaries/ -fopenmp -Wall -Wextra -o ./builds/c3
 # c3  simd
 g++ run.cpp ../auxiliaries/auxiliaries.cpp c3/saxpy.cpp -I c3/ -I ../auxiliaries/ -fopenmp -fopenmp-simd -Wall -Wextra -o ./builds/c3_simd
+g++ run.cpp ../auxiliaries/auxiliaries.cpp c3/saxpy.cpp -I c3/ -I ../auxiliaries/ -fopenmp -fopenmp-simd -Wall -Wextra -fno-tree-vectorize -o ./builds/c3_simd_no_vector
+
 # c3 --std=c++14 -O2
-g++ run.cpp ../auxiliaries/auxiliaries.cpp c3/saxpy.cpp -I c3/ -I ../auxiliaries/ -fopenmp -Wall -Wextra -std=c++14 -O2 -o ./builds/c3_O2
+g++ run.cpp ../auxiliaries/auxiliaries.cpp c3/saxpy.cpp -I c3/ -I ../auxiliaries/ -fopenmp -Wall -Wextra -std=c++14 -O3 -o ./builds/c3_O3
 # c3 --std=c++14 -O2 -fopenmp-simd
-g++ run.cpp ../auxiliaries/auxiliaries.cpp c3/saxpy.cpp -I c3/ -I ../auxiliaries/ -fopenmp -fopenmp-simd -Wall -Wextra -std=c++14 -O2 -o ./builds/c3_O2_simd
+g++ run.cpp ../auxiliaries/auxiliaries.cpp c3/saxpy.cpp -I c3/ -I ../auxiliaries/ -fopenmp -fopenmp-simd -Wall -Wextra -std=c++14 -O3 -o ./builds/c3_O3_simd
+g++ run.cpp ../auxiliaries/auxiliaries.cpp c3/saxpy.cpp -I c3/ -I ../auxiliaries/ -fopenmp -fopenmp-simd -Wall -Wextra -std=c++14 -fno-tree-vectorize -O3 -o ./builds/c3_O3_simd_no_vector
 
-# c4_1
-g++ run.cpp ../auxiliaries/auxiliaries.cpp c4_1/saxpy.cpp -I c4_1/ -I ../auxiliaries/ -fno-stack-protector  -foffload=nvptx-none -fopenmp -Wall -Wextra -o ./builds/c4_1
-# c4_1 --std=c++14 -O2
-g++ run.cpp ../auxiliaries/auxiliaries.cpp c4_1/saxpy.cpp -I c4_1/ -I ../auxiliaries/ -fopenmp -Wall -Wextra -std=c++14 -O2 -fno-stack-protector -foffload=nvptx-none="-O2" -o ./builds/c4_1_O2
+g++ run.cpp ../auxiliaries/auxiliaries.cpp c4_1/saxpy.cpp -I c4_1/ -I ../auxiliaries/ -Wall -Wextra\
+    -fopt-info-vec=builds/alt20.log -O2 -fno-tree-vectorize -fno-inline -fno-stack-protector\
+    -foffload=nvptx-none="-O2 -fno-tree-vectorize -fno-inline" -fopenmp -o ./builds/Alt20
+g++ run.cpp ../auxiliaries/auxiliaries.cpp c4_1/saxpy.cpp -I c4_1/ -I ../auxiliaries/ -Wall -Wextra\
+    -fopt-info-vec=builds/alt21.log -O2 -ftree-vectorize -fno-inline -fno-stack-protector\
+    -foffload=nvptx-none="-O2 -ftree-vectorize -fno-inline" -fopenmp -o ./builds/Alt21
 
-# c4_1_0
-g++ run.cpp ../auxiliaries/auxiliaries.cpp c4_1_0/saxpy.cpp -I c4_1_0/ -I ../auxiliaries/ -fno-stack-protector  -foffload=nvptx-none -fopenmp -Wall -Wextra -o ./builds/c4_1_0
-# c4_1_0 simd
-g++ run.cpp ../auxiliaries/auxiliaries.cpp c4_1_0/saxpy.cpp -I c4_1_0/ -I ../auxiliaries/ -fno-stack-protector -fopenmp-simd  -foffload=nvptx-none -fopenmp -Wall -Wextra -o ./builds/c4_1_0_simd
-# c4_1_0 --std=c++14 -O2
-g++ run.cpp ../auxiliaries/auxiliaries.cpp c4_1_0/saxpy.cpp -I c4_1_0/ -I ../auxiliaries/ -fno-stack-protector  -foffload=nvptx-none="-O2" --std=c++14 -O2 -fopenmp -Wall -Wextra -o ./builds/c4_1_0_O2
-# c4_1_0 simd -std=c++14 -O2
-g++ run.cpp ../auxiliaries/auxiliaries.cpp c4_1_0/saxpy.cpp -I c4_1_0/ -I ../auxiliaries/ -fno-stack-protector -fopenmp-simd --std=c++14 -O2 -foffload=nvptx-none="-O2" -fopenmp -Wall -Wextra -o ./builds/c4_1_0_simd_O2
+
+g++ run.cpp ../auxiliaries/auxiliaries.cpp c4_1_0/saxpy.cpp -I c4_1_0/ -I ../auxiliaries/ -Wall -Wextra\
+    -fopt-info-vec=builds/alt22.log -O2 -fno-tree-vectorize -fno-inline -fno-stack-protector\
+    -foffload=nvptx-none="-O2 -fno-tree-vectorize -fno-inline" -fopenmp -o ./builds/Alt22
+g++ run.cpp ../auxiliaries/auxiliaries.cpp c4_1_0/saxpy.cpp -I c4_1_0/ -I ../auxiliaries/ -Wall -Wextra\
+    -fopt-info-vec=builds/alt23.log -O2 -ftree-vectorize -fno-inline -fno-stack-protector\
+    -foffload=nvptx-none="-O2 -ftree-vectorize -fno-inline" -fopenmp -o ./builds/Alt23
+g++ run.cpp ../auxiliaries/auxiliaries.cpp c4_1_0/saxpy.cpp -I c4_1_0/ -I ../auxiliaries/ -Wall -Wextra\
+    -fopt-info-vec=builds/alt24.log -O2  -fno-inline -fno-stack-protector\
+    -foffload=nvptx-none="-O2  -fno-inline" -fopenmp -o ./builds/Alt24
 
 # c4_1_1
-#g++ run.cpp ../auxiliaries/auxiliaries.cpp c4_1_1/saxpy.cpp -I c4_1_1/ -I ../auxiliaries/ -fno-stack-protector  -foffload=nvptx-none -fopenmp -Wall -Wextra -o ./builds/c4_1_1
-# c4_1_1 --std=c++14 -O2
-#g++ run.cpp ../auxiliaries/auxiliaries.cpp c4_1_1/saxpy.cpp -I c4_1_1/ -I ../auxiliaries/ -fno-stack-protector --std=c++14 -O2 -foffload=nvptx-none="-O2" -fopenmp -Wall -Wextra -o ./builds/c4_1_1_O2
 
-# c4_1_2
-g++ run.cpp ../auxiliaries/auxiliaries.cpp c4_1_2/saxpy.cpp -I c4_1_2/ -I ../auxiliaries/ -fno-stack-protector  -foffload=nvptx-none -fopenmp -Wall -Wextra -o ./builds/c4_1_2
-# c4_1_2 --std=c++14 -O2
-g++ run.cpp ../auxiliaries/auxiliaries.cpp c4_1_2/saxpy.cpp -I c4_1_2/ -I ../auxiliaries/ -fno-stack-protector --std=c++14 -O2 -foffload=nvptx-none="-O2" -fopenmp -Wall -Wextra -o ./builds/c4_1_2_O2
+g++ run.cpp ../auxiliaries/auxiliaries.cpp c4_1_2/saxpy.cpp -I c4_1_2/ -I ../auxiliaries/ -Wall -Wextra\
+    -fopt-info-vec=builds/alt25.log -O2 -fno-tree-vectorize -fno-inline -fno-stack-protector\
+    -foffload=nvptx-none="-O2 -fno-tree-vectorize -fno-inline" -fopenmp -o ./builds/Alt25
+g++ run.cpp ../auxiliaries/auxiliaries.cpp c4_1_2/saxpy.cpp -I c4_1_2/ -I ../auxiliaries/ -Wall -Wextra\
+    -fopt-info-vec=builds/alt26.log -O2 -ftree-vectorize -fno-inline -fno-stack-protector\
+    -foffload=nvptx-none="-O2 -ftree-vectorize -fno-inline" -fopenmp -o ./builds/Alt26
 
-# c4_1_3
-g++ run.cpp ../auxiliaries/auxiliaries.cpp c4_1_3/saxpy.cpp -I c4_1_3/ -I ../auxiliaries/ -fno-stack-protector  -foffload=nvptx-none -fopenmp -Wall -Wextra -o ./builds/c4_1_3
-# c4_1_3 simd
-g++ run.cpp ../auxiliaries/auxiliaries.cpp c4_1_3/saxpy.cpp -I c4_1_3/ -I ../auxiliaries/ -fno-stack-protector -fopenmp-simd  -foffload=nvptx-none -fopenmp -Wall -Wextra -o ./builds/c4_1_3_simd
-# c4_1_3 --std=c++14 -O2
-g++ run.cpp ../auxiliaries/auxiliaries.cpp c4_1_3/saxpy.cpp -I c4_1_3/ -I ../auxiliaries/ -fno-stack-protector  -foffload=nvptx-none="-O2" --std=c++14 -O2 -fopenmp -Wall -Wextra -o ./builds/c4_1_3_O2
-# c4_1_3 simd -std=c++14 -O2
-g++ run.cpp ../auxiliaries/auxiliaries.cpp c4_1_3/saxpy.cpp -I c4_1_3/ -I ../auxiliaries/ -fno-stack-protector -fopenmp-simd --std=c++14 -O2 -foffload=nvptx-none="-O2" -fopenmp -Wall -Wextra -o ./builds/c4_1_3_simd_O2
+COMMENT2
+g++ run.cpp ../auxiliaries/auxiliaries.cpp c4_1_3/saxpy.cpp -I c4_1_3/ -I ../auxiliaries/ -Wall -Wextra\
+    -fopt-info-vec=builds/alt27.log -O2 -fno-tree-vectorize -fno-inline -fno-stack-protector\
+    -foffload=nvptx-none="-O2 -fno-tree-vectorize -fno-inline" -fopenmp -o ./builds/Alt27
+g++ run.cpp ../auxiliaries/auxiliaries.cpp c4_1_3/saxpy.cpp -I c4_1_3/ -I ../auxiliaries/ -Wall -Wextra\
+    -fopt-info-vec=builds/alt28.log -O2 -ftree-vectorize -fno-inline -fno-stack-protector\
+    -foffload=nvptx-none="-O2 -ftree-vectorize -fno-inline" -fopenmp -o ./builds/Alt28
+g++ run.cpp ../auxiliaries/auxiliaries.cpp c4_1_3/saxpy.cpp -I c4_1_3/ -I ../auxiliaries/ -Wall -Wextra\
+    -fopt-info-vec=builds/alt29.log -O2 -fno-inline -fno-stack-protector\
+    -foffload=nvptx-none="-O2 -fno-inline" -fopenmp -o ./builds/Alt29
+<<COMMENT1
 
 # c4_1_4
-#g++ run.cpp ../auxiliaries/auxiliaries.cpp c4_1_4/saxpy.cpp -I c4_1_4/ -I ../auxiliaries/ -fno-stack-protector  -foffload=nvptx-none -fopenmp -Wall -Wextra -o ./builds/c4_1_4
-# c4_1_4 --std=c++14 -O2
-#g++ run.cpp ../auxiliaries/auxiliaries.cpp c4_1_4/saxpy.cpp -I c4_1_4/ -I ../auxiliaries/ -fno-stack-protector --std=c++14 -O2 -foffload=nvptx-none="-O2" -fopenmp -Wall -Wextra -o ./builds/c4_1_4_O2
-
 # c4_1_5
-#g++ run.cpp ../auxiliaries/auxiliaries.cpp c4_1_5/saxpy.cpp -I c4_1_5/ -I ../auxiliaries/ -fno-stack-protector  -foffload=nvptx-none -fopenmp -Wall -Wextra -o ./builds/c4_1_5
-# c4_1_5 simd
-#g++ run.cpp ../auxiliaries/auxiliaries.cpp c4_1_5/saxpy.cpp -I c4_1_5/ -I ../auxiliaries/ -fno-stack-protector -fopenmp-simd  -foffload=nvptx-none -fopenmp -Wall -Wextra -o ./builds/c4_1_5_simd
-# c4_1_5 --std=c++14 -O2
-#g++ run.cpp ../auxiliaries/auxiliaries.cpp c4_1_5/saxpy.cpp -I c4_1_5/ -I ../auxiliaries/ -fno-stack-protector  -foffload=nvptx-none="-O2" --std=c++14 -O2 -fopenmp -Wall -Wextra -o ./builds/c4_1_5_O2
-# c4_1_5 simd -std=c++14 -O2
-#g++ run.cpp ../auxiliaries/auxiliaries.cpp c4_1_5/saxpy.cpp -I c4_1_5/ -I ../auxiliaries/ -fno-stack-protector -fopenmp-simd --std=c++14 -O2 -foffload=nvptx-none="-O2" -fopenmp -Wall -Wextra -o ./builds/c4_1_5_simd_O2
-
 # c4_1_6
-#g++ run.cpp ../auxiliaries/auxiliaries.cpp c4_1_6/saxpy.cpp -I c4_1_6/ -I ../auxiliaries/ -fno-stack-protector  -foffload=nvptx-none -fopenmp -Wall -Wextra -o ./builds/c4_1_6
-# c4_1_6 simd
-#g++ run.cpp ../auxiliaries/auxiliaries.cpp c4_1_6/saxpy.cpp -I c4_1_6/ -I ../auxiliaries/ -fno-stack-protector -fopenmp-simd  -foffload=nvptx-none -fopenmp -Wall -Wextra -o ./builds/c4_1_6_simd
-# c4_1_6 --std=c++14 -O2
-#g++ run.cpp ../auxiliaries/auxiliaries.cpp c4_1_6/saxpy.cpp -I c4_1_6/ -I ../auxiliaries/ -fno-stack-protector  -foffload=nvptx-none="-O2" --std=c++14 -O2 -fopenmp -Wall -Wextra -o ./builds/c4_1_6_O2
-# c4_1_6 simd -std=c++14 -O2
-#g++ run.cpp ../auxiliaries/auxiliaries.cpp c4_1_6/saxpy.cpp -I c4_1_6/ -I ../auxiliaries/ -fno-stack-protector -fopenmp-simd --std=c++14 -O2 -foffload=nvptx-none="-O2" -fopenmp -Wall -Wextra -o ./builds/c4_1_6_simd_O2
 
-# c4_3
-g++ run.cpp ../auxiliaries/auxiliaries.cpp c4_3/saxpy.cpp -I c4_3/ -I ../auxiliaries/ -fno-stack-protector  -foffload=nvptx-none -fopenmp -Wall -Wextra -o ./builds/c4_3
-# c4_3 --std=c++14 -O2
-g++ run.cpp ../auxiliaries/auxiliaries.cpp c4_3/saxpy.cpp -I c4_3/ -I ../auxiliaries/ -fno-stack-protector --std=c++14 -O2 -foffload=nvptx-none="-O2" -fopenmp -Wall -Wextra -o ./builds/c4_3_O2
+g++ run.cpp ../auxiliaries/auxiliaries.cpp c4_3/saxpy.cpp -I c4_3/ -I ../auxiliaries/ -Wall -Wextra\
+    -fopt-info-vec=builds/alt30.log -O2 -fno-tree-vectorize -fno-inline -fno-stack-protector\
+    -foffload=nvptx-none="-O2 -fno-tree-vectorize -fno-inline" -fopenmp -o ./builds/Alt30
+g++ run.cpp ../auxiliaries/auxiliaries.cpp c4_3/saxpy.cpp -I c4_3/ -I ../auxiliaries/ -Wall -Wextra\
+    -fopt-info-vec=builds/alt31.log -O2 -fno-inline -fno-stack-protector -ftree-vectorize\
+    -foffload=nvptx-none="-O2 -ftree-vectorize -fno-inline" -fopenmp -o ./builds/Alt31
 
-# c4_3_0
-g++ run.cpp ../auxiliaries/auxiliaries.cpp c4_3_0/saxpy.cpp -I c4_3_0/ -I ../auxiliaries/ -fno-stack-protector  -foffload=nvptx-none -fopenmp -Wall -Wextra -o ./builds/c4_3_0
-# c4_3_0 --std=c++14 -O2
-g++ run.cpp ../auxiliaries/auxiliaries.cpp c4_3_0/saxpy.cpp -I c4_3_0/ -I ../auxiliaries/ -fno-stack-protector --std=c++14 -O2 -foffload=nvptx-none="-O2" -fopenmp -Wall -Wextra -o ./builds/c4_3_0_O2
+g++ run.cpp ../auxiliaries/auxiliaries.cpp c4_3_0/saxpy.cpp -I c4_3_0/ -I ../auxiliaries/ -Wall -Wextra\
+    -fopt-info-vec=builds/alt32.log -O2 -fno-tree-vectorize -fno-inline -fno-stack-protector\
+    -foffload=nvptx-none="-O2 -fno-tree-vectorize -fno-inline" -fopenmp -o ./builds/Alt32
+g++ run.cpp ../auxiliaries/auxiliaries.cpp c4_3_0/saxpy.cpp -I c4_3_0/ -I ../auxiliaries/ -Wall -Wextra\
+    -fopt-info-vec=builds/alt33.log -O2 -fno-inline -fno-stack-protector -ftree-vectorize\
+    -foffload=nvptx-none="-O2 -ftree-vectorize -fno-inline" -fopenmp -o ./builds/Alt33
 
 # c4_3_1
-#g++ run.cpp ../auxiliaries/auxiliaries.cpp c4_3_1/saxpy.cpp -I c4_3_1/ -I ../auxiliaries/ -fno-stack-protector  -foffload=nvptx-none -fopenmp -Wall -Wextra -o ./builds/c4_3_1
-# c4_3_1 --std=c++14 -O2
-#g++ run.cpp ../auxiliaries/auxiliaries.cpp c4_3_1/saxpy.cpp -I c4_3_1/ -I ../auxiliaries/ -fno-stack-protector --std=c++14 -O2 -foffload=nvptx-none="-O2" -fopenmp -Wall -Wextra -o ./builds/c4_3_1_O2
-
 # c4_3_2
-#g++ run.cpp ../auxiliaries/auxiliaries.cpp c4_3_2/saxpy.cpp -I c4_3_2/ -I ../auxiliaries/ -fno-stack-protector  -foffload=nvptx-none -fopenmp -Wall -Wextra -o ./builds/c4_3_2
-# c4_3_2 simd
-#g++ run.cpp ../auxiliaries/auxiliaries.cpp c4_3_2/saxpy.cpp -I c4_3_2/ -I ../auxiliaries/ -fno-stack-protector -fopenmp-simd  -foffload=nvptx-none -fopenmp -Wall -Wextra -o ./builds/c4_3_2_simd
-# c4_3_2 --std=c++14 -O2
-#g++ run.cpp ../auxiliaries/auxiliaries.cpp c4_3_2/saxpy.cpp -I c4_3_2/ -I ../auxiliaries/ -fno-stack-protector  -foffload=nvptx-none="-O2" --std=c++14 -O2 -fopenmp -Wall -Wextra -o ./builds/c4_3_2_O2
-# c4_3_2 simd -std=c++14 -O2
-#g++ run.cpp ../auxiliaries/auxiliaries.cpp c4_3_2/saxpy.cpp -I c4_3_2/ -I ../auxiliaries/ -fno-stack-protector -fopenmp-simd --std=c++14 -O2 -foffload=nvptx-none="-O2" -fopenmp -Wall -Wextra -o ./builds/c4_3_2_simd_O2
 
-# c4_3_3
-g++ run.cpp ../auxiliaries/auxiliaries.cpp c4_3_3/saxpy.cpp -I c4_3_3/ -I ../auxiliaries/ -fno-stack-protector  -foffload=nvptx-none -fopenmp -Wall -Wextra -o ./builds/c4_3_3
-# c4_3_3 --std=c++14 -O2
-g++ run.cpp ../auxiliaries/auxiliaries.cpp c4_3_3/saxpy.cpp -I c4_3_3/ -I ../auxiliaries/ -fno-stack-protector --std=c++14 -O2 -foffload=nvptx-none="-O2" -fopenmp -Wall -Wextra -o ./builds/c4_3_3_O2
+g++ run.cpp ../auxiliaries/auxiliaries.cpp c4_3_3/saxpy.cpp -I c4_3_3/ -I ../auxiliaries/ -Wall -Wextra\
+    -fopt-info-vec=builds/alt34.log -O2 -fno-tree-vectorize -fno-inline -fno-stack-protector\
+    -foffload=nvptx-none="-O2 -fno-tree-vectorize -fno-inline" -fopenmp -o ./builds/Alt34
+
+g++ run.cpp ../auxiliaries/auxiliaries.cpp c4_3_3/saxpy.cpp -I c4_3_3/ -I ../auxiliaries/ -Wall -Wextra\
+    -fopt-info-vec=builds/alt35.log -O2 -fno-inline -fno-stack-protector -ftree-vectorize\
+    -foffload=nvptx-none="-O2 -ftree-vectorize -fno-inline" -fopenmp -o ./builds/Alt35
 
 
-# c4_3_4
-g++ run.cpp ../auxiliaries/auxiliaries.cpp c4_3_4/saxpy.cpp -I c4_3_4/ -I ../auxiliaries/ -fno-stack-protector  -foffload=nvptx-none -fopenmp -Wall -Wextra -o ./builds/c4_3_4
-# c4_3_4 simd
-g++ run.cpp ../auxiliaries/auxiliaries.cpp c4_3_4/saxpy.cpp -I c4_3_4/ -I ../auxiliaries/ -fno-stack-protector -fopenmp-simd  -foffload=nvptx-none -fopenmp -Wall -Wextra -o ./builds/c4_3_4_simd
-# c4_3_4 --std=c++14 -O2
-g++ run.cpp ../auxiliaries/auxiliaries.cpp c4_3_4/saxpy.cpp -I c4_3_4/ -I ../auxiliaries/ -fno-stack-protector  -foffload=nvptx-none="-O2" --std=c++14 -O2 -fopenmp -Wall -Wextra -o ./builds/c4_3_4_O2
-# c4_3_4 simd -std=c++14 -O2
-g++ run.cpp ../auxiliaries/auxiliaries.cpp c4_3_4/saxpy.cpp -I c4_3_4/ -I ../auxiliaries/ -fno-stack-protector -fopenmp-simd --std=c++14 -O2 -foffload=nvptx-none="-O2" -fopenmp -Wall -Wextra -o ./builds/c4_3_4_simd_O2
 
+g++ run.cpp ../auxiliaries/auxiliaries.cpp c4_3_4/saxpy.cpp -I c4_3_4/ -I ../auxiliaries/ -Wall -Wextra\
+    -fopt-info-vec=builds/alt36.log -O2 -fno-tree-vectorize -fno-inline -fno-stack-protector\
+    -foffload=nvptx-none="-O2 -fno-tree-vectorize -fno-inline" -fopenmp -o ./builds/Alt36
+g++ run.cpp ../auxiliaries/auxiliaries.cpp c4_3_4/saxpy.cpp -I c4_3_4/ -I ../auxiliaries/ -Wall -Wextra\
+    -fopt-info-vec=builds/alt37.log -O2 -ftree-vectorize -fno-inline -fno-stack-protector\
+    -foffload=nvptx-none="-O2 -ftree-vectorize -fno-inline" -fopenmp -o ./builds/Alt37
+g++ run.cpp ../auxiliaries/auxiliaries.cpp c4_3_4/saxpy.cpp -I c4_3_4/ -I ../auxiliaries/ -Wall -Wextra\
+    -fopt-info-vec=builds/alt38.log -O2 -fno-inline -fno-stack-protector\
+    -foffload=nvptx-none="-O2 -fno-inline" -fopenmp -o ./builds/Alt38
 
 # c4_3_5
-#g++ run.cpp ../auxiliaries/auxiliaries.cpp c4_3_5/saxpy.cpp -I c4_3_5/ -I ../auxiliaries/ -fno-stack-protector  -foffload=nvptx-none -fopenmp -Wall -Wextra -o ./builds/c4_3_5
-# c4_3_5 simd
-#g++ run.cpp ../auxiliaries/auxiliaries.cpp c4_3_5/saxpy.cpp -I c4_3_5/ -I ../auxiliaries/ -fno-stack-protector -fopenmp-simd  -foffload=nvptx-none -fopenmp -Wall -Wextra -o ./builds/c4_3_5_simd
+g++ run.cpp ../auxiliaries/auxiliaries.cpp c4_3_5/saxpy.cpp -I c4_3_5/ -I ../auxiliaries/ -fno-stack-protector  -foffload=nvptx-none -fopenmp -Wall -Wextra -o ./builds/c4_3_5
 # c4_3_5 --std=c++14 -O2
-#g++ run.cpp ../auxiliaries/auxiliaries.cpp c4_3_5/saxpy.cpp -I c4_3_5/ -I ../auxiliaries/ -fno-stack-protector  -foffload=nvptx-none="-O2" --std=c++14 -O2 -fopenmp -Wall -Wextra -o ./builds/c4_3_5_O2
-# c4_3_5 simd -std=c++14 -O2
-#g++ run.cpp ../auxiliaries/auxiliaries.cpp c4_3_5/saxpy.cpp -I c4_3_5/ -I ../auxiliaries/ -fno-stack-protector -fopenmp-simd --std=c++14 -O2 -foffload=nvptx-none="-O2" -fopenmp -Wall -Wextra -o ./builds/c4_3_5_simd_O2
+g++ run.cpp ../auxiliaries/auxiliaries.cpp c4_3_5/saxpy.cpp -I c4_3_5/ -I ../auxiliaries/ -fno-stack-protector  -foffload=nvptx-none="-O3 -fopenmp-simd" --std=c++14 -O3 -fopenmp -Wall -Wextra -o ./builds/c4_3_5_O3
 
 
-# c4_3_6
-#g++ run.cpp ../auxiliaries/auxiliaries.cpp c4_3_6/saxpy.cpp -I c4_3_6/ -I ../auxiliaries/ -fno-stack-protector  -foffload=nvptx-none -fopenmp -Wall -Wextra -o ./builds/c4_3_6
-# c4_3_6 simd
-#g++ run.cpp ../auxiliaries/auxiliaries.cpp c4_3_6/saxpy.cpp -I c4_3_6/ -I ../auxiliaries/ -fno-stack-protector -fopenmp-simd  -foffload=nvptx-none -fopenmp -Wall -Wextra -o ./builds/c4_3_6_simd
-# c4_3_6 --std=c++14 -O2
-#g++ run.cpp ../auxiliaries/auxiliaries.cpp c4_3_6/saxpy.cpp -I c4_3_6/ -I ../auxiliaries/ -fno-stack-protector  -foffload=nvptx-none="-O2" --std=c++14 -O2 -fopenmp -Wall -Wextra -o ./builds/c4_3_6_O2
-# c4_3_6 simd -std=c++14 -O2
-#g++ run.cpp ../auxiliaries/auxiliaries.cpp c4_3_6/saxpy.cpp -I c4_3_6/ -I ../auxiliaries/ -fno-stack-protector -fopenmp-simd --std=c++14 -O2 -foffload=nvptx-none="-O2" -fopenmp -Wall -Wextra -o ./builds/c4_3_6_simd_O2
+g++ run.cpp ../auxiliaries/auxiliaries.cpp c4_3_6/saxpy.cpp -I c4_3_6/ -I ../auxiliaries/ -Wall -Wextra\
+    -fopt-info-vec=builds/alt39.log -O2 -fno-tree-vectorize -fno-inline -fno-stack-protector\
+    -foffload=nvptx-none="-O2 -fno-tree-vectorize -fno-inline" -fopenmp -o ./builds/Alt39
+g++ run.cpp ../auxiliaries/auxiliaries.cpp c4_3_6/saxpy.cpp -I c4_3_6/ -I ../auxiliaries/ -Wall -Wextra\
+    -fopt-info-vec=builds/alt40.log -O2 -ftree-vectorize -fno-inline -fno-stack-protector\
+    -foffload=nvptx-none="-O2 -ftree-vectorize -fno-inline" -fopenmp -o ./builds/Alt40
+g++ run.cpp ../auxiliaries/auxiliaries.cpp c4_3_6/saxpy.cpp -I c4_3_6/ -I ../auxiliaries/ -Wall -Wextra\
+    -fopt-info-vec=builds/alt41.log -O2 -fno-inline -fno-stack-protector\
+    -foffload=nvptx-none="-O2 -fno-inline" -fopenmp -o ./builds/Alt41
 
-# c4_4
-g++ run_device_alloc.cpp ../auxiliaries/auxiliaries.cpp c4_4/saxpy.cpp -I c4_4/ -I ../auxiliaries/ -fno-stack-protector  -foffload=nvptx-none -fopenmp -Wall -Wextra -o ./builds/c4_4
-# c4_4 simd
-g++ run_device_alloc.cpp ../auxiliaries/auxiliaries.cpp c4_4/saxpy.cpp -I c4_4/ -I ../auxiliaries/ -fno-stack-protector -fopenmp-simd  -foffload=nvptx-none -fopenmp -Wall -Wextra -o ./builds/c4_4_simd
-# c4_4 --std=c++14 -O2
-g++ run_device_alloc.cpp ../auxiliaries/auxiliaries.cpp c4_4/saxpy.cpp -I c4_4/ -I ../auxiliaries/ -fno-stack-protector  -foffload=nvptx-none="-O2" --std=c++14 -O2 -fopenmp -Wall -Wextra -o ./builds/c4_4_O2
-# c4_4 simd -std=c++14 -O2
-g++ run_device_alloc.cpp ../auxiliaries/auxiliaries.cpp c4_4/saxpy.cpp -I c4_4/ -I ../auxiliaries/ -fno-stack-protector -fopenmp-simd --std=c++14 -O2 -foffload=nvptx-none="-O2" -fopenmp -Wall -Wextra -o ./builds/c4_4_simd_O2
+g++ run_device_alloc.cpp ../auxiliaries/auxiliaries.cpp c4_4/saxpy.cpp -I c4_4/ -I ../auxiliaries/ -Wall -Wextra\
+    -fopt-info-vec=builds/alt39.log -O2 -fno-tree-vectorize -fno-inline -fno-stack-protector\
+    -foffload=nvptx-none="-O2 -fno-tree-vectorize -fno-inline" -fopenmp -o ./builds/Alt42
+g++ run_device_alloc.cpp ../auxiliaries/auxiliaries.cpp c4_4/saxpy.cpp -I c4_4/ -I ../auxiliaries/ -Wall -Wextra\
+    -fopt-info-vec=builds/alt40.log -O2 -ftree-vectorize -fno-inline -fno-stack-protector\
+    -foffload=nvptx-none="-O2 -ftree-vectorize -fno-inline" -fopenmp -o ./builds/Alt43
+g++ run_device_alloc.cpp ../auxiliaries/auxiliaries.cpp c4_4/saxpy.cpp -I c4_4/ -I ../auxiliaries/ -Wall -Wextra\
+    -fopt-info-vec=builds/alt41.log -O2 -fno-inline -fno-stack-protector\
+    -foffload=nvptx-none="-O2 -fno-inline" -fopenmp -o ./builds/Alt44
+COMMENT1
+
